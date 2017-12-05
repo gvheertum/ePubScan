@@ -48,6 +48,8 @@ namespace EpubAnalyzer
 			return new EpubData()
 			{
 				FileName = file,
+				ISBN = GetISBNFromFile(dataXml),
+				Title = GetTitleFromFile(dataXml)
 			};
 		}
 	
@@ -78,14 +80,29 @@ namespace EpubAnalyzer
 			var d = XDocument.Load(new StringReader(fileContent));
 			return d;
 		}
+/*
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" xml:lang="nl" version="2005-1">
+<head>
+    <meta name="dtb:uid" content="978-90-263-3542-6"/>
+    <meta name="dtb:depth" content="1"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Niks</text>
+  </docTitle>
 
+ */
 		private string GetISBNFromFile(XDocument document)
 		{
 			return null;
 		}
 
-		private string GetTitleFromFile()
+		private string GetTitleFromFile(XDocument document)
 		{
+			return document.Elements("docTitle").First().Elements("text").First().ToString();
 			return null;
 		}
 	}
