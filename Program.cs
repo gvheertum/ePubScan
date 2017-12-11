@@ -18,8 +18,10 @@ namespace EpubAnalyzer
 			{
 				var data = new EpubFileParser().GetDataFromFile(f);
 				System.Console.WriteLine($"Filename: {data.FileName}");
+				System.Console.WriteLine("--------------------------------");
 				System.Console.WriteLine($"Title: {data.Title}");
 				System.Console.WriteLine($"ISBN: {data.ISBN}");
+				System.Console.WriteLine();
 			});
         }
     }
@@ -58,10 +60,8 @@ namespace EpubAnalyzer
 			if(!System.IO.File.Exists(file)) { throw new Exception("Invalid file"); }
 			using(var za = ZipFile.Open(file, ZipArchiveMode.Read))
 			{
-				System.Console.WriteLine($"Found {za.Entries.Count} files in archive");
 				foreach(var x in za.Entries)
 				{
-					System.Console.WriteLine($":{x.FullName} ({x.Length})");
 					if(x.FullName.EndsWith("ncx"))
 					{
 						using(var s = new System.IO.StreamReader(x.Open()))
@@ -90,6 +90,7 @@ namespace EpubAnalyzer
     <meta name="dtb:totalPageCount" content="0"/>
     <meta name="dtb:maxPageNumber" content="0"/>
   </head>
+
   <docTitle>
     <text>Niks</text>
   </docTitle>
@@ -97,13 +98,32 @@ namespace EpubAnalyzer
  */
 		private string GetISBNFromFile(XDocument document)
 		{
-			return null;
+			// root/head/ dtb:uid
+			var headTag = document.Descendants().First(d => d.Name.LocalName == "head");
+			var uidTag = headTag.Descendants().First(d => d.Name.LocalName == "meta" && d.Attributes("name").FirstOrDefault()?.Value == "dtb:uid");
+			return uidTag?.Attributes("content").FirstOrDefault()?.Value?.Replace("-", "").Replace(" ", "") ?? "No UID";
 		}
 
 		private string GetTitleFromFile(XDocument document)
 		{
-			return document.Elements("docTitle").First().Elements("text").First().ToString();
-			return null;
+			// root/doctitle
+			var docTitleTag = document.Descendants().First(d => d.Name.LocalName == "docTitle");
+			return docTitleTag?.Value ?? "No title";
 		}
+	}
+
+	public interface ICodeScanner
+	{
+
+	}
+
+	public class CodeScannerAko : ICodeScanner
+	{
+			//http://www.ako.nl/product/{ISBN}/
+	}
+	public class CodeScannerBlz : ICodeScanner
+	{
+		//https://www.blz.nl/boek/9789026332401 --> redir to
+		//https://www.blz.nl/boek/?authortitle=holly-seddon/hou-je-adem-in--9789026332401
 	}
 }
