@@ -30,6 +30,7 @@ namespace EpubAnalyzer.FileParsing
 				<dc:identifier/>
 			</metadata> 
 		*/
+		//TODO: isolate re-used logic
 		private string GetTitle(XDocument xDoc) 
 		{
 			var tag = GetMetadataTag(xDoc).Descendants().First(d => d.Name.LocalName == "title");
@@ -39,7 +40,7 @@ namespace EpubAnalyzer.FileParsing
 		private string GetISBN(XDocument xDoc) 
 		{
 			var tag = GetMetadataTag(xDoc).Descendants().First(d => d.Name.LocalName == "identifier");
-			return tag.Value;
+			return tag.Value?.Replace("-","").Replace(" ", "");
 		}
 
 		private string GetAuthor(XDocument xDoc)
