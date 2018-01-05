@@ -15,5 +15,8 @@
     <Content Include="BookLookup\BookScannerAko.cs" />
     <Content Include="BookLookup\BookScannerLibraryThing.cs" />
     <Content Include="Entities\ExternalDescription.cs" />
+    <Content Include="FileParsing\EpubOpfReader.cs" />
+    <Content Include="FileParsing\EpubReaderBase.cs" />
+    <Content Include="FileParsing\EpubNcxReader.cs" />
   </ItemGroup>
 </Project>
