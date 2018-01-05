@@ -18,7 +18,8 @@ namespace EpubAnalyzer.FileParsing
 				Folder = fileInfo.DirectoryName,
 				FileName = fileInfo.Name,
 				ISBN = GetISBNFromFile(dataXml),
-				Title = GetTitleFromFile(dataXml)
+				Title = GetTitleFromFile(dataXml),
+				DataSource = "opf"
 			};
 		}
 

@@ -13,6 +13,12 @@ namespace EpubAnalyzer.Entities
 		public string Folder {get;set;}
 		public string ISBN {get;set;}
 		public string Title {get;set;}
+		public string Author {get;set;}
+		public string DataSource {get;set;}
 		public List<ExternalDescription> ExternalData {get;set;} = new List<ExternalDescription>();
+		public bool IsUsable()
+		{
+			return !string.IsNullOrWhiteSpace(Title); //TODO: Add additional checks?
+		}
 	}
 }

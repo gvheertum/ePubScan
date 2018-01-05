@@ -31,8 +31,9 @@ namespace EpubAnalyzer
 			epubDetails.ForEach(data => 
 			{
 				System.Console.WriteLine("--------------------------------");
-				System.Console.WriteLine($"Filename: {data.FileName} (@ {data.Folder})");
+				System.Console.WriteLine($"Filename: {data.FileName} ({data.Folder}) - ds: {data.DataSource}");
 				System.Console.WriteLine($"Title: {data.Title}");
+				System.Console.WriteLine($"Title: {data.Author}");
 				System.Console.WriteLine($"ISBN: {data.ISBN}");
 			});
         }

@@ -15,7 +15,9 @@ namespace EpubAnalyzer.FileParsing
 			try		
 			{
 				string fileContent = GetRelevantFileContentEpubFile(fileInfo.FullName, FileMaskToSearch);
-				return GetDataInternal(fileContent, fileInfo);
+				var data = GetDataInternal(fileContent, fileInfo);
+				if(data?.IsUsable() != true) { throw new Exception("Discarding data due to not being usable"); }
+				return data;
 			}
 			catch(Exception e)
 			{
