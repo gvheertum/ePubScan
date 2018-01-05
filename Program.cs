@@ -33,7 +33,11 @@ namespace EpubAnalyzer
 				System.Console.WriteLine("--------------------------------");
 				System.Console.WriteLine($"Filename: {data.FileName} ({data.Folder}) - ds: {data.DataSource}");
 				System.Console.WriteLine($"Title: {data.Title}");
-				System.Console.WriteLine($"Title: {data.Author}");
+				System.Console.WriteLine($"Author: {data.Author}");
+				System.Console.WriteLine($"Subject: {data.Subject}");
+				System.Console.WriteLine($"Description: {data.Description}");
+				System.Console.WriteLine($"Language: {data.Language}");
+				System.Console.WriteLine($"Date: {data.Date}");
 				System.Console.WriteLine($"ISBN: {data.ISBN}");
 			});
         }
