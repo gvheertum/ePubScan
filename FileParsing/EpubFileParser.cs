@@ -17,9 +17,10 @@ namespace EpubAnalyzer.FileParsing
 			FileInfo fi = new FileInfo(file);
 			var opfContent = GetRelevantFileContentEpubFile(file, FileExtensionForMetaData);
 			var ncxContent = GetRelevantFileContentEpubFile(file, FileExtensionForMetaDataAlternate);
+			
 			EbookData data = null;
 			if(!string.IsNullOrWhiteSpace(opfContent)) { data = TryReadingFromOpf(opfContent, fi); }
-			if(!string.IsNullOrWhiteSpace(ncxContent)) { data = TryReadingFromNcx(opfContent, fi); }
+			if(!string.IsNullOrWhiteSpace(ncxContent)) { data = TryReadingFromNcx(ncxContent, fi); }
 			if(data == null) { throw new Exception($"Cannot read data from OPF and NCX for {fi.Name}"); }
 
 			return data;

@@ -25,14 +25,15 @@ namespace EpubAnalyzer
 			var files = new FolderScanner().GetEpubFilesFromFolder(TestEpubFolder);
 			System.Console.WriteLine($"Retrieved {files.Count} files");
 			
-			files.ForEach(f => 
+			
+			var parser = new EpubFileParser();
+			var epubDetails = files.Select(f => parser.GetDataFromFile(f)).ToList();
+			epubDetails.ForEach(data => 
 			{
-				var data = new EpubFileParser().GetDataFromFile(f);
-				System.Console.WriteLine($"Filename: {data.FileName} (@ {data.Folder})");
 				System.Console.WriteLine("--------------------------------");
+				System.Console.WriteLine($"Filename: {data.FileName} (@ {data.Folder})");
 				System.Console.WriteLine($"Title: {data.Title}");
 				System.Console.WriteLine($"ISBN: {data.ISBN}");
-				System.Console.WriteLine();
 			});
         }
     }	
