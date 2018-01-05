@@ -14,5 +14,6 @@
     <Content Include="BookLookup\BookScannerBlz.cs" />
     <Content Include="BookLookup\BookScannerAko.cs" />
     <Content Include="BookLookup\BookScannerLibraryThing.cs" />
+    <Content Include="Entities\ExternalDescription.cs" />
   </ItemGroup>
 </Project>

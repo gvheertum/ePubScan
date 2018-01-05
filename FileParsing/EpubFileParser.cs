@@ -10,39 +10,74 @@ namespace EpubAnalyzer.FileParsing
 {
 	public class EpubFileParser
 	{
+		public const string FileExtensionForMetaDataAlternate = "ncx";
+		public const string FileExtensionForMetaData = "opf";
 		public EbookData GetDataFromFile(string file)
 		{
-			var dataStr = GetRelevantFileContentEpubFile(file);
-			var dataXml = ParseDesciptorFile(dataStr);
-			return new EbookData()
+			FileInfo fi = new FileInfo(file);
+			var opfContent = GetRelevantFileContentEpubFile(file, FileExtensionForMetaData);
+			var ncxContent = GetRelevantFileContentEpubFile(file, FileExtensionForMetaDataAlternate);
+			EbookData data = null;
+			if(!string.IsNullOrWhiteSpace(opfContent)) { data = TryReadingFromOpf(opfContent, fi); }
+			if(!string.IsNullOrWhiteSpace(ncxContent)) { data = TryReadingFromNcx(opfContent, fi); }
+			if(data == null) { throw new Exception($"Cannot read data from OPF and NCX for {fi.Name}"); }
+
+			return data;
+		}
+
+		private EbookData TryReadingFromOpf(string fileContent, FileInfo fileInfo)
+		{
+			try
 			{
-				FileName = file,
-				ISBN = GetISBNFromFile(dataXml),
-				Title = GetTitleFromFile(dataXml)
-			};
+				throw new Exception("OPF not implemented");
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine($"Cannot parse opf: {e.Message}");
+				return null;
+			}
+		}
+
+		private EbookData TryReadingFromNcx(string fileContent, FileInfo fileInfo)
+		{
+			try
+			{
+				var dataXml = ParseDesciptorFileNcx(fileContent);
+		
+				return new EbookData()
+				{
+					Folder = fileInfo.DirectoryName,
+					FileName = fileInfo.Name,
+					ISBN = GetISBNFromFile(dataXml),
+					Title = GetTitleFromFile(dataXml)
+				};
+			}
+			catch(Exception e)
+			{
+				System.Console.WriteLine($"Cannot read ncx data: {e.Message}");
+				return null;
+			}
 		}
 	
-		private string GetRelevantFileContentEpubFile(string file)
+		private string GetRelevantFileContentEpubFile(string file, string fileSuffixToSearch)
 		{
-			if(!System.IO.File.Exists(file)) { throw new Exception("Invalid file"); }
+			if(!System.IO.File.Exists(file)) { throw new Exception("Invalid epub file"); }
 			using(var za = ZipFile.Open(file, ZipArchiveMode.Read))
 			{
-				foreach(var x in za.Entries)
+				var metaDataFile = za.Entries.FirstOrDefault(e => e.FullName.EndsWith(fileSuffixToSearch));
+				if(metaDataFile != null)
 				{
-					if(x.FullName.EndsWith("ncx"))
+					using(var s = new System.IO.StreamReader(metaDataFile.Open()))
 					{
-						using(var s = new System.IO.StreamReader(x.Open()))
-						{
-							var res = s.ReadToEnd();
-							return res;
-						}
+						var res = s.ReadToEnd();
+						return res;
 					}
 				}
 			}
-			throw new Exception("Could not find a ncx file");
+			return null;
 		}
 
-		private XDocument ParseDesciptorFile(string fileContent)
+		private XDocument ParseDesciptorFileNcx(string fileContent)
 		{
 			var d = XDocument.Load(new StringReader(fileContent));
 			return d;

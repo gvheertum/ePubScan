@@ -13,12 +13,22 @@ namespace EpubAnalyzer
 		private const string TestEpubFolder = "/Users/gertjan/Desktop/epubtest/";
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
+            Console.WriteLine("Epub data parser");
+            Console.WriteLine("****************");
+			
+			Console.WriteLine("Default path: " + TestEpubFolder);
+			Console.WriteLine("Folder (empty to keep default): ");
+			var folderToUse = Console.ReadLine();
+			folderToUse = !string.IsNullOrWhiteSpace(folderToUse) ? TestEpubFolder : folderToUse;
+
 			var files = new FolderScanner().GetEpubFilesFromFolder(TestEpubFolder);
+			System.Console.WriteLine($"Retrieved {files.Count} files");
+			
 			files.ForEach(f => 
 			{
 				var data = new EpubFileParser().GetDataFromFile(f);
-				System.Console.WriteLine($"Filename: {data.FileName}");
+				System.Console.WriteLine($"Filename: {data.FileName} (@ {data.Folder})");
 				System.Console.WriteLine("--------------------------------");
 				System.Console.WriteLine($"Title: {data.Title}");
 				System.Console.WriteLine($"ISBN: {data.ISBN}");

@@ -12,7 +12,10 @@ namespace EpubAnalyzer.FileParsing
 		public List<string> GetEpubFilesFromFolder(string folder)
 		{
 			var di = new System.IO.DirectoryInfo(folder);
-			return di.GetFileSystemInfos().Where(fi => fi.Extension == ".epub").Select(fi => fi.FullName).ToList();
+			var files = di.GetFileSystemInfos().Where(fi => fi.Extension == ".epub").Select(fi => fi.FullName).ToList();
+			di.GetDirectories().ToList().ForEach(d => files.AddRange(GetEpubFilesFromFolder(d.FullName)));
+			return files;
 		}
+
 	}
 }
