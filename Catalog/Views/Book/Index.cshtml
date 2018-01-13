@@ -4,7 +4,13 @@
 }
 <h1>Boooks</h1>
 Amount: @Model.Count()
+<table>
 @foreach(var b in Model)
 {
-	<b>b.Identfier</b>
+	<tr>
+		<td>@b.Identfier</td>
+		<td>@b.Name</td>
+	</tr>
 }
+
+</table>
