@@ -9,5 +9,9 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
     <Content Include=".vscode\launch.json" />
+    <Content Include="Library\BookCollectionRepository.cs" />
+    <Content Include="Models\Book.cs" />
+    <Content Include="Controllers\HomeController.cs" />
+    <Content Include="Controllers\BookController.cs" />
   </ItemGroup>
 </Project>

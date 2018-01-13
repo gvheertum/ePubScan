@@ -1,0 +1,10 @@
+@model System.Collections.Generic.IEnumerable<Models.Book>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h1>Boooks</h1>
+Amount: @Model.Count()
+@foreach(var b in Model)
+{
+	<b>b.Identfier</b>
+}
