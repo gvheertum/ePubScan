@@ -84,9 +84,9 @@ namespace EpubAnalyzer
 			sb.Append($"<th>Author</th>");
 			sb.Append($"<th>ISBN</th>");
 			sb.Append($"<th>Language</th>");
+			sb.Append($"<th>Category</th>");
 			sb.Append($"<th>Subject</th>");
 			sb.Append($"<th>Description</th>");
-			sb.Append($"<th>Date</th>");
 			sb.Append($"<th>Folder</th>");
 			sb.Append($"<th>FileName</th>");
 			sb.Append($"</tr>");
@@ -103,9 +103,9 @@ namespace EpubAnalyzer
 			sb.Append($"<td>{data.Author}</td>");
 			sb.Append($"<td>{data.ISBN}</td>");
 			sb.Append($"<td>{data.Language}</td>");
+			sb.Append($"<td></td>");
 			sb.Append($"<td>{data.Subject}</td>");
 			sb.Append($"<td>{data.Description}</td>");
-			sb.Append($"<td>{data.Date}</td>");
 			sb.Append($"<td>{data.Folder}</td>");
 			sb.Append($"<td>{data.FileName}</td>");
 			sb.Append($"</tr>");
