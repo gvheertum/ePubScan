@@ -8,3 +8,13 @@
 /Users/gertjan/Development/EpubAnalyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.AssemblyInfo.cs
 /Users/gertjan/Development/EpubAnalyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.dll
 /Users/gertjan/Development/EpubAnalyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.pdb
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/bin/Debug/netcoreapp2.0/EpubAnalyzer.deps.json
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/bin/Debug/netcoreapp2.0/EpubAnalyzer.runtimeconfig.json
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/bin/Debug/netcoreapp2.0/EpubAnalyzer.runtimeconfig.dev.json
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/bin/Debug/netcoreapp2.0/EpubAnalyzer.dll
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/bin/Debug/netcoreapp2.0/EpubAnalyzer.pdb
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.csproj.CoreCompileInputs.cache
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.AssemblyInfoInputs.cache
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.AssemblyInfo.cs
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.dll
+/Users/gertjan/Development/EpubAnalyzer/Analyzer/obj/Debug/netcoreapp2.0/EpubAnalyzer.pdb

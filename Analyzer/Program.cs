@@ -12,7 +12,7 @@ namespace EpubAnalyzer
 {
     class Program
     {
-		private const string TestEpubFolder = "/Users/gertjan/Desktop/epubtest/";
+		private const string TestEpubFolder = "/Users/gertjan/Desktop/ebooks/";
 		private const string TestEpubOutput = "/Users/gertjan/Desktop/epub-output/";
         static void Main(string[] args)
         {
@@ -78,9 +78,11 @@ namespace EpubAnalyzer
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append($"<tr>");
-			sb.Append($"<th>ISBN</th>");
+			sb.Append($"<th>Status</th>");
+			sb.Append($"<th>Remark</th>");
 			sb.Append($"<th>Title</th>");
 			sb.Append($"<th>Author</th>");
+			sb.Append($"<th>ISBN</th>");
 			sb.Append($"<th>Language</th>");
 			sb.Append($"<th>Subject</th>");
 			sb.Append($"<th>Description</th>");
@@ -95,9 +97,11 @@ namespace EpubAnalyzer
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append($"<tr>");
-			sb.Append($"<td>{data.ISBN}</td>");
+			sb.Append($"<td></td>");
+			sb.Append($"<td></td>");
 			sb.Append($"<td>{data.Title}</td>");
 			sb.Append($"<td>{data.Author}</td>");
+			sb.Append($"<td>{data.ISBN}</td>");
 			sb.Append($"<td>{data.Language}</td>");
 			sb.Append($"<td>{data.Subject}</td>");
 			sb.Append($"<td>{data.Description}</td>");

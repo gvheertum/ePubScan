@@ -670,11 +670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/gertjan/Development/EpubAnalyzer/EpubAnalyzer.csproj",
+      "projectUniqueName": "/Users/gertjan/Development/EpubAnalyzer/Analyzer/EpubAnalyzer.csproj",
       "projectName": "EpubAnalyzer",
-      "projectPath": "/Users/gertjan/Development/EpubAnalyzer/EpubAnalyzer.csproj",
+      "projectPath": "/Users/gertjan/Development/EpubAnalyzer/Analyzer/EpubAnalyzer.csproj",
       "packagesPath": "/Users/gertjan/.nuget/packages/",
-      "outputPath": "/Users/gertjan/Development/EpubAnalyzer/obj/",
+      "outputPath": "/Users/gertjan/Development/EpubAnalyzer/Analyzer/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
