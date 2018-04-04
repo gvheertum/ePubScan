@@ -1,4 +1,3 @@
---Server=tcp:netietsmeer.database.windows.net,1433;Initial Catalog=netietsmeer-books;Persist Security Info=False;User ID=netietsmeer-admin;Password=@zur3Adm!#2018^;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 --CREATE TABLE Book
 --(
 --	BookID INT NOT NULL,
