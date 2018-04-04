@@ -13,5 +13,7 @@
     <Content Include="Models\Book.cs" />
     <Content Include="Controllers\HomeController.cs" />
     <Content Include="Controllers\BookController.cs" />
+    <Content Include="initialize.sql" />
+    <Content Include="bundleconfig.json" />
   </ItemGroup>
 </Project>
