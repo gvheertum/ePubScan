@@ -3,9 +3,9 @@ using Models;
 using System.Linq;
 using System;
 
-namespace Library
+namespace Library.DAL
 {
-	public class BookCollectionRepository
+	public class BookRepository
 	{
 		public List<Book> GetBooks()
 		{
@@ -20,8 +20,8 @@ namespace Library
 		private List<Book> GetAllBooks()
 		{
 			var books = new List<Book>();
-			books.Add(new Book() { Identifier = "Boekje1", Name = "Mijn boek" });
-			books.Add(new Book() { Identifier = "Boekje2", Name = "Mijn boek dn 2de" });
+			// books.Add(new Book() { Identifier = "Boekje1", Name = "Mijn boek" });
+			// books.Add(new Book() { Identifier = "Boekje2", Name = "Mijn boek dn 2de" });
 			return books;
 		}
 	}

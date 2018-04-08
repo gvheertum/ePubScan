@@ -12,12 +12,12 @@ namespace Catalog.Controllers
     {
         public IActionResult Index()
         {
-            return View(new Library.BookCollectionRepository().GetBooks());
+            return View(new Library.DAL.BookRepository().GetBooks());
         }
 
 		public IActionResult Details(string id)
 		{
-			return View(new Library.BookCollectionRepository().GetBook(id));
+			return View(new Library.DAL.BookRepository().GetBook(id));
 		}
     }
 }
