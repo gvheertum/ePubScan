@@ -2,27 +2,38 @@ using System.Collections.Generic;
 using Models;
 using System.Linq;
 using System;
-
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 namespace Library.DAL
 {
-	public class BookRepository
+	public class RepositoryBase
 	{
+	}
+
+	public class BookRepository : RepositoryBase
+	{
+		private EpubCatalogContext GetContext()
+		{
+			return new EpubCatalogContext(EpubCatalogContext.GetConfig());
+		}
+
 		public List<Book> GetBooks()
 		{
-			return GetAllBooks();
+			using(var context = GetContext())
+			{
+				return context.Books.ToList();
+			}
 		}
 
-		public Book GetBook(string identifier)
+		public Book GetBook(int identifier)
 		{
-			return GetBooks().FirstOrDefault(b => string.Equals(b.Identifier, identifier, StringComparison.OrdinalIgnoreCase));
+			using(var context = GetContext())
+			{
+				return context.Books.FirstOrDefault(b => b.BookID == identifier);
+			}
 		}
 
-		private List<Book> GetAllBooks()
-		{
-			var books = new List<Book>();
-			// books.Add(new Book() { Identifier = "Boekje1", Name = "Mijn boek" });
-			// books.Add(new Book() { Identifier = "Boekje2", Name = "Mijn boek dn 2de" });
-			return books;
-		}
+		
 	}
 }

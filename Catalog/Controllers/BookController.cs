@@ -15,9 +15,9 @@ namespace Catalog.Controllers
             return View(new Library.DAL.BookRepository().GetBooks());
         }
 
-		public IActionResult Details(string id)
+		public IActionResult Details(int? id)
 		{
-			return View(new Library.DAL.BookRepository().GetBook(id));
+			return View(new Library.DAL.BookRepository().GetBook(id.Value));
 		}
     }
 }

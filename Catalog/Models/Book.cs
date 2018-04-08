@@ -2,6 +2,7 @@ namespace Models
 {
 	public class Book
 	{
+		public int BookID {get;set;}
 		public string ReadStatus {get;set;}
 		public string ReadRemark {get;set;}
 		public string Identifier {get;set;}

@@ -5,11 +5,23 @@
 <h1>Boooks</h1>
 Amount: @Model.Count()
 <table>
+	<tr>
+		<th>ID</th>
+		<th>Status</th>
+		<th></th>
+		<th>Author</th>
+		<th>Title</th>
+		<th>Identifier</th>
+	</tr>
 @foreach(var b in Model)
 {
 	<tr>
-		<td>@b.Identfier</td>
-		<td>@b.Name</td>
+		<td>@b.BookID</td>
+		<td>@b.ReadStatus</td>
+		<td>@b.ReadRemark</td>
+		<td>@b.Author</td>
+		<td>@b.Title</td>
+		<td>@b.Identifier</td>
 	</tr>
 }
 
