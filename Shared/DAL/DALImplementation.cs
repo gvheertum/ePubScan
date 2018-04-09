@@ -15,7 +15,7 @@ namespace ePubAnalyzer.Shared.DAL
 			return new BookRepository(GetContextCreator());
 		}
 
-		private Func<EpubCatalogContext> GetContextCreator()
+		protected virtual Func<EpubCatalogContext> GetContextCreator()
 		{
 			return () => new EpubCatalogContext(EpubCatalogContext.GetConfig(_connectionString));
 		}

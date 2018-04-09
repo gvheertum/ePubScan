@@ -13,7 +13,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
     <Content Include="DAL\BookRepository.cs" />
-    <Content Include="DAL\BookDAL.cs" />
     <Content Include="BLL\LogicBase.cs" />
     <Content Include="BLL\LogicFactory.cs" />
     <Content Include="DAL\DALImplementation.cs" />

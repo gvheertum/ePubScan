@@ -8,16 +8,16 @@ using Catalog.Models;
 
 namespace Catalog.Controllers
 {
-    public class BookController : Controller
+	public class BookController : BaseController
     {
         public IActionResult Index()
         {
-            return View(new Library.DAL.BookRepository().GetBooks());
+            return View(GetFrontendHelper().GetLogicFactory().GetBookLogic().GetAllBooks());
         }
 
 		public IActionResult Details(int? id)
 		{
-			return View(new Library.DAL.BookRepository().GetBook(id.Value));
+			return View(GetFrontendHelper().GetLogicFactory().GetBookLogic().GetBookByID(id.Value));
 		}
     }
 }

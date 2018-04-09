@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../Shared/ePubAnalyzer.Shared.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
   </ItemGroup>
@@ -17,5 +18,7 @@
     <Content Include="Library\DAL\BookCollectionRepository.cs" />
     <Content Include="Models\ErrorViewModel.cs" />
     <Content Include="Library\Book.cs" />
+    <Content Include="Controllers\BaseController.cs" />
+    <Content Include="Library\DAL\CatalogDALCreator.cs" />
   </ItemGroup>
 </Project>
