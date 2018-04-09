@@ -9,20 +9,18 @@ namespace EpubAnalyzer.Entities
 {
 	public class EbookData
 	{
-		public string FileName {get;set;}
-		public string Folder {get;set;}
-		public string ISBN {get;set;}
-		public string Title {get;set;}
-		public string Author {get;set;}
-		public string Date {get;set;}
-		public string Language {get;set;}
-		public string Description {get;set;}
-		public string Subject {get;set;}
+		private ePubAnalyzer.Shared.Entities.Book _bookDetail;
+		public ePubAnalyzer.Shared.Entities.Book BookDetail 
+		{
+			get { return _bookDetail = _bookDetail ?? new ePubAnalyzer.Shared.Entities.Book(); }
+			set { _bookDetail = value; } 
+		}
+
 		public string DataSource {get;set;}
-		public List<ExternalDescription> ExternalData {get;set;} = new List<ExternalDescription>();
+		public List<ExternalDescription> ExternalData {get; set; } = new List<ExternalDescription>();
 		public bool IsUsable()
 		{
-			return !string.IsNullOrWhiteSpace(Title); //TODO: Add additional checks?
+			return !string.IsNullOrWhiteSpace(BookDetail?.Title); //TODO: Add additional checks?
 		}
 	}
 }

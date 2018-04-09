@@ -8,7 +8,7 @@ using EpubAnalyzer.FileParsing;
 using System.Text;
 using EpubAnalyzer.Entities;
 
-namespace EpubAnalyzer
+namespace ePubAnalyzer
 {
     class Program
     {
@@ -32,17 +32,18 @@ namespace EpubAnalyzer
 			
 			var parser = new EpubFileParser();
 			var epubDetails = files.Select(f => parser.GetDataFromFile(f)).ToList();
-			epubDetails.ForEach(data => 
+			epubDetails.ForEach(dataC => 
 			{
+				var data = dataC.BookDetail;
 				System.Console.WriteLine("--------------------------------");
-				System.Console.WriteLine($"Filename: {data.FileName} ({data.Folder}) - ds: {data.DataSource}");
+				System.Console.WriteLine($"Filename: {data.FileName} ({data.Folder}) - ds: {dataC.DataSource}");
 				System.Console.WriteLine($"Title: {data.Title}");
 				System.Console.WriteLine($"Author: {data.Author}");
 				System.Console.WriteLine($"Subject: {data.Subject}");
 				System.Console.WriteLine($"Description: {data.Description}");
 				System.Console.WriteLine($"Language: {data.Language}");
-				System.Console.WriteLine($"Date: {data.Date}");
-				System.Console.WriteLine($"ISBN: {data.ISBN}");
+				//System.Console.WriteLine($"Date: {data.Date}");
+				System.Console.WriteLine($"ISBN: {data.Identifier}");
 			});
 
 			Console.WriteLine("Default output path: " + TestEpubOutput);
@@ -99,15 +100,15 @@ namespace EpubAnalyzer
 			sb.Append($"<tr>");
 			sb.Append($"<td></td>");
 			sb.Append($"<td></td>");
-			sb.Append($"<td>{data.Title}</td>");
-			sb.Append($"<td>{data.Author}</td>");
-			sb.Append($"<td>{data.ISBN}</td>");
-			sb.Append($"<td>{data.Language}</td>");
+			sb.Append($"<td>{data.BookDetail.Title}</td>");
+			sb.Append($"<td>{data.BookDetail.Author}</td>");
+			sb.Append($"<td>{data.BookDetail.Identifier}</td>");
+			sb.Append($"<td>{data.BookDetail.Language}</td>");
 			sb.Append($"<td></td>");
-			sb.Append($"<td>{data.Subject}</td>");
-			sb.Append($"<td>{data.Description}</td>");
-			sb.Append($"<td>{data.Folder}</td>");
-			sb.Append($"<td>{data.FileName}</td>");
+			sb.Append($"<td>{data.BookDetail.Subject}</td>");
+			sb.Append($"<td>{data.BookDetail.Description}</td>");
+			sb.Append($"<td>{data.BookDetail.Folder}</td>");
+			sb.Append($"<td>{data.BookDetail.FileName}</td>");
 			sb.Append($"</tr>");
 			return sb.ToString();
 		}

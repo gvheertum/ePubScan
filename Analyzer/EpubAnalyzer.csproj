@@ -4,6 +4,11 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
+    <ItemGroup>
+    <ProjectReference Include="../Shared/ePubAnalyzer.Shared.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Program.cs" />
     <Content Include="FileParsing\EpubFileParser.cs" />

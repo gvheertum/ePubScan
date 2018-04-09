@@ -15,10 +15,13 @@ namespace EpubAnalyzer.FileParsing
 	
 			return new EbookData()
 			{
-				Folder = fileInfo.DirectoryName,
-				FileName = fileInfo.Name,
-				ISBN = GetISBNFromFile(dataXml),
-				Title = GetTitleFromFile(dataXml),
+				BookDetail = new ePubAnalyzer.Shared.Entities.Book()
+				{
+					Folder = fileInfo.DirectoryName,
+					FileName = fileInfo.Name,
+					Identifier = GetISBNFromFile(dataXml),
+					Title = GetTitleFromFile(dataXml),
+				},
 				DataSource = "opf"
 			};
 		}

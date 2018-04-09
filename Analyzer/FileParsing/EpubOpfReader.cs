@@ -15,15 +15,18 @@ namespace EpubAnalyzer.FileParsing
 			var xDoc = ParseDesciptorFile(fileContent);
 			return new EbookData() 
 			{
-				Title = GetTitle(xDoc),
-				Author = GetAuthor(xDoc),
-				ISBN = GetISBN(xDoc),
-				FileName = fileInfo.Name,
-				Folder = fileInfo.DirectoryName,
-				Date = GetDate(xDoc),
-				Description = GetDescription(xDoc),
-				Subject = GetSubject(xDoc),
-				Language = GetLanguage(xDoc),
+				BookDetail = new ePubAnalyzer.Shared.Entities.Book()
+				{
+					Title = GetTitle(xDoc),
+					Author = GetAuthor(xDoc),
+					Identifier = GetISBN(xDoc),
+					FileName = fileInfo.Name,
+					Folder = fileInfo.DirectoryName,
+					//Date = GetDate(xDoc),
+					Description = GetDescription(xDoc),
+					Subject = GetSubject(xDoc),
+					Language = GetLanguage(xDoc),
+				},
 				DataSource = "opf"
 			};
 		}

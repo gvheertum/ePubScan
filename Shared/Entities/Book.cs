@@ -11,6 +11,7 @@ namespace ePubAnalyzer.Shared.Entities
 		public string Category {get;set;}
 		public string Subject {get;set;}
 		public string Description {get;set;}
+		public string Language {get;set;}
 		public string Folder {get;set;}
 		public string FileName {get;set;}
 	}
