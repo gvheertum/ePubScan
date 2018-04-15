@@ -11,3 +11,5 @@ bin
 Merged
 connectionstrings.json
 Shared/obj
+*/bin/*
+*/obj/*
