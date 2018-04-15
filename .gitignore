@@ -5,9 +5,10 @@ Merged
 connectionstrings.json
 Shared/obj
 obj
-Analyzer/obj/*
-bin/*
-Shared/bin/
-Shared/obj/
-Catalog/obj/
-Catalog/bin/
+Analyzer/obj
+Analyzer/bin
+bin
+Shared/bin
+Shared/obj
+Catalog/obj
+Catalog/bin
