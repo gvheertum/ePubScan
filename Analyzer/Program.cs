@@ -16,7 +16,25 @@ namespace ePubAnalyzer
 		private const string TestEpubOutput = "/Users/gertjan/Desktop/epub-output/";
         static void Main(string[] args)
         {
+			if(args.Any(a => string.Equals("/test", a, StringComparison.OrdinalIgnoreCase)))
+			{
+				TestRun();
+			}
+			else 
+			{
+				MainOld(args);
+			}
+		}
 
+		static void TestRun()
+		{
+			var x = new EpubAnalyzer.CatalogSync.CatalogSyncDatabaseSettingsRetriever().GetConnectionString();
+			System.Console.WriteLine("Connection string: ");
+			Console.WriteLine(x);
+		}
+
+		static void MainOld(string[] args)
+		{
             Console.WriteLine("Epub data parser");
             Console.WriteLine("****************");
 			

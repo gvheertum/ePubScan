@@ -15,8 +15,6 @@ namespace Library.DAL
 		private string GetConnectionStringFromConfig()
 		{
 			IConfigurationRoot configuration = new ConfigurationBuilder()
-				.SetBasePath("/Users/gertjan/Development/EpubAnalyzer/Catalog")
-				.AddJsonFile("appsettings.json")
 				.AddJsonFile("connectionstrings.json")
 				.Build();
 			return configuration.GetConnectionString("DefaultConnection");
