@@ -16,5 +16,15 @@ namespace ePubAnalyzer.Shared.BLL
 		{
 			return _dal.GetBookRepository().GetBook(bookID);
 		}
+
+		public Entities.Book Save(Entities.Book book)
+		{
+			return _dal.GetBookRepository().Save(book);
+		}
+
+		public Entities.ComparisonContainer<Entities.Book> CompareBooksWithExistingCollection(List<Entities.Book> books)
+		{
+			return new Library.BookSetComparer().GetComparisonContainer(this.GetAllBooks(), books);
+		}
 	}
 }

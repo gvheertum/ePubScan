@@ -17,5 +17,11 @@
     <Content Include="BLL\LogicFactory.cs" />
     <Content Include="DAL\DALImplementation.cs" />
     <Content Include="DAL\IDAL.cs" />
+    <Content Include="Entities\ComparisonObject.cs" />
+    <Content Include="Library\SetComparer.cs" />
+    <Content Include="Library\CompareSets.cs" />
+    <Content Include="Entities\ComparisonContainer.cs" />
+    <Content Include="Entities\ComparisonResult.cs" />
+    <Content Include="Library\BookSetComparer.cs" />
   </ItemGroup>
 </Project>
