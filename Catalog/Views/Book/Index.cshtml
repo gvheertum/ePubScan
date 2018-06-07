@@ -2,27 +2,30 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+
+
 <h1>Boooks</h1>
 Amount: @Model.Count()
 <table>
+	<colgroup>
+		<col width="50"/>
+		<col width="100"/>
+		<col width="200"/>
+		<col width="*"/>
+	</colgroup>
 	<tr>
 		<th>ID</th>
 		<th>Status</th>
-		<th></th>
 		<th>Author</th>
 		<th>Title</th>
-		<th>Identifier</th>
 	</tr>
 @foreach(var b in Model)
 {
-	<tr>
-		<td>@b.BookID</td>
-		<td>@b.ReadStatus</td>
-		<td>@b.ReadRemark</td>
+	<tr state="@b.ReadStatus">
+		<td>@Html.ActionLink($"{b.BookID}", "Details", new { id = b.BookID })</td>
+		<td title="@b.ReadRemark">@b.ReadStatus</td>
 		<td>@b.Author</td>
 		<td>@b.Title</td>
-		<td>@b.Identifier</td>
 	</tr>
 }
-
 </table>

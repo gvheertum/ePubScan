@@ -1,0 +1,8 @@
+/* My Styles */
+table { width: 95%; margin: auto; }
+th { background-color: orange; color: white; }
+
+a, a:hover, a:visited, a:active { color: orange; }
+
+tr[state="Gelezen"] { background-color: #AAFFAA; color: #555555; }
+tr[state="Lezen"] { background-color: rgb(170, 221, 255); color: #555555; }

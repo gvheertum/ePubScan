@@ -2,5 +2,26 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<h1>Boooks</h1>
-<b>@Model.Identifier</b>: @Model.Title
+<h1>Book detail (@Model.Identifier)</h1>
+<dl>
+	<dt>Identifier</dt>
+	<dd>@Model.BookID (@Model.Identifier)</dd>
+</dl>
+<dl>
+	<dt>Status</dt>
+	<dd>@Model.ReadStatus @(!String.IsNullOrWhiteSpace(Model.ReadRemark) ? $"({Model.ReadRemark})" : "")</dd>
+</dl>
+<dl>
+	<dt>Author</dt>
+	<dd>@Model.Author</dd>
+</dl>
+<dl>
+	<dt>Title</dt>
+	<dd>@Model.Title</dd>
+</dl>
+<dl>
+	<dt>Description</dt>
+	<dd>@Model.Description</dd>
+</dl>
+
+<p>@Html.ActionLink("Back", "Index")</p>
