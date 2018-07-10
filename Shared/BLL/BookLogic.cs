@@ -17,6 +17,24 @@ namespace ePubAnalyzer.Shared.BLL
 			return _dal.GetBookRepository().GetBook(bookID);
 		}
 
+		public Entities.Book UpdateReadState(int bookID, string readState)
+		{
+			var book = GetBookByID(bookID);
+			if(book == null) { throw new System.Exception($"Unknown bookid: {bookID}"); }
+			book.ReadStatus = readState;
+			book = Save(book);
+			return book;
+		}
+
+		public Entities.Book UpdateReadRemark(int bookID, string remark)
+		{
+			var book = GetBookByID(bookID);
+			if(book == null) { throw new System.Exception($"Unknown bookid: {bookID}"); }
+			book.ReadRemark = remark;
+			book = Save(book);
+			return book;
+		}
+
 		public Entities.Book Save(Entities.Book book)
 		{
 			return _dal.GetBookRepository().Save(book);
