@@ -12,12 +12,14 @@ Amount: @Model.Count()
 		<col width="100"/>
 		<col width="200"/>
 		<col width="*"/>
+		<col width="10"/>
 	</colgroup>
 	<tr>
 		<th>ID</th>
 		<th>Status</th>
 		<th>Author</th>
 		<th>Title</th>
+		<th title="Has description">D</th>
 	</tr>
 @foreach(var b in Model)
 {
@@ -26,6 +28,7 @@ Amount: @Model.Count()
 		<td title="@b.ReadRemark">@b.ReadStatus</td>
 		<td>@b.Author</td>
 		<td>@b.Title</td>
+		<td title="Description?" class="Description @(String.IsNullOrWhiteSpace(b.Description)? "" : "HasDescription")">@(String.IsNullOrWhiteSpace(b.Description)? "-" : "V")</td>
 	</tr>
 }
 </table>

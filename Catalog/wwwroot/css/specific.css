@@ -10,3 +10,8 @@ tr[state="Te lezen"] { background-color: rgb(170, 221, 255); color: #555555; }
 tr[state="Niet lezen"] { background-color: rgb(255, 109, 104); color: #555555; }
 form textarea { width: 100%; height: 200px; clear: both; }
 form input[type='text'] { width: 100%; }
+td { vertical-align: top; padding: 2px; }
+td { border: 1px solid #EEE; }
+td.Description { color: red; }
+
+td.Description.HasDescription { color: Green; }
