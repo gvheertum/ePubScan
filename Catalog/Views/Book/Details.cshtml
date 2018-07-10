@@ -2,26 +2,67 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<h1>Book detail (@Model.Identifier)</h1>
-<dl>
-	<dt>Identifier</dt>
-	<dd>@Model.BookID (@Model.Identifier)</dd>
-</dl>
-<dl>
-	<dt>Status</dt>
-	<dd>@Model.ReadStatus @(!String.IsNullOrWhiteSpace(Model.ReadRemark) ? $"({Model.ReadRemark})" : "")</dd>
-</dl>
-<dl>
-	<dt>Author</dt>
-	<dd>@Model.Author</dd>
-</dl>
-<dl>
-	<dt>Title</dt>
-	<dd>@Model.Title</dd>
-</dl>
-<dl>
-	<dt>Description</dt>
-	<dd>@Model.Description</dd>
-</dl>
 
-<p>@Html.ActionLink("Back", "Index")</p>
+<form class="subform" asp-controller="Book" asp-action="UpdateBookData" method="post">
+	<legend>@Model.Author - @Model.Title</legend>
+	<p>@Html.ActionLink("< Back", "Index")</p>
+	<input type="hidden" asp-for="@Model.BookID" />
+	<dl>
+		<dt>DB Identifier</dt>
+		<dd>@Model.BookID</dd>
+	</dl>
+	<dl>
+		<dt>Identifier</dt>
+		<dd><input type="text" asp-for="@Model.Identifier"/></dd>
+	</dl>
+	<dl>
+		<dt>Title</dt>
+		<dd><input type="text" asp-for="@Model.Title"/></dd>
+	</dl>
+	<dl>
+		<dt>Author</dt>
+		<dd><input type="text" asp-for="@Model.Author"/></dd>
+	</dl>
+	<dl>
+		<dt>Description</dt>
+		<dd><textarea asp-for="@Model.Description"></textarea></dd>
+	</dl>
+	<button type="submit" class="confirm">Update book data</button>
+</form>
+
+<form asp-controller="Book" asp-action="UpdateStatus" method="post">
+	<input type="hidden" asp-for="@Model.BookID" />
+	<legend>Read status</legend>
+	<dl>
+		<dt>Read Status</dt>
+		<dd>
+			<select asp-for="@Model.ReadStatus">
+				<option></option>
+				<option>Gelezen</option>
+				<option>Lezen</option>
+				<option>Te lezen</option>
+				<option>Niet lezen</option>
+			</select>
+		</dd>
+	</dl>
+	<dl>
+		<dt>Read Status</dt>
+		<dd>
+			<textarea asp-for="@Model.ReadRemark"></textarea>
+		</dd>
+	</dl>
+	<button type="submit">Update status</button>
+</form>
+
+@section Scripts
+{
+<script>
+	$(document).ready(function() 
+	{
+		$(".confirm").click(function() 
+		{ 
+			return confirm("Save data?"); 
+		});
+	});
+</script>
+}
