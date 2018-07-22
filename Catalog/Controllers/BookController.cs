@@ -21,10 +21,15 @@ namespace Catalog.Controllers
 			return View(GetFrontendHelper().GetLogicFactory().GetBookLogic().GetBookByID(id.Value));
 		}
 
-		public IActionResult UpdateStatus(Book book)
+		public IActionResult UpdateReadStatus(Book book)
 		{
-			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateReadRemark(book.BookID.Value, book.ReadRemark);
-			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateReadState(book.BookID.Value, book.ReadStatus);
+			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateReadStatus(book.BookID.Value, book.ReadStatus, book.ReadRemark);
+			return RedirectToAction("Details", new { id = book.BookID});
+		}
+
+		public IActionResult UpdateAvailabilityStatus(Book book)
+		{
+			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateAvailability(book.BookID.Value, book.Status, book.StatusRemark);
 			return RedirectToAction("Details", new { id = book.BookID});
 		}
 
@@ -36,7 +41,7 @@ namespace Catalog.Controllers
 			bookOrig.Author = GetOverrideOrOriginal(bookOrig.Author, book.Author);
 			bookOrig.Description = GetOverrideOrOriginal(bookOrig.Description, book.Description);
 			bookOrig.Identifier = GetOverrideOrOriginal(bookOrig.Identifier, book.Identifier);
-			
+			bookOrig.Medium = GetOverrideOrOriginal(bookOrig.Medium, book.Medium);
 			//Save and continue
 			GetFrontendHelper().GetLogicFactory().GetBookLogic().Save(bookOrig);
 			return RedirectToAction("Details", new { id = book.BookID});

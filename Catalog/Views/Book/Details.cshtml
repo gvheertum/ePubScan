@@ -27,10 +27,21 @@
 		<dt>Description</dt>
 		<dd><textarea asp-for="@Model.Description"></textarea></dd>
 	</dl>
+	<dl>
+		<dt>Medium</dt>
+		<dt>
+			<select asp-for="@Model.Medium">
+				<option></option>
+				<option>ebook</option>
+				<option>Physical</option>
+				<option>Bundle</option>
+			</select>
+		</dt>
+	</dl>
 	<button type="submit" class="confirm">Update book data</button>
 </form>
 
-<form asp-controller="Book" asp-action="UpdateStatus" method="post">
+<form asp-controller="Book" asp-action="UpdateReadStatus" method="post">
 	<input type="hidden" asp-for="@Model.BookID" />
 	<legend>Read status</legend>
 	<dl>
@@ -38,20 +49,44 @@
 		<dd>
 			<select asp-for="@Model.ReadStatus">
 				<option></option>
-				<option>Gelezen</option>
-				<option>Lezen</option>
-				<option>Te lezen</option>
-				<option>Niet lezen</option>
+				<option class="read">Read</option>
+				<option class="reading">Reading</option>
+				<option class="toread">To read</option>
+				<option class="notgoingtoread">Not going to read</option>
 			</select>
 		</dd>
 	</dl>
 	<dl>
-		<dt>Read Status</dt>
+		<dt>Remark</dt>
 		<dd>
 			<textarea asp-for="@Model.ReadRemark"></textarea>
 		</dd>
 	</dl>
-	<button type="submit">Update status</button>
+	<button type="submit">Update read status</button>
+</form>
+
+<form asp-controller="Book" asp-action="UpdateAvailabilityStatus" method="post">
+	<input type="hidden" asp-for="@Model.BookID" />
+	<legend>Availability</legend>
+	<dl>
+		<dt>Status</dt>
+		<dd>
+			<select asp-for="@Model.Status">
+				<option></option>
+				<option>N/A</option>
+				<option>Available</option>
+				<option>Lend-out</option>
+				<option>Available at other location</option>
+			</select>
+		</dd>
+	</dl>
+	<dl>
+		<dt>Remark</dt>
+		<dd>
+			<textarea asp-for="@Model.StatusRemark"></textarea>
+		</dd>
+	</dl>
+	<button type="submit">Update availability status</button>
 </form>
 
 @section Scripts
