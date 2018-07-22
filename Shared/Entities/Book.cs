@@ -14,7 +14,11 @@ namespace ePubAnalyzer.Shared.Entities
 		public string Language {get;set;}
 		public string Folder {get;set;}
 		public string FileName {get;set;}
-		
+		public string Medium {get;set;}
+		//Available, or lend to somebody
+		public string Status {get;set;}
+		//Remark applicable when lend to somebody
+		public string StatusRemark {get;set;}
 		public override string ToString()
 		{
 			return $"{Author} - {Title} (identifier: {Identifier}, bookID: {BookID})";

@@ -36,14 +36,6 @@ namespace ePubAnalyzer.Shared.DAL
 			using(var ctx = GetContext())
 			{
 				ctx.Update(input);
-				// if(input.BookID == null) 
-				// {
-				// 	ctx.Books.Add(input);
-				// }
-				// else
-				// {
-				// 	ctx.Attach(input);
-				// }	
 				ctx.SaveChanges();
 			}
 			return input;
