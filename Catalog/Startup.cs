@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace Catalog
 {
@@ -27,17 +28,22 @@ namespace Catalog
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+          //  if (env.IsDevelopment())
+           // {
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+           // }
+           // else
+           // {
+            //    app.UseExceptionHandler("/Home/Error");
+          //  }
 
             app.UseStaticFiles();
-
+			app.UseStaticFiles(new StaticFileOptions() { 
+				FileProvider = new PhysicalFileProvider(
+					System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), 
+					@"wwwroot")
+				) 
+			});
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
