@@ -27,5 +27,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="Controllers\BookBaseController.cs" />
+    <Content Include="Controllers\BookJsonController.cs" />
   </ItemGroup>
 </Project>
