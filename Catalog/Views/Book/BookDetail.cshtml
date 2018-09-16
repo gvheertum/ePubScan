@@ -1,0 +1,87 @@
+<div data-bind="with: ActiveBook">
+	<form>
+		<legend><span data-bind="text: author"></span> - <span data-bind="text: title"></span></legend>
+		<p><a href="#" data-bind="click: $root.backToOverview.bind($root)">Back</a></p>
+		<dl>
+			<dt>DB Identifier</dt>
+			<dd data-bind="text: bookID"></dd>
+		</dl>
+		<dl>
+			<dt>Identifier</dt>
+			<dd><input type="text" data-bind="value: identifier"/></dd>
+		</dl>
+		<dl>
+			<dt>Title</dt>
+			<dd><input type="text" data-bind="value: title"/></dd>
+		</dl>
+		<dl>
+			<dt>Author</dt>
+			<dd><input type="text" data-bind="value: author"/></dd>
+		</dl>
+		<dl>
+			<dt>Description</dt>
+			<dd><textarea data-bind="value: description"></textarea></dd>
+		</dl>
+		<dl>
+			<dt>Medium</dt>
+			<dt>
+				<select data-bind="value: medium">
+					<option></option>
+					<option>ebook</option>
+					<option>Physical</option>
+					<option>Bundle</option>
+				</select>
+			</dt>
+		</dl>
+		<button class="confirm">Update book data</button>
+	</form>
+
+	<form>
+		
+		<legend>Read status</legend>
+		<dl>
+			<dt>Read Status</dt>
+			<dd>
+				<select data-bind="value: readStatus">
+					<option></option>
+					<option class="read">Read</option>
+					<option class="reading">Reading</option>
+					<option class="toread">To read</option>
+					<option class="notgoingtoread">Not going to read</option>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt>Remark</dt>
+			<dd>
+				<textarea data-bind="value: readRemark"></textarea>
+			</dd>
+		</dl>
+		<button>Update read status</button>
+	</form>
+
+	<form>
+		<legend>Availability</legend>
+		<dl>
+			<dt>Status</dt>
+			<dd>
+				<select data-bind="value: status">
+					<option></option>
+					<option>N/A</option>
+					<option>Available</option>
+					<option>Lend-out</option>
+					<option>Available at other location</option>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt>Remark</dt>
+			<dd>
+				<textarea data-bind="value: statusRemark"></textarea>
+			</dd>
+		</dl>
+		<button>Update availability status</button>
+	</form>
+
+	
+</div>
