@@ -3,6 +3,37 @@
     ViewData["Title"] = "Home Page";
 }
 
+<h1>Async books</h1>
+<div data-bind="if: Collection">
+	<table>
+		<colgroup>
+			<col width="50"/>
+			<col width="100"/>
+			<col width="200"/>
+			<col width="*"/>
+			<col width="10"/>
+		</colgroup>
+		<tr>
+			<th>ID</th>
+			<th>Status</th>
+			<th>Author</th>
+			<th>Title</th>
+			<th title="Has description">D</th>
+		</tr>
+		<tbody data-bind="foreach: Collection">
+			<tr data-bind="attr: { state: readStatus}">
+				<td data-bind="text: bookID"></td>
+				<td data-bind="attr: {title: readRemark}, text: readStatus"></td>
+				<td data-bind="text: author"></td>
+				<td data-bind="text: title"></td>
+				<td data-bind="attr: {title: description}" class="Description">
+					<span data-bind="if: description">V</span>
+					<span data-bind="ifnot: description">-</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 <h1>Boooks</h1>
 Amount: @Model.Count()

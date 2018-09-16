@@ -1,9 +1,17 @@
 {
- "compileOnSave": true,
- 
+ 	"compileOnSave": true,
 	"compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "sourceMap": true
-	}	
+		"sourceMap": true,
+	},
+	"files": [
+		"wwwroot/js/book.controller.ts",
+	],
+	"typeAcquisition": {
+        "include": [
+			"knockout",
+			"jquery"
+        ]
+    }
 }
