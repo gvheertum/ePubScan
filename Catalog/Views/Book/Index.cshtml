@@ -4,13 +4,13 @@
 }
 
 
-<fieldset data-bind="visible: ShowingActiveBook">
+<fieldset data-bind="visible: ShowingActiveBook()">
 	<legend>Active book</legend>
 	@Html.Partial("BookDetail")
 </fieldset>
 
 
-<fieldset>
+<fieldset data-bind="visible: !ShowingActiveBook()">
 	<legend>Async books</legend>
 	@Html.Partial("BookOverview")
 </fieldset>

@@ -30,9 +30,5 @@
     <Content Include="Controllers\BookBaseController.cs" />
     <Content Include="Controllers\BookJsonController.cs" />
     <TypeScriptCompile Include="wwwroot\js\book.controller.ts" />
-    <Content Include="Views\Book\BookDetail.cshtml" />
-    <Content Include="Views\Book\BookOverview.cshtml" />
-    <Content Include="Views\Book\DetailsOld.cshtml" />
-    <Content Include="Views\Book\IndexOld.cshtml" />
   </ItemGroup>
 </Project>

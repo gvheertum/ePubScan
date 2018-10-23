@@ -33,7 +33,11 @@
 				</select>
 			</dt>
 		</dl>
-		<button class="confirm">Update book data</button>
+		<dl>
+			<dt>Nr of pages</dt>
+			<dd><input type="text" data-bind="value: nrOfPages" /></dd>
+		</dl>
+		<button data-bind="click: $root.updateBookData.bind($root)">Update book data</button>
 	</form>
 
 	<form>
@@ -57,7 +61,7 @@
 				<textarea data-bind="value: readRemark"></textarea>
 			</dd>
 		</dl>
-		<button>Update read status</button>
+		<button data-bind="click: $root.updateReadData.bind($root)">Update read status</button>
 	</form>
 
 	<form>
@@ -80,7 +84,7 @@
 				<textarea data-bind="value: statusRemark"></textarea>
 			</dd>
 		</dl>
-		<button>Update availability status</button>
+		<button data-bind="click: $root.updateAvailabilityData.bind($root)">Update availability status</button>
 	</form>
 
 	

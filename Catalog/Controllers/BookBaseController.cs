@@ -17,7 +17,6 @@ namespace Catalog.Controllers
 		{
 			return GetFrontendHelper().GetLogicFactory().GetBookLogic().GetBookByID(bookID);
 		}
-
 	
 		protected Book UpdateBookDataInternal(Book book)
 		{
@@ -28,15 +27,32 @@ namespace Catalog.Controllers
 			bookOrig.Description = GetOverrideOrOriginal(bookOrig.Description, book.Description);
 			bookOrig.Identifier = GetOverrideOrOriginal(bookOrig.Identifier, book.Identifier);
 			bookOrig.Medium = GetOverrideOrOriginal(bookOrig.Medium, book.Medium);
+			bookOrig.NrOfPages = GetOverrideOrOriginal(bookOrig.NrOfPages, book.NrOfPages);
+			if(bookOrig.NrOfPages == 0) { book.NrOfPages = null; }
 			//Save and continue
 			GetFrontendHelper().GetLogicFactory().GetBookLogic().Save(bookOrig);
 			return bookOrig;
+		}
+
+		protected void UpdateReadStatusInternal(int bookID, string readStatus, string readRemark)
+		{
+			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateReadStatus(bookID, readStatus, readRemark);
+		}
+
+		protected void UpdateAvailabilityStatusInternal(int bookID, string bookStatus, string statusRemark)
+		{
+			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateAvailability(bookID, bookStatus, statusRemark);
 		}
 
 		//TODO: this could be done with generics, but for those whopping 5 max fields, nah
 		private string GetOverrideOrOriginal(string originalData, string overrideData)
 		{
 			return !string.IsNullOrWhiteSpace(overrideData) ? overrideData : originalData;
+		}
+
+		private int? GetOverrideOrOriginal(int? originalData, int? overrideData)
+		{
+			return overrideData != null ? overrideData : originalData;
 		}
 	}
 }

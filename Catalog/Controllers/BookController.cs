@@ -8,7 +8,7 @@ using ePubAnalyzer.Shared.Entities;
 
 namespace Catalog.Controllers
 {
-
+	//TODO: The fields in the model can be split to serve only the required data to the routes/actions (now we flush the full model, however only with the limited usage but still)
 	public class BookController : BookBaseController
     {
  		public IActionResult Index()
@@ -23,13 +23,13 @@ namespace Catalog.Controllers
 
       	public IActionResult UpdateReadStatus(Book book)
 		{
-			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateReadStatus(book.BookID.Value, book.ReadStatus, book.ReadRemark);
+			UpdateReadStatusInternal(book.BookID.Value, book.ReadStatus, book.ReadRemark);
 			return RedirectToAction("Details", new { id = book.BookID});
 		}
 
 		public IActionResult UpdateAvailabilityStatus(Book book)
 		{
-			GetFrontendHelper().GetLogicFactory().GetBookLogic().UpdateAvailability(book.BookID.Value, book.Status, book.StatusRemark);
+			UpdateAvailabilityStatusInternal(book.BookID.Value, book.Status, book.StatusRemark);
 			return RedirectToAction("Details", new { id = book.BookID});
 		}
 
