@@ -19,6 +19,7 @@ namespace ePubAnalyzer.Shared.Entities
 		public string Status {get;set;}
 		//Remark applicable when lend to somebody
 		public string StatusRemark {get;set;}
+		public int? NrOfPages {get;set;}
 		public override string ToString()
 		{
 			return $"{Author} - {Title} (identifier: {Identifier}, bookID: {BookID})";
