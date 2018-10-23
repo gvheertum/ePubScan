@@ -48,7 +48,6 @@ var BookCollectionViewModel = /** @class */ (function () {
         this.loadFromServer();
     }
     BookCollectionViewModel.prototype.loadFromServer = function () {
-        console.log("Loading books from server");
         var _self = this;
         $.getJSON("/api/books/all/", function (data) {
             //TODO: Check if and how we can use the .mapping from KO here. 
@@ -68,7 +67,6 @@ var BookCollectionViewModel = /** @class */ (function () {
         var _self = this;
         var url = this.prepRouteForBook(this.RouteGetDetails, data);
         $.getJSON(url, function (data) {
-            console.log("Loaded book detail");
             _self.ShowingActiveBook(true);
             _self.ActiveBook(new Book().ReadFromIBook(data));
             _self.scrollToTop();
@@ -84,32 +82,40 @@ var BookCollectionViewModel = /** @class */ (function () {
         if (confirm("Are you sure you want to update the basic book details?")) {
             var _self = this;
             var route = this.prepRouteForBook(this.RouteUpdateDetails, data);
-            console.log("Updating book data:", data, route);
-            $.post(route, ko.toJSON(data), function () {
-                //TODO: Show success
-            });
+            this.postBookToRoute(route, data, this.showSuccess.bind(this));
         }
     };
     BookCollectionViewModel.prototype.updateReadData = function (data) {
         var _self = this;
         var route = this.prepRouteForBook(this.RouteUpdateReadStatus, data);
-        console.log("Updating read data:", data, route);
-        $.post(route, ko.toJSON(data), function () {
-            //TODO: Show success
-        });
+        this.postBookToRoute(route, data, this.showSuccess.bind(this));
     };
     BookCollectionViewModel.prototype.updateAvailabilityData = function (data) {
         var _self = this;
         var route = this.prepRouteForBook(this.RouteUpdateAvailabilityStatus, data);
-        $.post(route, ko.toJSON(data), function () {
-            //TODO: Show success
-        });
+        this.postBookToRoute(route, data, this.showSuccess.bind(this));
     };
     BookCollectionViewModel.prototype.prepRouteForBook = function (route, data) {
         return route.replace(/BOOKID/g, data.bookID() + "");
     };
+    BookCollectionViewModel.prototype.postBookToRoute = function (route, book, success) {
+        $.ajax({
+            url: route,
+            type: "POST",
+            data: ko.toJSON(book),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: success
+        });
+    };
+    BookCollectionViewModel.prototype.showSuccess = function () {
+        if (confirm("Save completed, do you want to return to the overview")) {
+            this.backToOverview();
+        }
+    };
     BookCollectionViewModel.prototype.scrollToTop = function () {
-        $("body").scrollTop(0);
+        //TODO: Implement
+        //$("body").scrollTop(0);
     };
     return BookCollectionViewModel;
 }());

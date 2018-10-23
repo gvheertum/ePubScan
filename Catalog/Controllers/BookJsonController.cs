@@ -39,27 +39,27 @@ namespace Catalog.Controllers
 			return Json(GetBookDetail(bookRouteID.Value));
 		}
 
-		[HttpPost("api/books/book/{bookRouteID}/readstatus")]
-		public IActionResult UpdateReadStatus(Book book)
+		[HttpPost("api/books/book/{bookRouteID}/update")]
+		public IActionResult UpdateBookData([FromBody] Book input)
 		{
-			ValidatePostAgainstRoute(book);
-			UpdateReadStatusInternal(book.BookID.Value, book.ReadStatus, book.ReadRemark);
+			ValidatePostAgainstRoute(input);
+			input = UpdateBookDataInternal(input);			
+			return Json(true);
+		}
+
+		[HttpPost("api/books/book/{bookRouteID}/readstatus")]
+		public IActionResult UpdateReadStatus([FromBody] Book input)
+		{
+			ValidatePostAgainstRoute(input);
+			UpdateReadStatusInternal(input.BookID.Value, input.ReadStatus, input.ReadRemark);
 			return Json(true);
 		}
 
 		[HttpPost("api/books/book/{bookRouteID}/availabilitystatus")]
-		public IActionResult UpdateAvailabilityStatus(Book book)
+		public IActionResult UpdateAvailabilityStatus([FromBody] Book input)
 		{
-			ValidatePostAgainstRoute(book);
-			UpdateAvailabilityStatusInternal(book.BookID.Value, book.Status, book.StatusRemark);
-			return Json(true);
-		}
-
-		[HttpPost("api/books/book/{bookRouteID}/")]
-		public IActionResult UpdateBookData(Book book)
-		{
-			ValidatePostAgainstRoute(book);
-			book = UpdateBookDataInternal(book);			
+			ValidatePostAgainstRoute(input);
+			UpdateAvailabilityStatusInternal(input.BookID.Value, input.Status, input.StatusRemark);
 			return Json(true);
 		}
 

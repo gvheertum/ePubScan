@@ -88,7 +88,6 @@ class BookCollectionViewModel
 	
 	public loadFromServer() : void
 	{
-		console.log("Loading books from server");
 		var _self = this;
 		$.getJSON("/api/books/all/", function(data : IBookCollection) 
 		{ 
@@ -113,7 +112,6 @@ class BookCollectionViewModel
 		var url = this.prepRouteForBook(this.RouteGetDetails, data);
 		$.getJSON(url, function(data : IBook) 
 		{ 
-			console.log("Loaded book detail");
 			_self.ShowingActiveBook(true);
 			_self.ActiveBook(new Book().ReadFromIBook(data));
 			_self.scrollToTop();
@@ -133,11 +131,7 @@ class BookCollectionViewModel
 		{
 			var _self = this;
 			var route = this.prepRouteForBook(this.RouteUpdateDetails, data);
-			console.log("Updating book data:", data, route);
-			$.post(route, ko.toJSON(data), function() 
-			{ 
-				//TODO: Show success
-			});
+			this.postBookToRoute(route, data, this.showSuccess.bind(this));
 		}
 	}
 
@@ -145,21 +139,14 @@ class BookCollectionViewModel
 	{
 		var _self = this;
 		var route = this.prepRouteForBook(this.RouteUpdateReadStatus, data);
-		console.log("Updating read data:", data, route);
-		$.post(route, ko.toJSON(data), function() 
-		{ 
-			//TODO: Show success
-		});
+		this.postBookToRoute(route, data, this.showSuccess.bind(this));
 	}
 
 	public updateAvailabilityData(data: Book)
 	{
 		var _self = this;
 		var route = this.prepRouteForBook(this.RouteUpdateAvailabilityStatus, data);
-		$.post(route, ko.toJSON(data), function() 
-		{ 
-			//TODO: Show success
-		});
+		this.postBookToRoute(route, data, this.showSuccess.bind(this));
 	}
 
 	private prepRouteForBook(route: string, data: Book) : string
@@ -167,9 +154,30 @@ class BookCollectionViewModel
 		return route.replace(/BOOKID/g, data.bookID() + "");
 	}
 
+	private postBookToRoute(route: string, book: Book, success : any)
+	{
+		$.ajax({
+            url: route,
+            type: "POST",
+            data: ko.toJSON(book),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+			success: success
+		});
+	}
+
+	private showSuccess()
+	{
+		if(confirm("Save completed, do you want to return to the overview"))
+		{
+			this.backToOverview();
+		}
+	}
+
 	private scrollToTop()
 	{
-		$("body").scrollTop(0);
+		//TODO: Implement
+		//$("body").scrollTop(0);
 	}
 }
 
