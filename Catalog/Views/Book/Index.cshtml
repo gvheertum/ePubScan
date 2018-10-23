@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+<script>
+	var $getAllBooksRoute = "@Url.Action("Books", "BookJson")";
+</script>
 
 <fieldset data-bind="visible: ShowingActiveBook()">
 	<legend>Active book</legend>

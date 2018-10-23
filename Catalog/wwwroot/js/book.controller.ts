@@ -1,3 +1,5 @@
+declare var $getAllBooksRoute : any;
+
 class PropertyCopier
 {
 	public static CopyElement(from: any, to: any) : any
@@ -89,7 +91,7 @@ class BookCollectionViewModel
 	public loadFromServer() : void
 	{
 		var _self = this;
-		$.getJSON("/api/books/all/", function(data : IBookCollection) 
+		$.getJSON($getAllBooksRoute, function(data : IBookCollection) 
 		{ 
 			//TODO: Check if and how we can use the .mapping from KO here. 
 			//Example online states a mapping on the whole viewmodel, while we only want to do a part

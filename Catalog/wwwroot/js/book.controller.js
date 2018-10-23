@@ -49,7 +49,7 @@ var BookCollectionViewModel = /** @class */ (function () {
     }
     BookCollectionViewModel.prototype.loadFromServer = function () {
         var _self = this;
-        $.getJSON("/api/books/all/", function (data) {
+        $.getJSON($getAllBooksRoute, function (data) {
             //TODO: Check if and how we can use the .mapping from KO here. 
             //Example online states a mapping on the whole viewmodel, while we only want to do a part
             var bookArray = [];
