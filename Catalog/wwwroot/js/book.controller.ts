@@ -1,4 +1,5 @@
 declare var $getAllBooksRoute : any;
+declare var Sammy : any;
 
 class PropertyCopier
 {
@@ -17,7 +18,10 @@ class Book
 {
 	public constructor(input?: IBook)
 	{
-		this.ReadFromIBook(input);
+		if(input != null) 
+		{
+			this.ReadFromIBook(input);
+		}
 	}
 
 	public ReadFromIBook(input: IBook) : Book
@@ -45,22 +49,22 @@ class Book
 }
 interface IBook
 {
-	author: string;
+	author?: string;
 	bookID: number;
-	category: string;
-	description: string;
-	fileName: string;
-	folder: string;
-	identifier: string;
-	language: string;
-	medium: string;
-	readRemark: string;
-	readStatus: string;
-	status: string;
-	statusRemark: string;
-	subject: string;
-	title: string;
-	nrOfPages: number;
+	category?: string;
+	description?: string;
+	fileName?: string;
+	folder?: string;
+	identifier?: string;
+	language?: string;
+	medium?: string;
+	readRemark?: string;
+	readStatus?: string;
+	status?: string;
+	statusRemark?: string;
+	subject?: string;
+	title?: string;
+	nrOfPages?: number;
 }
 
 interface IBookCollection
@@ -85,10 +89,25 @@ class BookCollectionViewModel
 	public NumberOfBooks : any = ko.computed(() => { return this.Collection().length; }, this);
 	public constructor()
 	{
-		this.loadFromServer();
+		var _self = this;
+		// Define sammy routes for location/hash navigation
+		var sammy = Sammy(function() {
+			this.get('/#:bookid', function() 
+			{
+				var bookID = this.params.bookid;
+				var dummyBook = new Book({ bookID: bookID });
+				_self.showDetails(dummyBook);	
+			});
+			//Root matches to not found, so navigate back to the overview
+			this.notFound = function()
+			{ 
+				_self.backToOverview();
+			}
+		});
+		this.loadFromServer(() => sammy.run()); //When loaded run Sammy script
 	}
 	
-	public loadFromServer() : void
+	public loadFromServer(onComplete? : ()=>void) : void
 	{
 		var _self = this;
 		$.getJSON($getAllBooksRoute, function(data : IBookCollection) 
@@ -105,6 +124,7 @@ class BookCollectionViewModel
 			_self.RouteUpdateAvailabilityStatus = data.routeUpdateAvailabilityStatus;
 			_self.RouteUpdateReadStatus = data.routeUpdateReadStatus;
 			_self.RouteUpdateDetails = data.routeUpdateDetails;
+			if(onComplete != null) { onComplete(); }
 		});
 	}
 
@@ -117,6 +137,7 @@ class BookCollectionViewModel
 			_self.ShowingActiveBook(true);
 			_self.ActiveBook(new Book().ReadFromIBook(data));
 			_self.scrollToTop();
+			location.hash = data.bookID.toString();
 		});
 	}
 	public backToOverview()
@@ -125,6 +146,7 @@ class BookCollectionViewModel
 		this.ActiveBook(new Book());
 		this.scrollToTop();
 		this.loadFromServer(); //TODO: smarter update, now we just reload all
+		location.hash = "";
 	}
 
 	public updateBookData(data: Book)
@@ -178,9 +200,11 @@ class BookCollectionViewModel
 
 	private scrollToTop()
 	{
-		//TODO: Implement
-		//$("body").scrollTop(0);
+		window.scrollTo(0,0);
 	}
+
+
+	
 }
 
 ko.applyBindings(new BookCollectionViewModel());

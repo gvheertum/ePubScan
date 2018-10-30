@@ -1,6 +1,5 @@
 <div data-bind="if: Collection">
-	<span>Number of books: </span><span data-bind="text: NumberOfBooks"></span>
-	<table>
+	<table style="margin-top: 20px">
 		<colgroup>
 			<col width="50"/>
 			<col width="100"/>
@@ -10,6 +9,11 @@
 			<col width="10"/>
 		</colgroup>
 		<tr>
+			<th colspan="6">
+				<span>Number of books: </span><span data-bind="text: NumberOfBooks"></span>
+			</th>
+		</tr>
+		<tr>
 			<th>ID</th>
 			<th>Status</th>
 			<th>Author</th>
@@ -17,6 +21,7 @@
 			<th>Pages</th>
 			<th title="Has description">D</th>
 		</tr>
+		
 		<tbody data-bind="foreach: Collection">
 			<tr data-bind="attr: { state: readStatus}">
 				<td><a href="#" data-bind="click: $root.showDetails.bind($parent), text: bookID"></a></td>

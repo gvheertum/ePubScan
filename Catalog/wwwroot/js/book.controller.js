@@ -30,7 +30,9 @@ var Book = /** @class */ (function () {
         this.subject = ko.observable("");
         this.title = ko.observable("");
         this.nrOfPages = ko.observable(null);
-        this.ReadFromIBook(input);
+        if (input != null) {
+            this.ReadFromIBook(input);
+        }
     }
     Book.prototype.ReadFromIBook = function (input) {
         PropertyCopier.CopyElement(input, this);
@@ -45,9 +47,22 @@ var BookCollectionViewModel = /** @class */ (function () {
         this.Collection = ko.observable([]);
         this.ActiveBook = ko.observable(new Book(null));
         this.NumberOfBooks = ko.computed(function () { return _this.Collection().length; }, this);
-        this.loadFromServer();
+        var _self = this;
+        // Define sammy routes for location/hash navigation
+        var sammy = Sammy(function () {
+            this.get('/#:bookid', function () {
+                var bookID = this.params.bookid;
+                var dummyBook = new Book({ bookID: bookID });
+                _self.showDetails(dummyBook);
+            });
+            //Root matches to not found, so navigate back to the overview
+            this.notFound = function () {
+                _self.backToOverview();
+            };
+        });
+        this.loadFromServer(function () { return sammy.run(); }); //When loaded run Sammy script
     }
-    BookCollectionViewModel.prototype.loadFromServer = function () {
+    BookCollectionViewModel.prototype.loadFromServer = function (onComplete) {
         var _self = this;
         $.getJSON($getAllBooksRoute, function (data) {
             //TODO: Check if and how we can use the .mapping from KO here. 
@@ -61,6 +76,9 @@ var BookCollectionViewModel = /** @class */ (function () {
             _self.RouteUpdateAvailabilityStatus = data.routeUpdateAvailabilityStatus;
             _self.RouteUpdateReadStatus = data.routeUpdateReadStatus;
             _self.RouteUpdateDetails = data.routeUpdateDetails;
+            if (onComplete != null) {
+                onComplete();
+            }
         });
     };
     BookCollectionViewModel.prototype.showDetails = function (data) {
@@ -70,6 +88,7 @@ var BookCollectionViewModel = /** @class */ (function () {
             _self.ShowingActiveBook(true);
             _self.ActiveBook(new Book().ReadFromIBook(data));
             _self.scrollToTop();
+            location.hash = data.bookID.toString();
         });
     };
     BookCollectionViewModel.prototype.backToOverview = function () {
@@ -77,6 +96,7 @@ var BookCollectionViewModel = /** @class */ (function () {
         this.ActiveBook(new Book());
         this.scrollToTop();
         this.loadFromServer(); //TODO: smarter update, now we just reload all
+        location.hash = "";
     };
     BookCollectionViewModel.prototype.updateBookData = function (data) {
         if (confirm("Are you sure you want to update the basic book details?")) {
@@ -114,8 +134,7 @@ var BookCollectionViewModel = /** @class */ (function () {
         }
     };
     BookCollectionViewModel.prototype.scrollToTop = function () {
-        //TODO: Implement
-        //$("body").scrollTop(0);
+        window.scrollTo(0, 0);
     };
     return BookCollectionViewModel;
 }());

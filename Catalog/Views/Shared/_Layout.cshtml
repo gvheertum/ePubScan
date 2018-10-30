@@ -27,12 +27,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Catalog</a>
+                <a asp-area="" asp-controller="Book" asp-action="Index" class="navbar-brand">Book Catalog</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Book" asp-action="Index">Books</a></li>
+                    <li><a asp-area="" asp-controller="Book" asp-action="Index">Catalog</a></li>
                 </ul>
             </div>
         </div>
@@ -54,6 +53,7 @@
     <environment exclude="Development">
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+    <script src="~/js/sammy.min.js" asp-append-version="true"></script>
     <script src="~/js/book.controller.js" asp-append-version="true"></script>
 	
     @RenderSection("Scripts", required: false)
