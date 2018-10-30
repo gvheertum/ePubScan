@@ -24,7 +24,7 @@
 		
 		<tbody data-bind="foreach: Collection">
 			<tr data-bind="attr: { state: readStatus}">
-				<td><a href="#" data-bind="click: $root.showDetails.bind($parent), text: bookID"></a></td>
+				<td><a data-bind="attr: {href: '#Detail/' + bookID() }, text: bookID"></a></td>
 				<td data-bind="attr: {title: readRemark}, text: readStatus"></td>
 				<td data-bind="text: author"></td>
 				<td data-bind="text: title"></td>

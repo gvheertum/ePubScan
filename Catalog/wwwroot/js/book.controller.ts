@@ -92,16 +92,20 @@ class BookCollectionViewModel
 		var _self = this;
 		// Define sammy routes for location/hash navigation
 		var sammy = Sammy(function() {
-			this.get('/#:bookid', function() 
+			this.get('/#Detail/:bookid', function() 
 			{
 				var bookID = this.params.bookid;
 				var dummyBook = new Book({ bookID: bookID });
-				_self.showDetails(dummyBook);	
+				_self.loadDetails(dummyBook);	
+			});
+			this.get('/#Overview/', function() 
+			{
+				_self.loadOverview();	
 			});
 			//Root matches to not found, so navigate back to the overview
 			this.notFound = function()
 			{ 
-				_self.backToOverview();
+				console.log("Not found: ", this);
 			}
 		});
 		this.loadFromServer(() => sammy.run()); //When loaded run Sammy script
@@ -130,23 +134,32 @@ class BookCollectionViewModel
 
 	public showDetails(data: Book)
 	{
+		location.hash = "Detail/" + data.bookID().toString();
+	}
+
+	private loadDetails(data: Book)
+	{
 		var _self = this;
 		var url = this.prepRouteForBook(this.RouteGetDetails, data);
 		$.getJSON(url, function(data : IBook) 
 		{ 
-			_self.ShowingActiveBook(true);
 			_self.ActiveBook(new Book().ReadFromIBook(data));
+			_self.ShowingActiveBook(true);
 			_self.scrollToTop();
-			location.hash = data.bookID.toString();
 		});
 	}
+
 	public backToOverview()
+	{
+		location.hash = "Overview/";
+	}
+
+	private loadOverview()
 	{
 		this.ShowingActiveBook(false);
 		this.ActiveBook(new Book());
 		this.scrollToTop();
 		this.loadFromServer(); //TODO: smarter update, now we just reload all
-		location.hash = "";
 	}
 
 	public updateBookData(data: Book)

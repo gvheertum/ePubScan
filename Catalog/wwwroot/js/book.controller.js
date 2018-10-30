@@ -50,14 +50,17 @@ var BookCollectionViewModel = /** @class */ (function () {
         var _self = this;
         // Define sammy routes for location/hash navigation
         var sammy = Sammy(function () {
-            this.get('/#:bookid', function () {
+            this.get('/#Detail/:bookid', function () {
                 var bookID = this.params.bookid;
                 var dummyBook = new Book({ bookID: bookID });
-                _self.showDetails(dummyBook);
+                _self.loadDetails(dummyBook);
+            });
+            this.get('/#Overview/', function () {
+                _self.loadOverview();
             });
             //Root matches to not found, so navigate back to the overview
             this.notFound = function () {
-                _self.backToOverview();
+                console.log("Not found: ", this);
             };
         });
         this.loadFromServer(function () { return sammy.run(); }); //When loaded run Sammy script
@@ -82,21 +85,25 @@ var BookCollectionViewModel = /** @class */ (function () {
         });
     };
     BookCollectionViewModel.prototype.showDetails = function (data) {
+        location.hash = "Detail/" + data.bookID().toString();
+    };
+    BookCollectionViewModel.prototype.loadDetails = function (data) {
         var _self = this;
         var url = this.prepRouteForBook(this.RouteGetDetails, data);
         $.getJSON(url, function (data) {
-            _self.ShowingActiveBook(true);
             _self.ActiveBook(new Book().ReadFromIBook(data));
+            _self.ShowingActiveBook(true);
             _self.scrollToTop();
-            location.hash = data.bookID.toString();
         });
     };
     BookCollectionViewModel.prototype.backToOverview = function () {
+        location.hash = "Overview/";
+    };
+    BookCollectionViewModel.prototype.loadOverview = function () {
         this.ShowingActiveBook(false);
         this.ActiveBook(new Book());
         this.scrollToTop();
         this.loadFromServer(); //TODO: smarter update, now we just reload all
-        location.hash = "";
     };
     BookCollectionViewModel.prototype.updateBookData = function (data) {
         if (confirm("Are you sure you want to update the basic book details?")) {
