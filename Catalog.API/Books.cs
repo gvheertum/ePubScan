@@ -14,15 +14,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using System;
+using Microsoft.Extensions.Logging;
+
 namespace Catalog.API
 {
+    public class BookRequest
+    {
+        public int BookID {get;set;}
+    }
 
-	public class BookJsonController
+	public class BooksFunction
 	{
 
 		// [HttpGet("api/books/all")]
         [FunctionName("GetBooks")]
-		public static IActionResult Books([HttpTrigger(AuthorizationLevel.Function, "get", Route = "Books/All")]HttpRequest req, TraceWriter log)
+		public static IActionResult Books([HttpTrigger(AuthorizationLevel.Function, "get", Route = "Books/All")]HttpRequest req, ILogger log)
 		{
             try{
 			return new OkObjectResult(GetAllBooks());
@@ -36,10 +42,10 @@ namespace Catalog.API
 
 		// [HttpGet("api/books/book/{bookRouteID}")]
         [FunctionName("GetBookDetail")]
-		public static IActionResult Details([HttpTrigger(AuthorizationLevel.Function, "get", Route = "Book/Detail")]int? bookID)
+		public static IActionResult Details([HttpTrigger(AuthorizationLevel.Function, "get", Route = "Book/Detail")]BookRequest req, ILogger log)
 		{
-            if(bookID == null) { return new BadRequestObjectResult("Please fill the bookID"); }
-			return new OkObjectResult(GetBookDetail(bookID.Value));
+            if(req == null) { return new BadRequestObjectResult("Please fill the bookID"); }
+			return new OkObjectResult(GetBookDetail(req.BookID));
 		}
 
 		// [HttpPost("api/books/book/{bookRouteID}/update")]
