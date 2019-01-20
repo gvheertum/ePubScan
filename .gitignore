@@ -1,10 +1,14 @@
-obj/*
+*/obj/*
+*/bin/*
+.vs/*
+.vs/
+*/lib/*
 .vscode
 bin
 Merged
 connectionstrings.json
 Shared/obj
-obj
+*/obj
 Analyzer/obj
 Analyzer/bin
 bin
@@ -12,3 +16,6 @@ Shared/bin
 Shared/obj
 Catalog/obj
 Catalog/bin
+
+*/node_modules/*
+.vs/ePubScan/v15/.suo

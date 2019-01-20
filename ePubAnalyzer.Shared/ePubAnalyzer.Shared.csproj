@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Entities\Book.cs" />
+    <Content Include="DAL\EpubCatalogContext.cs" />
+    <Content Include="BLL\BookLogic.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
+    <Content Include="DAL\BookRepository.cs" />
+    <Content Include="BLL\LogicBase.cs" />
+    <Content Include="BLL\LogicFactory.cs" />
+    <Content Include="DAL\DALImplementation.cs" />
+    <Content Include="DAL\IDAL.cs" />
+    <Content Include="Entities\ComparisonObject.cs" />
+    <Content Include="Library\SetComparer.cs" />
+    <Content Include="Library\CompareSets.cs" />
+    <Content Include="Entities\ComparisonContainer.cs" />
+    <Content Include="Entities\ComparisonResult.cs" />
+    <Content Include="Library\BookSetComparer.cs" />
+  </ItemGroup>
+</Project>
