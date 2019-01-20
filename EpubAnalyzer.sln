@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Angular", "Catalog.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "Catalog.API\Catalog.API.csproj", "{D6B1C77B-4AFD-40D1-A4D8-1980729551B8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontends", "Frontends", "{BFA1AB52-8263-4FFB-BC93-EADFB2C88491}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logic", "Logic", "{3A8E0328-AED9-4135-A659-E13969F72AC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4397EA7E-352B-47B8-9311-A3B1E03CB59E} = {BFA1AB52-8263-4FFB-BC93-EADFB2C88491}
+		{D933BC59-D5D7-4762-9674-6E06A8663FCC} = {BFA1AB52-8263-4FFB-BC93-EADFB2C88491}
+		{415C835C-8243-4710-8529-EAB8326341FB} = {3A8E0328-AED9-4135-A659-E13969F72AC9}
+		{691CFD0A-B75C-467E-A76A-86E9BF076E8C} = {BFA1AB52-8263-4FFB-BC93-EADFB2C88491}
+		{D6B1C77B-4AFD-40D1-A4D8-1980729551B8} = {3A8E0328-AED9-4135-A659-E13969F72AC9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {321FB7FD-C024-4C94-82BE-A69F3275400D}
