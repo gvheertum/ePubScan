@@ -15,60 +15,97 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using System;
 using Microsoft.Extensions.Logging;
+using Catalog.API.Models;
 
 namespace Catalog.API
 {
-    public class BookRequest
+    public class OkObjectResult<T> : OkObjectResult, IActionResult<T>
     {
-        public int BookID {get;set;}
+        public OkObjectResult(T value) : base(value)
+        {
+        }
     }
 
-	public class BooksFunction
+    public class BadRequestObjectResult<T> : BadRequestObjectResult, IActionResult<T>
+    {
+        public BadRequestObjectResult(object error) : base(error)
+        {
+        }
+    }
+
+    public interface IActionResult<T> : IActionResult
+	{
+		
+	}
+
+
+    public class BooksFunction
 	{
 
-		// [HttpGet("api/books/all")]
         [FunctionName("GetBooks")]
-		public static IActionResult Books([HttpTrigger(AuthorizationLevel.Function, "get", Route = "Books/All")]HttpRequest req, ILogger log)
+		public static IActionResult<IEnumerable<Book>> Books(
+			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Books/All")]HttpRequest req, 
+			ILogger log)
 		{
             try{
-			return new OkObjectResult(GetAllBooks());
+			return new OkObjectResult<IEnumerable<Book>>(GetBookLogic().GetAllBooks());
 
             }
             catch(Exception e)
             {
-                return new BadRequestObjectResult(e.ToString());
+                return new BadRequestObjectResult<IEnumerable<Book>>(e.ToString());
             }
 		}
 
-		// [HttpGet("api/books/book/{bookRouteID}")]
         [FunctionName("GetBookDetail")]
-		public static IActionResult Details([HttpTrigger(AuthorizationLevel.Function, "get", Route = "Book/Detail")]BookRequest req, ILogger log)
+		public static IActionResult<Book> Details(
+			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Book/{bookID:int}/Detail")]HttpRequest req, 
+			ILogger log,
+			int bookID)
 		{
-            if(req == null) { return new BadRequestObjectResult("Please fill the bookID"); }
-			return new OkObjectResult(GetBookDetail(req.BookID));
+            if(bookID == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
+			return new OkObjectResult<Book>(GetBookLogic().GetBookByID(bookID));
 		}
 
-		// [HttpPost("api/books/book/{bookRouteID}/update")]
-		public IActionResult UpdateBookData([FromBody] Book input)
+        [FunctionName("UpdateBookData")]
+		public static IActionResult<bool> UpdateBookData(
+			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookID:int?}/UpdateBookData")]Book input, 
+			ILogger log,
+			int? bookID)
 		{
-			ValidatePostAgainstRoute(input);
-			input = UpdateBookDataInternal(input);			
+			//TODO: What happens when the id and the post object are different?
+			//TODO: Validate input object 
+			//input = UpdateBookDataInternal(input);			
+			log.LogWarning("Saving is disabled");
+			//log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
+			return new OkObjectResult<bool>(true);
+		}
+
+		[FunctionName("UpdateReadStatus")]		
+		public static IActionResult UpdateReadStatus(
+			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookID:int}/UpdateReadStatus")] BookReadStatusUpdateModel input,
+			ILogger log,
+			int bookID)
+		{
+			//TODO: Validate input object 
+			//UpdateReadStatusInternal(input.BookID, input.ReadStatus, input.ReadRemark);
+			log.LogWarning("Saving is disabled");
+			log.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
 			return new OkObjectResult(true);
 		}
 
-		// [HttpPost("api/books/book/{bookRouteID}/readstatus")]
-		public IActionResult UpdateReadStatus([FromBody] Book input)
+		
+		[FunctionName("UpdateAvailabilityStatus")]		
+		public static IActionResult UpdateAvailabilityStatus(
+			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookID:int}/UpdateAvailabilityStatus")] BookAvailabilityStatusUpdateModel input,
+			ILogger log,
+			int bookID)
 		{
-			ValidatePostAgainstRoute(input);
-			UpdateReadStatusInternal(input.BookID.Value, input.ReadStatus, input.ReadRemark);
-			return new OkObjectResult(true);
-		}
-
-		// [HttpPost("api/books/book/{bookRouteID}/availabilitystatus")]
-		public IActionResult UpdateAvailabilityStatus([FromBody] Book input)
-		{
-			ValidatePostAgainstRoute(input);
-			UpdateAvailabilityStatusInternal(input.BookID.Value, input.Status, input.StatusRemark);
+			//TODO: Validate input object 
+			//UpdateAvailabilityStatusInternal(input.BookID, input.Status, input.StatusRemark);
+			log.LogWarning("Saving is disabled");
+			log.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
+		
 			return new OkObjectResult(true);
 		}
 
@@ -81,17 +118,8 @@ namespace Catalog.API
 			// if(bookID != book.BookID) { throw new Exception("Invalid call, route and data are not matching"); }
 		}
 
-        //TODO: This is ripped from the KO project, check if we can collapse some of the elements into each other
-        protected static IEnumerable<Book> GetAllBooks()
-		{
-			return GetBookLogic().GetAllBooks();
-		}
-		
+     
 
-		protected static Book GetBookDetail(int bookID)
-		{
-			return GetBookLogic().GetBookByID(bookID);
-		}
 	
 		protected Book UpdateBookDataInternal(Book book)
 		{
