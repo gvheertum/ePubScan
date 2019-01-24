@@ -59,23 +59,24 @@ namespace Catalog.API
 
         [FunctionName("GetBookDetail")]
 		public static IActionResult<Book> Details(
-			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Book/{bookID:int}/Detail")]HttpRequest req, 
+			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Book/{bookIDParam:int}/Detail")]HttpRequest req, 
 			ILogger log,
-			int bookID)
+			int bookIDParam)
 		{
-            if(bookID == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
-			return new OkObjectResult<Book>(GetBookLogic().GetBookByID(bookID));
+            if(bookIDParam == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
+			return new OkObjectResult<Book>(GetBookLogic().GetBookByID(bookIDParam));
 		}
 
         [FunctionName("UpdateBookData")]
 		public static IActionResult<bool> UpdateBookData(
-			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookID:int?}/UpdateBookData")]Book input, 
+			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookIDParam:int}/UpdateBookData")]Book input, 
 			ILogger log,
-			int? bookID)
+			int bookIDParam)
 		{
 			//TODO: What happens when the id and the post object are different?
 			//TODO: Validate input object 
 			//input = UpdateBookDataInternal(input);			
+			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 			log.LogWarning("Saving is disabled");
 			//log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
 			return new OkObjectResult<bool>(true);
@@ -83,12 +84,13 @@ namespace Catalog.API
 
 		[FunctionName("UpdateReadStatus")]		
 		public static IActionResult UpdateReadStatus(
-			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookID:int}/UpdateReadStatus")] BookReadStatusUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookIDParam:int}/UpdateReadStatus")] BookReadStatusUpdateModel input,
 			ILogger log,
-			int bookID)
+			int bookIDParam)
 		{
 			//TODO: Validate input object 
 			//UpdateReadStatusInternal(input.BookID, input.ReadStatus, input.ReadRemark);
+			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 			log.LogWarning("Saving is disabled");
 			log.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
 			return new OkObjectResult(true);
@@ -96,27 +98,21 @@ namespace Catalog.API
 
 		
 		[FunctionName("UpdateAvailabilityStatus")]		
-		public static IActionResult UpdateAvailabilityStatus(
-			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookID:int}/UpdateAvailabilityStatus")] BookAvailabilityStatusUpdateModel input,
+		public static IActionResult<bool> UpdateAvailabilityStatus(
+			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookIDParam:int}/UpdateAvailabilityStatus")] BookAvailabilityStatusUpdateModel input,
 			ILogger log,
-			int bookID)
+			int bookIDParam)
 		{
+			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 			//TODO: Validate input object 
 			//UpdateAvailabilityStatusInternal(input.BookID, input.Status, input.StatusRemark);
 			log.LogWarning("Saving is disabled");
 			log.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
 		
-			return new OkObjectResult(true);
+			return new OkObjectResult<bool>(true);
 		}
 
-        //TODO: Are we going to need a validation? Functions don't seem to use the specific routes for this.
-		private void ValidatePostAgainstRoute(Book book)
-		{
-			// var parsedBookIDInRoute = this.RouteData.Values.FirstOrDefault(kp => string.Equals(kp.Key, "bookRouteID", StringComparison.OrdinalIgnoreCase));
-			// if(parsedBookIDInRoute.Value == null) { throw new Exception("No bookID in route"); }
-			// if(!Int32.TryParse(parsedBookIDInRoute.Value as string, out int bookID)) { throw new Exception("Not a valid bookID"); };
-			// if(bookID != book.BookID) { throw new Exception("Invalid call, route and data are not matching"); }
-		}
+    
 
      
 
