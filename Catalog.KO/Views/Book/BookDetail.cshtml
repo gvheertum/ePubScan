@@ -1,90 +1,85 @@
 <div data-bind="with: ActiveBook">
 	<form>
 		<legend><span data-bind="text: author"></span> - <span data-bind="text: title"></span></legend>
-		<p><a href="#Overview/">Back</a></p>
-		<dl>
-			<dt>DB Identifier</dt>
+		<p><a class="btn btn-primary" role="button" href="#Overview/">Back</a></p>
+		
+		<div  class="form-group">
+			<label>Identifier</dt>
 			<dd data-bind="text: bookID"></dd>
-		</dl>
-		<dl>
-			<dt>Identifier</dt>
-			<dd><input type="text" data-bind="value: identifier"/></dd>
-		</dl>
-		<dl>
-			<dt>Title</dt>
-			<dd><input type="text" data-bind="value: title"/></dd>
-		</dl>
-		<dl>
-			<dt>Author</dt>
-			<dd><input type="text" data-bind="value: author"/></dd>
-		</dl>
-		<dl>
-			<dt>Description</dt>
-			<dd><textarea data-bind="value: description"></textarea></dd>
-		</dl>
-		<dl>
-			<dt>Medium</dt>
+		</div>
+		<div  class="form-group">
+			<label for="identifier">Identifier</dt>
+			<input type="text" class="form-control" id="identifier" data-bind="value: identifier"/>
+		</div>
+		<div  class="form-group">
+			<label for="title">Title</label>
+			<input type="text" class="form-control" id="title" data-bind="value: title"/>
+		</div>
+		<div  class="form-group">
+			<label for="author">Author</label>
+			<input type="text" id="author" class="form-control" data-bind="value: author"/>
+		</div>
+		<div  class="form-group">
+			<label for="description">Description</label>
+			<textarea id="description" class="form-control" data-bind="value: description"></textarea>
+		</div>
+		<div  class="form-group">
+			<label for="medium">Medium</label>
 			<dt>
-				<select data-bind="value: medium">
+				<select data-bind="value: medium" id="medium" class="form-control">
 					<option></option>
 					<option>ebook</option>
 					<option>Physical</option>
 					<option>Bundle</option>
 				</select>
 			</dt>
-		</dl>
-		<dl>
-			<dt>Nr of pages</dt>
-			<dd><input type="text" data-bind="value: nrOfPages" /></dd>
-		</dl>
-		<button data-bind="click: $root.updateBookData.bind($root)">Update book data</button>
+		</div>
+		<div class="form-group">
+			<label for="nrOfPages">Nr of pages</label>
+			<dd><input type="text" class="form-control" id="nrOfPages" data-bind="value: nrOfPages" /></dd>
+		</div>
+		<button class="btn btn-success" type="button" data-bind="click: $root.updateBookData.bind($root)">Update book data</button>
 	</form>
 
 	<form>
-		
 		<legend>Read status</legend>
-		<dl>
-			<dt>Read Status</dt>
-			<dd>
-				<select data-bind="value: readStatus">
-					<option></option>
-					<option class="read">Read</option>
-					<option class="reading">Reading</option>
-					<option class="toread">To read</option>
-					<option class="notgoingtoread">Not going to read</option>
-				</select>
-			</dd>
-		</dl>
-		<dl>
-			<dt>Remark</dt>
-			<dd>
-				<textarea data-bind="value: readRemark"></textarea>
-			</dd>
-		</dl>
-		<button data-bind="click: $root.updateReadData.bind($root)">Update read status</button>
+		<div class="form-group">
+			<label for="readStatus">Read Status</label>
+			
+			<select data-bind="value: readStatus" id="readStatus" class="form-control">
+				<option></option>
+				<option class="read">Read</option>
+				<option class="reading">Reading</option>
+				<option class="toread">To read</option>
+				<option class="notgoingtoread">Not going to read</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="readRemark">Remark</label>
+			<textarea id="readRemark" class="form-control" data-bind="value: readRemark"></textarea>
+		</div>
+		<button class="btn btn-success" type="button" data-bind="click: $root.updateReadData.bind($root)">Update read status</button>
 	</form>
 
 	<form>
 		<legend>Availability</legend>
-		<dl>
-			<dt>Status</dt>
-			<dd>
-				<select data-bind="value: status">
-					<option></option>
-					<option>N/A</option>
-					<option>Available</option>
-					<option>Lend-out</option>
-					<option>Available at other location</option>
-				</select>
-			</dd>
-		</dl>
-		<dl>
-			<dt>Remark</dt>
-			<dd>
-				<textarea data-bind="value: statusRemark"></textarea>
-			</dd>
-		</dl>
-		<button data-bind="click: $root.updateAvailabilityData.bind($root)">Update availability status</button>
+		<div>
+			<label for="status">Status</label>
+			
+			<select id="status" class="form-control"  data-bind="value: status">
+				<option></option>
+				<option>N/A</option>
+				<option>Available</option>
+				<option>Lend-out</option>
+				<option>Available at other location</option>
+			</select>
+			
+		</div>
+		<div>
+			<label for="statusRemark">Remark</label>
+			<textarea class="form-control" id="statusRemark" data-bind="value: statusRemark"></textarea>
+		</div>
+		<button class="btn btn-success" type="button" data-bind="click: $root.updateAvailabilityData.bind($root)">Update availability status</button>
 	</form>
 
 	

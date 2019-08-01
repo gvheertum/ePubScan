@@ -1,8 +1,7 @@
 /* My Styles */
-table { width: 95%; margin: auto; }
-th { background-color: orange; color: white; }
+table { width: 99%; margin: auto; }
 
-a, a:hover, a:visited, a:active { color: orange; }
+table a, table a:hover, table a:visited, table a:active { color: orange; }
 
 /*Allow styling on dropdown */
 option, optgroup { -webkit-appearance: none; }
