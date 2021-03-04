@@ -30,6 +30,9 @@ var Book = /** @class */ (function () {
         this.subject = ko.observable("");
         this.title = ko.observable("");
         this.nrOfPages = ko.observable(null);
+        this.isRead = false;
+	    this.isReading = false;
+	    this.isToRead = false;
         if (input != null) {
             this.ReadFromIBook(input);
         }

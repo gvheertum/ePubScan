@@ -4,8 +4,9 @@
 		<span>Number of books: </span><span data-bind="text: NumberOfBooks"></span>
 	</div>
 
-	<table class="table" style="margin-top: 20px">
+	<table class="table table-striped" style="margin-top: 20px">
 		<colgroup>
+			<col width="50"/>
 			<col width="50"/>
 			<col width="100"/>
 			<col width="200"/>
@@ -15,6 +16,7 @@
 		</colgroup>
 		<thead class="thead-dark">
 			<tr> 
+				<th title="Status">S</th>
 				<th>ID</th>
 				<th>Status</th>
 				<th>Author</th>
@@ -24,8 +26,14 @@
 			</tr>
 		</thead>
 		<tbody data-bind="foreach: Collection">
-			<tr data-bind="attr: { state: readStatus}">
-				<td><a data-bind="attr: {href: '#Detail/' + bookID() }, text: bookID"></a></td>
+			<tr class="rowclick" data-bind="attr: { state: readStatus}">
+				<td data-bind="attr: {title: readStatus}">
+					<i data-bind="visible: isReading" style="color: blue;" class="bi bi-book-half"></i>
+					<i data-bind="visible: isToRead" style="color: grey;" class="bi bi-book"></i>
+					<i data-bind="visible: isRead" style="color: green;" class="bi bi-book-fill"></i>
+					@* <i data-bind="visible: readStatus == 'To Read'" style="color: red;" class="bi bi-x"></i> *@
+				</td>
+				<td><a class="directlink" data-bind="attr: {href: '#Detail/' + bookID() }, text: bookID"></a></td>
 				<td data-bind="attr: {title: readRemark}, text: readStatus"></td>
 				<td data-bind="text: author"></td>
 				<td data-bind="text: title"></td>

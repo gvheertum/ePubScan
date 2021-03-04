@@ -46,6 +46,10 @@ class Book
 	public subject: KnockoutObservable<string> = ko.observable("");
 	public title: KnockoutObservable<string> = ko.observable("");
 	public nrOfPages: KnockoutObservable<number> = ko.observable(null);
+
+	public isRead: boolean = false;
+	public isReading: boolean = false;
+	public isToRead: boolean = false;
 }
 interface IBook
 {
@@ -128,6 +132,7 @@ class BookCollectionViewModel
 			_self.RouteUpdateAvailabilityStatus = data.routeUpdateAvailabilityStatus;
 			_self.RouteUpdateReadStatus = data.routeUpdateReadStatus;
 			_self.RouteUpdateDetails = data.routeUpdateDetails;
+			
 			if(onComplete != null) { onComplete(); }
 		});
 	}
