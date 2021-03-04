@@ -11,7 +11,6 @@
 			<col width="200"/>
 			<col width="*"/>
 			<col width="20"/>
-			<col width="10"/>
 		</colgroup>
 		<thead class="thead-dark">
 			<tr> 
@@ -20,7 +19,6 @@
 				<th>Author</th>
 				<th>Title</th>
 				<th>Pages</th>
-				<th title="Has description">D</th>
 			</tr>
 		</thead>
 		<tbody data-bind="foreach: Collection">
@@ -36,10 +34,9 @@
 				<td data-bind="text: author"></td>
 				<td data-bind="text: title"></td>
 				<td data-bind="text: nrOfPages"></td>
-				<td data-bind="attr: {title: description}" class="Description">
-					<span data-bind="if: description">V</span>
-					<span data-bind="ifnot: description">-</span>
-				</td>
+			</tr>
+			<tr data-bind="visible: description" class="book-description">
+				<td colspan="5" data-bind="text: description"></td>
 			</tr>
 		</tbody>
 	</table>
