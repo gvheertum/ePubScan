@@ -30,15 +30,22 @@ var Book = /** @class */ (function () {
         this.subject = ko.observable("");
         this.title = ko.observable("");
         this.nrOfPages = ko.observable(null);
-        this.isRead = false;
-	    this.isReading = false;
-	    this.isToRead = false;
+        this.isRead = ko.observable(false);
+        this.isReading = ko.observable(false);
+        this.isToRead = ko.observable(false);
+        this.isUnknown = ko.observable(false);
+        this.isNotGoingToRead = ko.observable(false);
         if (input != null) {
             this.ReadFromIBook(input);
         }
     }
     Book.prototype.ReadFromIBook = function (input) {
         PropertyCopier.CopyElement(input, this);
+        this.isRead = this.readStatus() == "Read";
+        this.isToRead = this.readStatus() == "To read";
+        this.isReading = this.readStatus() == "Reading";
+        this.isNotGoingToRead = this.readStatus() == "Not going to read";
+        this.isUnknown = !this.readStatus();
         return this;
     };
     return Book;

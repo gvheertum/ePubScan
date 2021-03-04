@@ -26,7 +26,12 @@ class Book
 
 	public ReadFromIBook(input: IBook) : Book
 	{
-		PropertyCopier.CopyElement(input,this);
+		PropertyCopier.CopyElement(input, this);
+		this.isRead = this.readStatus() == "Read";
+		this.isToRead = this.readStatus() == "To read";
+		this.isReading = this.readStatus() == "Reading";
+		this.isNotGoingToRead = this.readStatus() == "Not going to read";
+		this.isUnknown = !this.readStatus();
 		return this;
 	} 
 
@@ -47,9 +52,11 @@ class Book
 	public title: KnockoutObservable<string> = ko.observable("");
 	public nrOfPages: KnockoutObservable<number> = ko.observable(null);
 
-	public isRead: boolean = false;
-	public isReading: boolean = false;
-	public isToRead: boolean = false;
+	public isRead: KnockoutObservable<boolean> = ko.observable(false);
+	public isReading: KnockoutObservable<boolean> = ko.observable(false);
+	public isToRead: KnockoutObservable<boolean> = ko.observable(false);
+	public isUnknown: KnockoutObservable<boolean> = ko.observable(false);
+	public isNotGoingToRead: KnockoutObservable<boolean> = ko.observable(false);
 }
 interface IBook
 {

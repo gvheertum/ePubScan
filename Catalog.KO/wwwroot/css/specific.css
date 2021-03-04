@@ -6,10 +6,10 @@ table a, table a:hover, table a:visited, table a:active { color: orange; }
 /*Allow styling on dropdown */
 option, optgroup { -webkit-appearance: none; }
 
-tr[state="Read"], select option.read { background-color: #AAFFAA; color: #555555; }
-tr[state="Reading"], select option.reading { background-color: rgb(0, 100, 214); color: #FFFFFF; font-weight: bold; }
-tr[state="To read"], select option.toread { background-color: rgb(170, 221, 255); color: #555555; }
-tr[state="Not going to read"], select option.notgoingtoread { background-color: rgb(255, 109, 104); color: #555555; }
+tr[state="Read"], select option.read { background-color: rgba(100,200,100,0.2); color: #555555; }
+tr[state="Reading"], select option.reading { background-color: rgba(0, 100, 214, 0.2); color: #FFFFFF; font-weight: bold; }
+tr[state="To read"], select option.toread { background-color: rgba(170, 221, 255, 0.2); color: #555555; }
+tr[state="Not going to read"], select option.notgoingtoread { background-color: rgba(255, 109, 104, 0.2); color: #555555; }
 form textarea { width: 100%; height: 200px; clear: both; }
 form input[type='text'] { width: 100%; }
 td { vertical-align: top; padding: 2px; }
