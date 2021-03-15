@@ -1,10 +1,10 @@
 <div data-bind="with: ActiveBook">
-	<fieldset>
-		<legend><span data-bind="text: author"></span> - <span data-bind="text: title"></span></legend>
-		<p><a class="btn btn-primary" role="button" href="#Overview/">Back</a></p>
+	<legend><span data-bind="text: author"></span> - <span data-bind="text: title"></span></legend>
+	<p><a class="btn btn-primary" role="button" href="#Overview/">Back</a></p>
+	
+	<div class="card border-dark">
+		<div class="card-header">Book details</div>	
 		<form>
-			
-
 			<div class="input-group input-group-sm mb-3">
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="inputGroup-sizing-sm">BookID (db)</span>
@@ -37,7 +37,7 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="inputGroup-sizing-sm">Description</span>
 				</div>
-				<input type="text" class="form-control" data-bind="value: description" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+				<textarea id="readRemark" class="form-control" data-bind="value: description"></textarea>
 			</div>
 
 			<div class="input-group input-group-sm mb-3">
@@ -59,16 +59,20 @@
 				<input type="text" class="form-control" data-bind="value: nrOfPages" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			</div>
 			
-		
-			<button class="btn btn-success" type="button" data-bind="click: $root.updateBookData.bind($root)">Update book data</button>
+			<div class="card-footer text-muted">
+				<button class="btn btn-info" type="button" data-bind="click: $root.updateBookData.bind($root)">Update book data</button>
+			</div>
 		</form>
-	</fieldset>
-	<fieldset>
-		<legend>Read status</legend>
+	</div>
+
+
+	<div class="card border-dark">
+		<div class="card-header">Read status</div>
 		<form>
-			<div class="form-group">
-				<label for="readStatus">Read Status</label>
-				
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Read status</span>
+				</div>
 				<select data-bind="value: readStatus" id="readStatus" class="form-control">
 					<option></option>
 					<option class="read">Read</option>
@@ -77,19 +81,27 @@
 					<option class="notgoingtoread">Not going to read</option>
 				</select>
 			</div>
-			<div class="form-group">
-				<label for="readRemark">Remark</label>
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Read remark</span>
+				</div>
 				<textarea id="readRemark" class="form-control" data-bind="value: readRemark"></textarea>
 			</div>
-			<button class="btn btn-success" type="button" data-bind="click: $root.updateReadData.bind($root)">Update read status</button>
+			
+			<div class="card-footer text-muted">
+				<button class="btn btn-info" type="button" data-bind="click: $root.updateReadData.bind($root)">Update read status</button>
+			</div>
 		</form>
-	</fieldset>
-	<fieldset>
+	</div>
+
+	<div class="card border-dark">
+		<div class="card-header">Availability</div>
 		<form>
-			<legend>Availability</legend>
-			<div>
-				<label for="status">Status</label>
-				
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Status</span>
+				</div>
 				<select id="status" class="form-control"  data-bind="value: status">
 					<option></option>
 					<option>N/A</option>
@@ -97,14 +109,18 @@
 					<option>Lend-out</option>
 					<option>Available at other location</option>
 				</select>
-				
 			</div>
-			<div>
-				<label for="statusRemark">Remark</label>
+		
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Status remark</span>
+				</div>
 				<textarea class="form-control" id="statusRemark" data-bind="value: statusRemark"></textarea>
 			</div>
-			<button class="btn btn-success" type="button" data-bind="click: $root.updateAvailabilityData.bind($root)">Update availability status</button>
+			<div class="card-footer text-muted">
+				<button class="btn btn-info" type="button" data-bind="click: $root.updateAvailabilityData.bind($root)">Update availability status</button>
+			</div>
 		</form>
-	</fieldset>
+	</div>
 	
 </div>

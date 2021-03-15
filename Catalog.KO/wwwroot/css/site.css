@@ -34,3 +34,8 @@
     }
 }
 .input-group-text { width: 150px; }
+.input-group textarea { height: 150px; }
+
+.card { margin-bottom: 30px; }
+.card form div.input-group { padding-left: 20px; padding-right: 20px; }
+.card .card-header { margin-bottom: 10px; } 
