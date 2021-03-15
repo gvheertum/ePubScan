@@ -1,44 +1,65 @@
 <div data-bind="with: ActiveBook">
 	<fieldset>
 		<legend><span data-bind="text: author"></span> - <span data-bind="text: title"></span></legend>
+		<p><a class="btn btn-primary" role="button" href="#Overview/">Back</a></p>
 		<form>
-			<p><a class="btn btn-primary" role="button" href="#Overview/">Back</a></p>
 			
-			<div  class="form-group">
-				<label>Identifier</dt>
-				<dd data-bind="text: bookID"></dd>
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">BookID (db)</span>
+				</div>
+				<input type="text" readonly="readonly" class="form-control" data-bind="value: bookID" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			</div>
-			<div  class="form-group">
-				<label for="identifier">Identifier</dt>
-				<input type="text" class="form-control" id="identifier" data-bind="value: identifier"/>
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Identifier</span>
+				</div>
+				<input type="text" class="form-control" data-bind="value: identifier" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			</div>
-			<div  class="form-group">
-				<label for="title">Title</label>
-				<input type="text" class="form-control" id="title" data-bind="value: title"/>
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
+				</div>
+				<input type="text" class="form-control" data-bind="value: title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			</div>
-			<div  class="form-group">
-				<label for="author">Author</label>
-				<input type="text" id="author" class="form-control" data-bind="value: author"/>
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Author</span>
+				</div>
+				<input type="text" class="form-control" data-bind="value: author" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			</div>
-			<div  class="form-group">
-				<label for="description">Description</label>
-				<textarea id="description" class="form-control" data-bind="value: description"></textarea>
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Description</span>
+				</div>
+				<input type="text" class="form-control" data-bind="value: description" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			</div>
-			<div  class="form-group">
-				<label for="medium">Medium</label>
-				<dt>
-					<select data-bind="value: medium" id="medium" class="form-control">
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Medium</span>
+				</div>
+				<select data-bind="value: medium" id="medium" class="form-control">
 						<option></option>
 						<option>ebook</option>
 						<option>Physical</option>
 						<option>Bundle</option>
 					</select>
-				</dt>
 			</div>
-			<div class="form-group">
-				<label for="nrOfPages">Nr of pages</label>
-				<dd><input type="text" class="form-control" id="nrOfPages" data-bind="value: nrOfPages" /></dd>
+
+			<div class="input-group input-group-sm mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-sm">Nr. of pages</span>
+				</div>
+				<input type="text" class="form-control" data-bind="value: nrOfPages" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			</div>
+			
+		
 			<button class="btn btn-success" type="button" data-bind="click: $root.updateBookData.bind($root)">Update book data</button>
 		</form>
 	</fieldset>

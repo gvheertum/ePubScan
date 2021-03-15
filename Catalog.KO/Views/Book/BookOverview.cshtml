@@ -22,7 +22,7 @@
 			</tr>
 		</thead>
 		<tbody data-bind="foreach: Collection">
-			<tr class="rowclick" data-bind="attr: { state: readStatus}">
+			<tr class="rowclick" data-bind="attr: { state: readStatus, bookidx: bookID }"> 
 				<td data-bind="attr: {title: readRemark}">
 					<i data-bind="attr: { title: readStatus }, visible: isReading" style="color: blue;" class="bi bi-book-half"></i>
 					<i data-bind="attr: { title: readStatus }, visible: isToRead" style="color: grey;" class="bi bi-book"></i>
@@ -35,7 +35,7 @@
 				<td data-bind="text: title"></td>
 				<td data-bind="text: nrOfPages"></td>
 			</tr>
-			<tr data-bind="visible: description" class="book-description">
+			<tr data-bind="visible: description, attr: { state: readStatus, bookidx: bookID}" class="book-description">
 				<td colspan="5" data-bind="text: description"></td>
 			</tr>
 		</tbody>
