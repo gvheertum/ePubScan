@@ -4,7 +4,7 @@
 		<span>Number of books: </span><span data-bind="text: NumberOfBooks"></span>
 	</div>
 
-	<table class="table table-striped" style="margin-top: 20px">
+	<table class="table table-sm" style="margin-top: 20px">
 		<colgroup>
 			<col width="50"/>
 			<col width="50"/>
@@ -36,7 +36,7 @@
 				<td data-bind="text: nrOfPages"></td>
 			</tr>
 			<tr data-bind="visible: description, attr: { state: readStatus, bookidx: bookID}" class="book-description">
-				<td colspan="5" data-bind="text: description"></td>
+				<td colspan="5"><div data-bind="text: description"></div></td>
 			</tr>
 		</tbody>
 	</table>
