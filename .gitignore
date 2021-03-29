@@ -17,5 +17,6 @@ Shared/obj
 Catalog/obj
 Catalog/bin
 
+*/out/*
 */node_modules/*
 .vs/ePubScan/v15/.suo
