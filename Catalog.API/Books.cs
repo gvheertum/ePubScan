@@ -44,7 +44,7 @@ namespace Catalog.API
 
         [FunctionName("GetBooks")]
 		public static IActionResult<IEnumerable<Book>> Books(
-			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Books/All")]HttpRequest req, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Books/All")]HttpRequest req, 
 			ILogger log)
 		{
             try{
@@ -59,7 +59,7 @@ namespace Catalog.API
 
         [FunctionName("GetBookDetail")]
 		public static IActionResult<Book> Details(
-			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Book/{bookIDParam:int}/Detail")]HttpRequest req, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Book/{bookIDParam:int}/Detail")]HttpRequest req, 
 			ILogger log,
 			int bookIDParam)
 		{
@@ -69,7 +69,7 @@ namespace Catalog.API
 
         [FunctionName("UpdateBookData")]
 		public static IActionResult<bool> UpdateBookData(
-			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookIDParam:int}/UpdateBookData")]Book input, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateBookData")]Book input, 
 			ILogger log,
 			int bookIDParam)
 		{
@@ -84,7 +84,7 @@ namespace Catalog.API
 
 		[FunctionName("UpdateReadStatus")]		
 		public static IActionResult UpdateReadStatus(
-			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookIDParam:int}/UpdateReadStatus")] BookReadStatusUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateReadStatus")] BookReadStatusUpdateModel input,
 			ILogger log,
 			int bookIDParam)
 		{
@@ -99,7 +99,7 @@ namespace Catalog.API
 		
 		[FunctionName("UpdateAvailabilityStatus")]		
 		public static IActionResult<bool> UpdateAvailabilityStatus(
-			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Book/{bookIDParam:int}/UpdateAvailabilityStatus")] BookAvailabilityStatusUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateAvailabilityStatus")] BookAvailabilityStatusUpdateModel input,
 			ILogger log,
 			int bookIDParam)
 		{
