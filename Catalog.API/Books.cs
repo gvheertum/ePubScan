@@ -16,27 +16,10 @@ using Microsoft.Extensions.Configuration.Json;
 using System;
 using Microsoft.Extensions.Logging;
 using Catalog.API.Models;
+using Catalog.API;
 
 namespace Catalog.API
 {
-    public class OkObjectResult<T> : OkObjectResult, IActionResult<T>
-    {
-        public OkObjectResult(T value) : base(value)
-        {
-        }
-    }
-
-    public class BadRequestObjectResult<T> : BadRequestObjectResult, IActionResult<T>
-    {
-        public BadRequestObjectResult(object error) : base(error)
-        {
-        }
-    }
-
-    public interface IActionResult<T> : IActionResult
-	{
-		
-	}
 
 
     public class BooksFunction
@@ -45,10 +28,11 @@ namespace Catalog.API
         [FunctionName("GetBooks")]
 		public static IActionResult<IEnumerable<Book>> Books(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Books/All")]HttpRequest req, 
-			ILogger log)
+			ILogger log, ExecutionContext context)
 		{
-            try{
-			return new OkObjectResult<IEnumerable<Book>>(GetBookLogic().GetAllBooks());
+            try
+			{
+				return new OkObjectResult<IEnumerable<Book>>(GetBookLogic(context).GetAllBooks());
 
             }
             catch(Exception e)
@@ -60,17 +44,19 @@ namespace Catalog.API
         [FunctionName("GetBookDetail")]
 		public static IActionResult<Book> Details(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Book/{bookIDParam:int}/Detail")]HttpRequest req, 
-			ILogger log,
+			ILogger log, 
+			ExecutionContext context,
 			int bookIDParam)
 		{
             if(bookIDParam == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
-			return new OkObjectResult<Book>(GetBookLogic().GetBookByID(bookIDParam));
+			return new OkObjectResult<Book>(GetBookLogic(context).GetBookByID(bookIDParam));
 		}
 
         [FunctionName("UpdateBookData")]
 		public static IActionResult<bool> UpdateBookData(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateBookData")]Book input, 
 			ILogger log,
+			ExecutionContext context,
 			int bookIDParam)
 		{
 			//TODO: What happens when the id and the post object are different?
@@ -86,6 +72,7 @@ namespace Catalog.API
 		public static IActionResult UpdateReadStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateReadStatus")] BookReadStatusUpdateModel input,
 			ILogger log,
+			ExecutionContext context,
 			int bookIDParam)
 		{
 			//TODO: Validate input object 
@@ -101,6 +88,7 @@ namespace Catalog.API
 		public static IActionResult<bool> UpdateAvailabilityStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateAvailabilityStatus")] BookAvailabilityStatusUpdateModel input,
 			ILogger log,
+			ExecutionContext context,
 			int bookIDParam)
 		{
 			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
@@ -117,10 +105,10 @@ namespace Catalog.API
      
 
 	
-		protected Book UpdateBookDataInternal(Book book)
+		protected Book UpdateBookDataInternal(Book book, ExecutionContext context)
 		{
 			//Merge new fields over the original book
-			var bookOrig = GetBookLogic().GetBookByID(book.BookID.Value);
+			var bookOrig = GetBookLogic(context).GetBookByID(book.BookID.Value);
 			bookOrig.Title = GetOverrideOrOriginal(bookOrig.Title, book.Title);
 			bookOrig.Author = GetOverrideOrOriginal(bookOrig.Author, book.Author);
 			bookOrig.Description = GetOverrideOrOriginal(bookOrig.Description, book.Description);
@@ -129,18 +117,18 @@ namespace Catalog.API
 			bookOrig.NrOfPages = GetOverrideOrOriginal(bookOrig.NrOfPages, book.NrOfPages);
 			if(bookOrig.NrOfPages == 0) { book.NrOfPages = null; }
 			//Save and continue
-			GetBookLogic().Save(bookOrig);
+			GetBookLogic(context).Save(bookOrig);
 			return bookOrig;
 		}
 
-		protected void UpdateReadStatusInternal(int bookID, string readStatus, string readRemark)
+		protected void UpdateReadStatusInternal(int bookID, string readStatus, string readRemark, ExecutionContext context)
 		{
-			GetBookLogic().UpdateReadStatus(bookID, readStatus, readRemark);
+			GetBookLogic(context).UpdateReadStatus(bookID, readStatus, readRemark);
 		}
 
-		protected void UpdateAvailabilityStatusInternal(int bookID, string bookStatus, string statusRemark)
+		protected void UpdateAvailabilityStatusInternal(int bookID, string bookStatus, string statusRemark, ExecutionContext context)
 		{
-			GetBookLogic().UpdateAvailability(bookID, bookStatus, statusRemark);
+			GetBookLogic(context).UpdateAvailability(bookID, bookStatus, statusRemark);
 		}
 
 		//TODO: this could be done with generics, but for those whopping 5 max fields, nah
@@ -155,21 +143,28 @@ namespace Catalog.API
 		}
 
         
-        public static ePubAnalyzer.Shared.BLL.BookLogic GetBookLogic()
+        public static ePubAnalyzer.Shared.BLL.BookLogic GetBookLogic(ExecutionContext context)
         {
-            return GetLogicFactory().GetBookLogic();
+            return GetLogicFactory(context).GetBookLogic();
         }
 
         //TODO: Isolate?
 
-		private static ePubAnalyzer.Shared.BLL.LogicFactory GetLogicFactory()
+		private static ePubAnalyzer.Shared.BLL.LogicFactory GetLogicFactory(ExecutionContext context)
 		{
-			return new ePubAnalyzer.Shared.BLL.LogicFactory(GetDALImplementation());
+			return new ePubAnalyzer.Shared.BLL.LogicFactory(GetDALImplementation(context));
 		}
 
-        private static DALImplementation GetDALImplementation()
+        private static DALImplementation GetDALImplementation(ExecutionContext context)
 		{
-			var cString = Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection");
+			var configuration = new ConfigurationBuilder()
+            .SetBasePath(context.FunctionAppDirectory)                    
+            .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .Build();
+
+
+			var cString = configuration.GetConnectionStringOrSetting("DefaultConnection");
             Console.WriteLine($"Connecting with: {cString}");
 			return new DALImplementation(cString);
 		}
