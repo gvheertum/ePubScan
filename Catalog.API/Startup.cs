@@ -4,7 +4,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-// [assembly: FunctionsStartup(typeof(Catalog.API.Startup))]
+[assembly: FunctionsStartup(typeof(Catalog.API.Startup))]
 namespace Catalog.API
 {
     public class Startup : FunctionsStartup
@@ -13,15 +13,12 @@ namespace Catalog.API
         {
         
             //TODO: in real config object?
-            //SOME KIND OF DI WOULD BE NICE :)
-			var configuration = new ConfigurationBuilder()
-				//.SetBasePath(context.FunctionAppDirectory)                    
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(builder.GetContext().ApplicationRootPath)           
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
 
-
-			
             builder.Services.AddScoped<BookLogic>(d => { 
                 var cString = configuration.GetConnectionStringOrSetting("DefaultConnection");
                 var dalimpl = new DALImplementation(cString);
