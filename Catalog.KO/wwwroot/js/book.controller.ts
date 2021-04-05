@@ -1,4 +1,3 @@
-declare var $getAllBooksRoute : any;
 declare var Sammy : any;
 
 class PropertyCopier
@@ -27,11 +26,11 @@ class Book
 	public ReadFromIBook(input: IBook) : Book
 	{
 		PropertyCopier.CopyElement(input, this);
-		this.isRead = this.readStatus() == "Read";
-		this.isToRead = this.readStatus() == "To read";
-		this.isReading = this.readStatus() == "Reading";
-		this.isNotGoingToRead = this.readStatus() == "Not going to read";
-		this.isUnknown = !this.readStatus();
+		this.isRead = ko.observable(this.readStatus() == "Read");
+		this.isToRead = ko.observable(this.readStatus() == "To read");
+		this.isReading = ko.observable(this.readStatus() == "Reading");
+		this.isNotGoingToRead = ko.observable(this.readStatus() == "Not going to read");
+		this.isUnknown = ko.observable(!this.readStatus());
 		return this;
 	} 
 
@@ -81,18 +80,17 @@ interface IBook
 interface IBookCollection
 {
 	books : Array<IBook>;
-	routeGetDetails : string;
-	routeUpdateDetails : string;
-	routeUpdateReadStatus : string;
-	routeUpdateAvailabilityStatus : string;
 }
 
 class BookCollectionViewModel
 {
-	public RouteGetDetails : string;
-	public RouteUpdateDetails : string;
-	public RouteUpdateReadStatus : string;
-	public RouteUpdateAvailabilityStatus : string;
+	//TODO: this one should from the server (config??)
+	public RouteRoot: string = "http://localhost:7071/api/";
+	public RouteGetAll : string = "Books/All";
+	public RouteGetDetails : string = "Book/BOOKID/Detail";
+	public RouteUpdateDetails : string = "Book/BOOKID/UpdateBookData";
+	public RouteUpdateReadStatus : string = "Book/BOOKID/UpdateReadStatus";
+	public RouteUpdateAvailabilityStatus : string = "Book/BOOKID/UpdateAvailabilityStatus";
 
 	public ShowingActiveBook : KnockoutObservable<boolean> = ko.observable(false);
 	public Collection : KnockoutObservable<Array<Book>> = ko.observable([]);
@@ -125,21 +123,16 @@ class BookCollectionViewModel
 	public loadFromServer(onComplete? : ()=>void) : void
 	{
 		var _self = this;
-		$.getJSON($getAllBooksRoute, function(data : IBookCollection) 
+		$.getJSON(this.composeRoute(this.RouteGetAll), function(data : Array<IBook>) 
 		{ 
 			//TODO: Check if and how we can use the .mapping from KO here. 
 			//Example online states a mapping on the whole viewmodel, while we only want to do a part
 			var bookArray : Array<Book> = [];
-			for(var i = 0; data.books != null && i < data.books.length; i++)
+			for(var i = 0; data != null && i < data.length; i++)
 			{
-				bookArray.push(new Book().ReadFromIBook(data.books[i]));
+				bookArray.push(new Book().ReadFromIBook(data[i]));
 			}
 			_self.Collection(bookArray);
-			_self.RouteGetDetails = data.routeGetDetails;
-			_self.RouteUpdateAvailabilityStatus = data.routeUpdateAvailabilityStatus;
-			_self.RouteUpdateReadStatus = data.routeUpdateReadStatus;
-			_self.RouteUpdateDetails = data.routeUpdateDetails;
-			
 			if(onComplete != null) { onComplete(); }
 		});
 	}
@@ -152,7 +145,7 @@ class BookCollectionViewModel
 	private loadDetails(data: Book)
 	{
 		var _self = this;
-		var url = this.prepRouteForBook(this.RouteGetDetails, data);
+		var url = this.prepRouteForBook(this.composeRoute(this.RouteGetDetails), data);
 		$.getJSON(url, function(data : IBook) 
 		{ 
 			_self.ActiveBook(new Book().ReadFromIBook(data));
@@ -179,7 +172,7 @@ class BookCollectionViewModel
 		if(confirm("Are you sure you want to update the basic book details?"))
 		{
 			var _self = this;
-			var route = this.prepRouteForBook(this.RouteUpdateDetails, data);
+			var route = this.prepRouteForBook(this.composeRoute(this.RouteUpdateDetails), data);
 			this.postBookToRoute(route, data, this.showSuccess.bind(this));
 		}
 	}
@@ -187,15 +180,24 @@ class BookCollectionViewModel
 	public updateReadData(data: Book)
 	{
 		var _self = this;
-		var route = this.prepRouteForBook(this.RouteUpdateReadStatus, data);
+		var route = this.prepRouteForBook(this.composeRoute(this.RouteUpdateReadStatus), data);
 		this.postBookToRoute(route, data, this.showSuccess.bind(this));
 	}
 
 	public updateAvailabilityData(data: Book)
 	{
 		var _self = this;
-		var route = this.prepRouteForBook(this.RouteUpdateAvailabilityStatus, data);
+		var route = this.prepRouteForBook(this.composeRoute(this.RouteUpdateAvailabilityStatus), data);
 		this.postBookToRoute(route, data, this.showSuccess.bind(this));
+	}
+
+	private composeRoute(routeSuffix: string)
+	{
+		var r = this.RouteRoot;
+		if(r.lastIndexOf("/") != r.length-1) { r += "/" };
+		r = r + routeSuffix;
+		console.log("Route->" + r);
+		return r;
 	}
 
 	private prepRouteForBook(route: string, data: Book) : string

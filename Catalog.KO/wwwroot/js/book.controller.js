@@ -41,11 +41,11 @@ var Book = /** @class */ (function () {
     }
     Book.prototype.ReadFromIBook = function (input) {
         PropertyCopier.CopyElement(input, this);
-        this.isRead = this.readStatus() == "Read";
-        this.isToRead = this.readStatus() == "To read";
-        this.isReading = this.readStatus() == "Reading";
-        this.isNotGoingToRead = this.readStatus() == "Not going to read";
-        this.isUnknown = !this.readStatus();
+        this.isRead = ko.observable(this.readStatus() == "Read");
+        this.isToRead = ko.observable(this.readStatus() == "To read");
+        this.isReading = ko.observable(this.readStatus() == "Reading");
+        this.isNotGoingToRead = ko.observable(this.readStatus() == "Not going to read");
+        this.isUnknown = ko.observable(!this.readStatus());
         return this;
     };
     return Book;
@@ -53,6 +53,13 @@ var Book = /** @class */ (function () {
 var BookCollectionViewModel = /** @class */ (function () {
     function BookCollectionViewModel() {
         var _this = this;
+        //TODO: this one should from the server (config??)
+        this.RouteRoot = "http://localhost:7071/api/";
+        this.RouteGetAll = "Books/All";
+        this.RouteGetDetails = "Book/BOOKID/Detail";
+        this.RouteUpdateDetails = "Book/BOOKID/UpdateBookData";
+        this.RouteUpdateReadStatus = "Book/BOOKID/UpdateReadStatus";
+        this.RouteUpdateAvailabilityStatus = "Book/BOOKID/UpdateAvailabilityStatus";
         this.ShowingActiveBook = ko.observable(false);
         this.Collection = ko.observable([]);
         this.ActiveBook = ko.observable(new Book(null));
@@ -77,18 +84,14 @@ var BookCollectionViewModel = /** @class */ (function () {
     }
     BookCollectionViewModel.prototype.loadFromServer = function (onComplete) {
         var _self = this;
-        $.getJSON($getAllBooksRoute, function (data) {
+        $.getJSON(this.composeRoute(this.RouteGetAll), function (data) {
             //TODO: Check if and how we can use the .mapping from KO here. 
             //Example online states a mapping on the whole viewmodel, while we only want to do a part
             var bookArray = [];
-            for (var i = 0; data.books != null && i < data.books.length; i++) {
-                bookArray.push(new Book().ReadFromIBook(data.books[i]));
+            for (var i = 0; data != null && i < data.length; i++) {
+                bookArray.push(new Book().ReadFromIBook(data[i]));
             }
             _self.Collection(bookArray);
-            _self.RouteGetDetails = data.routeGetDetails;
-            _self.RouteUpdateAvailabilityStatus = data.routeUpdateAvailabilityStatus;
-            _self.RouteUpdateReadStatus = data.routeUpdateReadStatus;
-            _self.RouteUpdateDetails = data.routeUpdateDetails;
             if (onComplete != null) {
                 onComplete();
             }
@@ -99,7 +102,7 @@ var BookCollectionViewModel = /** @class */ (function () {
     };
     BookCollectionViewModel.prototype.loadDetails = function (data) {
         var _self = this;
-        var url = this.prepRouteForBook(this.RouteGetDetails, data);
+        var url = this.prepRouteForBook(this.composeRoute(this.RouteGetDetails), data);
         $.getJSON(url, function (data) {
             _self.ActiveBook(new Book().ReadFromIBook(data));
             _self.ShowingActiveBook(true);
@@ -118,19 +121,29 @@ var BookCollectionViewModel = /** @class */ (function () {
     BookCollectionViewModel.prototype.updateBookData = function (data) {
         if (confirm("Are you sure you want to update the basic book details?")) {
             var _self = this;
-            var route = this.prepRouteForBook(this.RouteUpdateDetails, data);
+            var route = this.prepRouteForBook(this.composeRoute(this.RouteUpdateDetails), data);
             this.postBookToRoute(route, data, this.showSuccess.bind(this));
         }
     };
     BookCollectionViewModel.prototype.updateReadData = function (data) {
         var _self = this;
-        var route = this.prepRouteForBook(this.RouteUpdateReadStatus, data);
+        var route = this.prepRouteForBook(this.composeRoute(this.RouteUpdateReadStatus), data);
         this.postBookToRoute(route, data, this.showSuccess.bind(this));
     };
     BookCollectionViewModel.prototype.updateAvailabilityData = function (data) {
         var _self = this;
-        var route = this.prepRouteForBook(this.RouteUpdateAvailabilityStatus, data);
+        var route = this.prepRouteForBook(this.composeRoute(this.RouteUpdateAvailabilityStatus), data);
         this.postBookToRoute(route, data, this.showSuccess.bind(this));
+    };
+    BookCollectionViewModel.prototype.composeRoute = function (routeSuffix) {
+        var r = this.RouteRoot;
+        if (r.lastIndexOf("/") != r.length - 1) {
+            r += "/";
+        }
+        ;
+        r = r + routeSuffix;
+        console.log("Route->" + r);
+        return r;
     };
     BookCollectionViewModel.prototype.prepRouteForBook = function (route, data) {
         return route.replace(/BOOKID/g, data.bookID() + "");
@@ -156,4 +169,3 @@ var BookCollectionViewModel = /** @class */ (function () {
     return BookCollectionViewModel;
 }());
 ko.applyBindings(new BookCollectionViewModel());
-//# sourceMappingURL=book.controller.js.map
