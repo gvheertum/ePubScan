@@ -22,6 +22,15 @@ namespace Catalog.API
     public class BooksFunction
     {
 
+		public class HttpRoutes 
+		{
+			public const string GetBooksAll = "Books/All";
+			public const string GetBookDetail = "Book/{bookIDParam:int}/Detail";
+			public const string SetBookData = "Book/{bookIDParam:int}/UpdateBookData";
+			public const string SetBookReadStatus = "Book/{bookIDParam:int}/UpdateReadStatus";
+			public const string SetBookAvailabilityStatus = "Book/{bookIDParam:int}/UpdateAvailabilityStatus";
+		}
+
         private readonly BookLogic bookLogic;
         private readonly BookPartialDataUpdateHelper bookPartialDataUpdateHelper;
 
@@ -33,7 +42,7 @@ namespace Catalog.API
     
         [FunctionName("GetBooks")]
 		public IActionResult<IEnumerable<Book>> Books(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Books/All")]HttpRequest req, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBooksAll)]HttpRequest req, 
 			ILogger log, 
 			ExecutionContext context)
 		{
@@ -52,7 +61,7 @@ namespace Catalog.API
 
         [FunctionName("GetBookDetail")]
 		public async Task<IActionResult<Book>> Details(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Book/{bookIDParam:int}/Detail")]HttpRequest req, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBookDetail)]HttpRequest req, 
 			ILogger log, 
 			ExecutionContext context,
 			int bookIDParam)
@@ -65,7 +74,7 @@ namespace Catalog.API
 
         [FunctionName("UpdateBookData")]
 		public async Task<IActionResult<bool>> UpdateBookData(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateBookData")]Book input, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)]Book input, 
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
@@ -81,7 +90,7 @@ namespace Catalog.API
 
 		[FunctionName("UpdateReadStatus")]		
 		public async Task<IActionResult> UpdateReadStatus(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateReadStatus")] BookReadStatusUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
@@ -97,7 +106,7 @@ namespace Catalog.API
 		
 		[FunctionName("UpdateAvailabilityStatus")]		
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Book/{bookIDParam:int}/UpdateAvailabilityStatus")] BookAvailabilityStatusUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
