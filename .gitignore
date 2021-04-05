@@ -3,7 +3,7 @@
 .vs/*
 .vs/
 */lib/*
-.vscode
+
 bin
 Merged
 connectionstrings.json

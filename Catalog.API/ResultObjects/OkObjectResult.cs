@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Catalog.API
+namespace Catalog.API.ResultObjects
 {
     public class OkObjectResult<T> : OkObjectResult, IActionResult<T>
     {

@@ -3,6 +3,7 @@ using ePubAnalyzer.Shared.DAL;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Catalog.API.Helpers;
 
 [assembly: FunctionsStartup(typeof(Catalog.API.Startup))]
 namespace Catalog.API
@@ -11,20 +12,18 @@ namespace Catalog.API
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-        
             //TODO: in real config object?
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(builder.GetContext().ApplicationRootPath)           
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
-
-            builder.Services.AddScoped<BookLogic>(d => { 
-                var cString = configuration.GetConnectionStringOrSetting("DefaultConnection");
-                var dalimpl = new DALImplementation(cString);
-                var logicFactory = new ePubAnalyzer.Shared.BLL.LogicFactory(dalimpl);
-                return logicFactory.GetBookLogic();
-            });	
+            
+            //Register our services
+            builder.Services.AddTransient<DALImplementation>(d => new DALImplementation(configuration.GetConnectionStringOrSetting("DefaultConnection"))); 
+            builder.Services.AddTransient<LogicFactory>(d => new LogicFactory(d.GetRequiredService<DALImplementation>()));
+            builder.Services.AddTransient<BookLogic>(d => d.GetRequiredService<LogicFactory>().GetBookLogic());
+            builder.Services.AddTransient<BookPartialDataUpdateHelper, BookPartialDataUpdateHelper>();
         }
     }
 }
