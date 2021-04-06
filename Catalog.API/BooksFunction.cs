@@ -19,10 +19,10 @@ using Catalog.API.Helpers;
 namespace Catalog.API
 {
 
-    public class BooksFunction
-    {
+	public class BooksFunction
+	{
 
-		public class HttpRoutes 
+		public class HttpRoutes
 		{
 			public const string GetBooksAll = "Books/All";
 			public const string GetBookDetail = "Book/{bookIDParam:int}/Detail";
@@ -31,101 +31,126 @@ namespace Catalog.API
 			public const string SetBookAvailabilityStatus = "Book/{bookIDParam:int}/UpdateAvailabilityStatus";
 		}
 
-        private readonly BookLogic bookLogic;
-        private readonly BookPartialDataUpdateHelper bookPartialDataUpdateHelper;
+		private readonly BookLogic bookLogic;
+		private readonly BookPartialDataUpdateHelper bookPartialDataUpdateHelper;
 
-        public BooksFunction(BookLogic bookLogic, BookPartialDataUpdateHelper bookPartialDataUpdateHelper)
-        {
-            this.bookLogic = bookLogic;
+		public BooksFunction(BookLogic bookLogic, BookPartialDataUpdateHelper bookPartialDataUpdateHelper)
+		{
+			this.bookLogic = bookLogic;
 			this.bookPartialDataUpdateHelper = bookPartialDataUpdateHelper;
-        }
-    
-        [FunctionName("GetBooks")]
+		}
+
+		[FunctionName("GetBooks")]
 		public IActionResult<IEnumerable<Book>> Books(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBooksAll)]HttpRequest req, 
-			ILogger log, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBooksAll)] HttpRequest req,
+			ILogger log,
 			ExecutionContext context)
 		{
 			log.LogInformation($"Retrieving all books");
-            try
+			try
 			{
-				SetOriginHeader(req);
 				return new OkObjectResult<IEnumerable<Book>>(bookLogic.GetAllBooks());
-            }
-            catch(Exception e)
-            {
-                return new BadRequestObjectResult<IEnumerable<Book>>(e.ToString());
-            }
+			}
+			catch (Exception e)
+			{
+				return new BadRequestObjectResult<IEnumerable<Book>>(e.ToString());
+			}
 		}
 
-        [FunctionName("GetBookDetail")]
+		[FunctionName("GetBookDetail")]
 		public async Task<IActionResult<Book>> Details(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBookDetail)]HttpRequest req, 
-			ILogger log, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBookDetail)] HttpRequest req,
+			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
 		{
-            if(bookIDParam == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
-			
-			log.LogInformation($"Retrieving details for id {bookIDParam}");
+			if (bookIDParam == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
 
-			SetOriginHeader(req);
+			log.LogInformation($"Retrieving details for id {bookIDParam}");;
 			return new OkObjectResult<Book>(bookLogic.GetBookByID(bookIDParam));
 		}
 
-        [FunctionName("UpdateBookData")]
+		[FunctionName("UpdateBookData")]
 		public async Task<IActionResult<bool>> UpdateBookData(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)]Book input, 
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] Book input,
+			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 
 			log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
-			//SetOriginHeader(req);
 			input = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
-			bookLogic.Save(input);			
-			
+			bookLogic.Save(input);
+
 			return new OkObjectResult<bool>(true);
 		}
 
-		[FunctionName("UpdateReadStatus")]		
-		public async Task<IActionResult> UpdateReadStatus(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
-			ILogger log,
-			ExecutionContext context,
-			int bookIDParam)
+		[FunctionName("UpdateBookData_Options")]
+		public async Task<IActionResult<bool>> UpdateBookData_Options(
+		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookData)] Book input,
+		   HttpRequest req,
+		   ILogger log,
+		   ExecutionContext context,
+		   int bookIDParam)
 		{
-			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
-			
+			return new OkObjectResult<bool>(true);
+		}
+
+		[FunctionName("UpdateReadStatus")]
+		public async Task<IActionResult> UpdateReadStatus(
+		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
+		HttpRequest req,
+		ILogger log,
+		ExecutionContext context,
+		int bookIDParam)
+		{
+			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+
 			log.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
-			//SetOriginHeader(req);
-		    bookLogic.UpdateReadStatus(input.BookID, input.ReadStatus, input.ReadRemark);
-			
+			bookLogic.UpdateReadStatus(input.BookID, input.ReadStatus, input.ReadRemark);
+
 			return new OkObjectResult(true);
 		}
 
-		
-		[FunctionName("UpdateAvailabilityStatus")]		
-		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
+		[FunctionName("UpdateReadStatus_Options")]
+		public async Task<IActionResult> UpdateReadStatusOptions(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
+			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
-			
+			return new OkObjectResult(true);
+		}
+
+
+		[FunctionName("UpdateAvailabilityStatus")]
+		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
+			HttpRequest req,
+			ILogger log,
+			ExecutionContext context,
+			int bookIDParam)
+		{
+			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+
 			log.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
-			//SetOriginHeader(req);
 			bookLogic.UpdateAvailability(input.BookID, input.Status, input.StatusRemark);
-			
+
 			return new OkObjectResult<bool>(true);
 		}
 
-		private void SetOriginHeader(HttpRequest req)
+		[FunctionName("UpdateAvailabilityStatus_Options")]
+		public async Task<IActionResult<bool>> UpdateAvailabilityStatusOptions(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
+			HttpRequest req,
+			ILogger log,
+			ExecutionContext context,
+			int bookIDParam)
 		{
-			req.HttpContext.Response.Headers.Add("Access-Control-Allow-Origin","*");
+			return new OkObjectResult<bool>(true);
 		}
 	}
 }
