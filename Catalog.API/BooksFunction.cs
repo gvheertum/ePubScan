@@ -16,12 +16,11 @@ using Microsoft.Extensions.DependencyInjection;
 using ePubAnalyzer.Shared.BLL;
 using Catalog.API.ResultObjects;
 using Catalog.API.Helpers;
+
 namespace Catalog.API
 {
-
-	public class BooksFunction
+    public class BooksFunction
 	{
-
 		public class HttpRoutes
 		{
 			public const string GetBooksAll = "Books/All";
@@ -87,17 +86,7 @@ namespace Catalog.API
 			return new OkObjectResult<bool>(true);
 		}
 
-		[FunctionName("UpdateBookData_Options")]
-		public async Task<IActionResult<bool>> UpdateBookData_Options(
-		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookData)] Book input,
-		   HttpRequest req,
-		   ILogger log,
-		   ExecutionContext context,
-		   int bookIDParam)
-		{
-			return new OkObjectResult<bool>(true);
-		}
-
+		
 		[FunctionName("UpdateReadStatus")]
 		public async Task<IActionResult> UpdateReadStatus(
 		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
@@ -114,16 +103,6 @@ namespace Catalog.API
 			return new OkObjectResult(true);
 		}
 
-		[FunctionName("UpdateReadStatus_Options")]
-		public async Task<IActionResult> UpdateReadStatusOptions(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
-			int bookIDParam)
-		{
-			return new OkObjectResult(true);
-		}
 
 
 		[FunctionName("UpdateAvailabilityStatus")]
@@ -142,15 +121,6 @@ namespace Catalog.API
 			return new OkObjectResult<bool>(true);
 		}
 
-		[FunctionName("UpdateAvailabilityStatus_Options")]
-		public async Task<IActionResult<bool>> UpdateAvailabilityStatusOptions(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
-			int bookIDParam)
-		{
-			return new OkObjectResult<bool>(true);
-		}
+		
 	}
 }
