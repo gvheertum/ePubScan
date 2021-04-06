@@ -1,10 +1,9 @@
-@model System.Collections.Generic.IEnumerable<ePubAnalyzer.Shared.Entities.Book>
+@model Catalog.Models.CatalogConfiguration
 @{
     ViewData["Title"] = "Home Page";
 }
 <script>
-	var $CATALOGAPIROOTURL = "http://localhost:4321/api/";
-	@* var $CATALOGAPIROOTURL = "http://localhost:7071/api/"; *@
+	var $CATALOGAPIROOTURL = @Html.Raw(Model.CatalogApiRootUrlString);
 </script>
 
 <fieldset data-bind="visible: ShowingActiveBook()">
