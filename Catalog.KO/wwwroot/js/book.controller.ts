@@ -1,4 +1,5 @@
 declare var Sammy : any;
+declare var $CATALOGAPIROOTURL;
 
 class PropertyCopier
 {
@@ -85,7 +86,7 @@ interface IBookCollection
 class BookCollectionViewModel
 {
 	//TODO: this one should from the server (config??)
-	public RouteRoot: string = "http://localhost:7071/api/";
+	public RouteRoot: string = $CATALOGAPIROOTURL;
 	public RouteGetAll : string = "Books/All";
 	public RouteGetDetails : string = "Book/BOOKID/Detail";
 	public RouteUpdateDetails : string = "Book/BOOKID/UpdateBookData";

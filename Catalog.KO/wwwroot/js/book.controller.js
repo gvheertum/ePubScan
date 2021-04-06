@@ -54,7 +54,7 @@ var BookCollectionViewModel = /** @class */ (function () {
     function BookCollectionViewModel() {
         var _this = this;
         //TODO: this one should from the server (config??)
-        this.RouteRoot = "http://localhost:7071/api/";
+        this.RouteRoot = $CATALOGAPIROOTURL;
         this.RouteGetAll = "Books/All";
         this.RouteGetDetails = "Book/BOOKID/Detail";
         this.RouteUpdateDetails = "Book/BOOKID/UpdateBookData";
