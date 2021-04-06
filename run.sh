@@ -1,6 +1,7 @@
 dotnet publish Catalog.KO/ -c Release -o out 
 
 dotnet publish Catalog.API -c Release -o out
+cp Catalog.API/appsettings.local.json Catalog.API/out/
 
 docker build -t catalogapi Catalog.API/.
 docker build -t catalogko Catalog.KO/.

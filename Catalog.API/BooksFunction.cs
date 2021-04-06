@@ -46,11 +46,10 @@ namespace Catalog.API
 			ILogger log, 
 			ExecutionContext context)
 		{
-
 			log.LogInformation($"Retrieving all books");
-
             try
 			{
+				SetOriginHeader(req);
 				return new OkObjectResult<IEnumerable<Book>>(bookLogic.GetAllBooks());
             }
             catch(Exception e)
@@ -69,6 +68,8 @@ namespace Catalog.API
             if(bookIDParam == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
 			
 			log.LogInformation($"Retrieving details for id {bookIDParam}");
+
+			SetOriginHeader(req);
 			return new OkObjectResult<Book>(bookLogic.GetBookByID(bookIDParam));
 		}
 
@@ -82,6 +83,7 @@ namespace Catalog.API
 			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 
 			log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
+			//SetOriginHeader(req);
 			input = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
 			bookLogic.Save(input);			
 			
@@ -98,6 +100,7 @@ namespace Catalog.API
 			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 			
 			log.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
+			//SetOriginHeader(req);
 		    bookLogic.UpdateReadStatus(input.BookID, input.ReadStatus, input.ReadRemark);
 			
 			return new OkObjectResult(true);
@@ -114,9 +117,15 @@ namespace Catalog.API
 			if(bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 			
 			log.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
+			//SetOriginHeader(req);
 			bookLogic.UpdateAvailability(input.BookID, input.Status, input.StatusRemark);
 			
 			return new OkObjectResult<bool>(true);
+		}
+
+		private void SetOriginHeader(HttpRequest req)
+		{
+			req.HttpContext.Response.Headers.Add("Access-Control-Allow-Origin","*");
 		}
 	}
 }
