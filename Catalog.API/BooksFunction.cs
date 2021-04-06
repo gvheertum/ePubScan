@@ -48,11 +48,11 @@ namespace Catalog.API
 			log.LogInformation($"Retrieving all books");
 			try
 			{
-				return new OkObjectResult<IEnumerable<Book>>(bookLogic.GetAllBooks());
+				return new OkObjectResult<IEnumerable<Book>>(req, bookLogic.GetAllBooks());
 			}
 			catch (Exception e)
 			{
-				return new BadRequestObjectResult<IEnumerable<Book>>(e.ToString());
+				return new BadRequestObjectResult<IEnumerable<Book>>(req, e.ToString());
 			}
 		}
 
@@ -63,10 +63,10 @@ namespace Catalog.API
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if (bookIDParam == 0) { return new BadRequestObjectResult<Book>("Please fill the bookID"); }
+			if (bookIDParam == 0) { return new BadRequestObjectResult<Book>(req, "Please fill the bookID"); }
 
 			log.LogInformation($"Retrieving details for id {bookIDParam}");;
-			return new OkObjectResult<Book>(bookLogic.GetBookByID(bookIDParam));
+			return new OkObjectResult<Book>(req, bookLogic.GetBookByID(bookIDParam));
 		}
 
 		[FunctionName("UpdateBookData")]
@@ -77,15 +77,14 @@ namespace Catalog.API
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>(req, $"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 
 			log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
 			input = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
 			bookLogic.Save(input);
 
-			return new OkObjectResult<bool>(true);
+			return new OkObjectResult<bool>(req, true);
 		}
-
 		
 		[FunctionName("UpdateReadStatus")]
 		public async Task<IActionResult> UpdateReadStatus(
@@ -95,15 +94,13 @@ namespace Catalog.API
 		ExecutionContext context,
 		int bookIDParam)
 		{
-			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>(req, $"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 
 			log.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
 			bookLogic.UpdateReadStatus(input.BookID, input.ReadStatus, input.ReadRemark);
 
-			return new OkObjectResult(true);
+			return new OkObjectResult<bool>(req, true);
 		}
-
-
 
 		[FunctionName("UpdateAvailabilityStatus")]
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
@@ -113,14 +110,12 @@ namespace Catalog.API
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>($"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>(req, $"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
 
 			log.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
 			bookLogic.UpdateAvailability(input.BookID, input.Status, input.StatusRemark);
 
-			return new OkObjectResult<bool>(true);
-		}
-
-		
+			return new OkObjectResult<bool>(req, true);
+		}		
 	}
 }

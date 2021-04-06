@@ -15,6 +15,7 @@
 		<!-- Always let the content from the page slide through, this prevents issues when the state is not 200 but we want to have the content -->
 		<httpErrors existingResponse="PassThrough" />
 		<!-- Allow all headers and origins to be served, otherwise IIS will refure to function, update to reflect running values-->
+		<!-- Only required if the headers were not set by the ResultObject Helper-->
 		<httpProtocol>
 			<customHeaders>
 				<add name="Access-Control-Allow-Headers" value="*" />

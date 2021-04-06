@@ -20,7 +20,7 @@ namespace Catalog.API
 		   ExecutionContext context,
 		   int bookIDParam)
 		{
-			return new OkObjectResult<bool>(true);
+			return new OkObjectResult<bool>(req, true);
 		}
 		[FunctionName("Options_UpdateAvailabilityStatus")]
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
@@ -30,7 +30,7 @@ namespace Catalog.API
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			return new OkObjectResult<bool>(true);
+			return new OkObjectResult<bool>(req, true);
 		}
 
 		
@@ -42,7 +42,7 @@ namespace Catalog.API
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			return new OkObjectResult(true);
+			return new OkObjectResult<bool>(req, true);
 		}
 	}
 }

@@ -5,4 +5,3 @@ ENV AZURE_FUNCTIONS_ENVIRONMENT=Development
 
 WORKDIR /home/site/wwwroot
 COPY /out/ .
-#ENTRYPOINT ["dotnet", "Catalog.API.dll"]
