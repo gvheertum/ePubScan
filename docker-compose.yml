@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  
+  frontend:
+    build: Catalog.KO/. 
+    container_name: frontend
+    networks:
+      - catalog-network
+    expose:
+      - "80"
+
+  service:
+    build: Catalog.API/.
+    networks:
+      - catalog-network
+    container_name: service
+    expose:
+      - "80"
+
+
+  nginx:
+    depends_on:
+      - service
+      - frontend
+    build: nginx-proxy/.
+    container_name: catalog_nginx
+    networks:
+      - catalog-network
+    ports:
+      - "80"
+
+
+networks:
+  catalog-network:
+    driver: bridge

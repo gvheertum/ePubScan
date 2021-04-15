@@ -22,6 +22,7 @@ namespace Catalog.API
 		{
 			return new OkObjectResult<bool>(req, true);
 		}
+
 		[FunctionName("Options_UpdateAvailabilityStatus")]
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
@@ -33,7 +34,6 @@ namespace Catalog.API
 			return new OkObjectResult<bool>(req, true);
 		}
 
-		
 		[FunctionName("Options_UpdateReadStatus")]
 		public async Task<IActionResult> UpdateReadStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
