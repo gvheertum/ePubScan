@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IBook } from 'src/book';
+import { BookService } from 'src/book.service';
 
 @Component({
   selector: 'app-book-detail-general',
@@ -9,9 +10,13 @@ import { IBook } from 'src/book';
 export class BookDetailGeneralComponent implements OnInit {
   @Input() book!: IBook;
 
-  constructor() { }
+  constructor(
+    bookService : BookService
+  ) { }
 
   ngOnInit(): void {
   }
-
+  updateData() : void {
+    alert("Not yet implemented");
+  }
 }
