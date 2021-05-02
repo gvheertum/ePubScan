@@ -1,1 +1,30 @@
-<p>book-detail-readstatus works!</p>
+<div class="card border-dark">
+    <div class="card-header">Read status</div>
+    <form>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Read status</span>
+            </div>
+            <input type="text" class="form-control" value="{{book.readStatus}}">
+
+            <select id="readStatus" class="form-control"> <!-- TODO: Make -->
+                <option></option>
+                <option class="read">Read</option>
+                <option class="reading">Reading</option>
+                <option class="toread">To read</option>
+                <option class="notgoingtoread">Not going to read</option>
+            </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Read remark</span>
+            </div>
+            <textarea id="readRemark" class="form-control">{{book.readRemark}}</textarea>
+        </div>
+        
+        <div class="card-footer text-muted">
+            <button class="btn btn-info" (click)="updateData()" type="button">Update read status</button> <!-- TODO: Make -->
+        </div>
+    </form>
+</div>

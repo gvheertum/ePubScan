@@ -1,1 +1,29 @@
-<p>book-detail-availabilitystatus works!</p>
+<div class="card border-dark">
+    <div class="card-header">Availability</div>
+    <form>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Status</span>
+            </div>
+            <input type="text" class="form-control" value="{{book.status}}">
+
+            <select id="status" class="form-control"  data-bind="value: status"> <!-- TODO: Make -->
+                <option></option>
+                <option>N/A</option>
+                <option>Available</option>
+                <option>Lend-out</option>
+                <option>Available at other location</option>
+            </select>
+        </div>
+    
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Status remark</span>
+            </div>
+            <textarea class="form-control" id="statusRemark">{{book.statusRemark}}</textarea>
+        </div>
+        <div class="card-footer text-muted">
+            <button class="btn btn-info" (click)="updateData()" type="button">Update availability status</button>
+        </div>
+    </form>
+</div>

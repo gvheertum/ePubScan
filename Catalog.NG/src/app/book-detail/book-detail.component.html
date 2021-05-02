@@ -1,13 +1,18 @@
-<button (click)="goBack()">go back</button>
-
 <div *ngIf="!book">
     <ngb-alert type="info" [dismissible]="false">
         Loading book details
     </ngb-alert>
 </div>
 
-<p>book-detail works!</p>
-<div *ngIf="book">
-    {{book.title}}
+<div *ngIf="book">    	
+    
+    <div class="jumbotron">
+        <h1 class="display-4">{{book.title}}<br/><sub>{{book.author}}</sub></h1>       
+        <a class="btn btn-dark" role="button" (click)="goBack()">Back</a> 
+    </div>
+    
+    <app-book-detail-general [book]="book"></app-book-detail-general>
+    <app-book-detail-readstatus [book]="book"></app-book-detail-readstatus>
+    <app-book-detail-availabilitystatus [book]="book"></app-book-detail-availabilitystatus>    
 </div>
 
