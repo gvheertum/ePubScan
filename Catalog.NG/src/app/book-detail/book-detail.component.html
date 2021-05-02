@@ -1,0 +1,13 @@
+<button (click)="goBack()">go back</button>
+
+<div *ngIf="!book">
+    <ngb-alert type="info" [dismissible]="false">
+        Loading book details
+    </ngb-alert>
+</div>
+
+<p>book-detail works!</p>
+<div *ngIf="book">
+    {{book.title}}
+</div>
+

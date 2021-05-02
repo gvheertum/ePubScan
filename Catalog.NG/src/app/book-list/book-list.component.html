@@ -1,0 +1,19 @@
+<div *ngIf="!books || books.length <= 0">
+    <ngb-alert type="info" [dismissible]="false">
+        Loading booklist
+    </ngb-alert>
+</div>
+
+
+
+<div *ngIf="books && books.length > 0">
+    <p>
+        <ngb-alert type="success" [dismissible]="false">
+            {{books.length}} books found
+        </ngb-alert>
+      </p>
+
+    <ul>
+        <li *ngFor="let b of books"><a routerLink="/book/{{b.bookID}}">{{b.title}} - {{b.author}} ({{b.readStatus}})</a></li>
+    </ul>
+</div>
