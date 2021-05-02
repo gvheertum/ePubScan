@@ -11,6 +11,7 @@ import { BookDetailGeneralComponent } from './book-detail/book-detail-general/bo
 import { BookDetailReadstatusComponent } from './book-detail/book-detail-readstatus/book-detail-readstatus.component';
 import { BookDetailAvailabilitystatusComponent } from './book-detail/book-detail-availabilitystatus/book-detail-availabilitystatus.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MasterContentComponent } from './master-content/master-content.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     BookListItemComponent,
     BookDetailGeneralComponent,
     BookDetailReadstatusComponent,
-    BookDetailAvailabilitystatusComponent
+    BookDetailAvailabilitystatusComponent,
+    MasterContentComponent
   ],
   imports: [
     BrowserModule,

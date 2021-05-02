@@ -1,15 +1,2 @@
-<h1> Book catalog (General styling)</h1>
-{{title}}
-
-<ul ngbNav #nav="ngbNav" [destroyOnHide]="false" class="nav-tabs">
-  <li [ngbNavItem]="1" [destroyOnHide]="true"></li>
-</ul>
-<nav>
-  <a routerLink="books/">All books</a>
-  <!-- TODO: Why wont the string values not work here? -->
-  <a routerLink="books/{{readStates.Read.display}}">Books already read</a>
-  <a routerLink="books/{{readStates.Reading.display}}">Books currently reading</a>
-  <a routerLink="books/{{readStates.ToRead.display}}">Books to read next</a>
-  <a routerLink="books/{{readStates.WontRead.display}}">Books that will not be read</a>
-</nav>
+<app-master-content></app-master-content>
 <router-outlet></router-outlet>

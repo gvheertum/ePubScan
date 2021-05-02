@@ -7,6 +7,5 @@ import { ReadStates } from '../book'
   styleUrls: ['./app.root.less']
 })
 export class AppComponent {
-  readStates : ReadStates = new ReadStates();
   title = 'Book Catalog';
 }

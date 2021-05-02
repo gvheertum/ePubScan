@@ -1,0 +1,48 @@
+body {
+    padding-bottom: 20px;
+    background-color: #EEEEEE;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+.input-group-text { width: 150px; }
+.input-group textarea { height: 150px; }
+
+.card { margin-bottom: 30px; }
+.card form div.input-group { padding-left: 20px; padding-right: 20px; }
+.card .card-header { margin-bottom: 10px; } 
+
+.book-description div { max-height: 50px; font-size: .8em; overflow: auto; }
+
+
+table { width: 99%; margin: auto; }
+
+table a, table a:hover, table a:visited, table a:active { color: orange; }
