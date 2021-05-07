@@ -24,7 +24,7 @@ export class ReadStates
     ToRead = new ReadStateElement("To read", "toread");
     Reading = new ReadStateElement("Reading", "reading");
     WontRead  = new ReadStateElement("Not going to read", "notgoingtoread");
-    Unknown = { 
+    Unknown : ReadStateElement =  { 
         display: "", 
         code: "", 
         matches(input?:string) : boolean { 
@@ -37,7 +37,7 @@ export class ReadStates
     }
 }
 
-class ReadStateElement {
+export class ReadStateElement {
     constructor(public display: string, public code: string) { }
     matches(input?:string) : boolean { 
         return input?.toLocaleLowerCase() == this.code.toLocaleLowerCase() || 

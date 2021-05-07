@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IBook, ReadStates } from 'src/book';
+import { IBook, ReadStates, ReadStateElement } from 'src/book';
 
 @Component({
   selector: '[book-list-item]',
@@ -14,4 +14,7 @@ export class BookListItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  updateStatus(status: ReadStateElement) {
+    alert(`Change status to: ${status.display} code: ${status.code}`);
+  }
 }
