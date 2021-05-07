@@ -1,21 +1,30 @@
 <h2 class="accordion-header" id="book-panel-header-{{book.bookID}}">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" attr.data-bs-target="#book-panel-collapse-{{book.bookID}}" aria-expanded="true" attr.aria-controls="book-panel-collapse-{{book.bookID}}">
-        <span class="author">{{book.author}}</span> - <span class="title">{{book.title}}</span>
+        <span class="author">{{book.author}}</span>&nbsp;-&nbsp;<span class="title">{{book.title}}</span>
         <div class="labels">
             <span *ngIf="book.nrOfPages" class="pagecount badge bg-light text-dark">{{book.nrOfPages}} pages</span>
-            
             
             <span class="readstatus badge bg-primary" *ngIf="readStates.Reading.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-book-half"></i> Reading</span>
             <span class="readstatus badge bg-info text-dark" *ngIf="readStates.ToRead.matches(book.readStatus)" ><i title="{{book.readRemark}}" style="color: white;" class="bi bi-book"></i> To Read</span>
             <span class="readstatus badge bg-success" *ngIf="readStates.Read.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-book-fill"></i> Read</span>
             <span class="readstatus badge bg-danger" *ngIf="readStates.WontRead.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-x"></i> Won't read</span>
             <span class="readstatus badge bg-secondary" *ngIf="readStates.Unknown.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-patch-question"></i> Unknown</span>
-            
         </div>
     </button> 
 </h2>
 <div id="book-panel-collapse-{{book.bookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.bookID}}" data-bs-parent="#booklist">
     <div class="accordion-body">
-        {{book.description}}
+        <div *ngIf="book.description" class="description">{{book.description}}</div>
+        <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
+            <a [routerLink]="['/book', book.bookID]" type="button" class="btn btn-primary">Edit book details</a>
+        </div>
+        <div class="readstatus btn-group btn-group-sm" role="group" aria-label="Actions">
+            <button type="button" class="btn bg-light text-dark">Update read status to:</button>
+            <button type="button" class="btn btn-success">Read</button>
+            <button type="button" class="btn btn-info text-dark">To Read</button>
+            <button type="button" class="btn btn-primary">Reading</button>
+            <button type="button" class="btn btn-danger">Won't read</button>
+            <button type="button" class="btn btn-secondary">Unknown</button>
+        </div>
     </div>
 </div>
