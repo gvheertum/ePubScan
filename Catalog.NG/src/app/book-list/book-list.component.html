@@ -13,30 +13,8 @@
         </ngb-alert>
     </p>
 
-    <!-- <ul>
-        <li *ngFor="let b of books"><a routerLink="/book/{{b.bookID}}">{{b.title}} - {{b.author}} ({{b.readStatus}})</a></li>
-    </ul> -->
-
-    <table class="table table-sm" style="margin-top: 20px">
-		<colgroup>
-			<col width="50"/>
-			<col width="50"/>
-			<col width="200"/>
-			<col width="*"/>
-			<col width="20"/>
-		</colgroup>
-		<thead class="thead-dark">
-			<tr> 
-				<th title="Status">S</th>
-				<th>ID</th>
-				<th>Author</th>
-				<th>Title</th>
-				<th>Pages</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr book-list-item *ngFor="let book of books" [book]="book" class="rowclick" [attr.state]="book.readStatus" [attr.bookidx]="book.bookID"></tr>
-		</tbody>
-	</table>
+	<div class="accordion" id="booklist">
+		<div class="accordion-item" book-list-item id="book-panel-{{book.bookID}}" *ngFor="let book of books" [book]="book" [attr.state]="book.readStatus" [attr.bookidx]="book.bookID"></div>
+	</div>
 
 </div>

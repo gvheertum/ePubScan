@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.root';
 import { HttpClientModule } from '@angular/common/http';
+import { Secrets } from '../secrets'
 import { BookDetailComponent } from './book-detail/book-detail.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { BookListItemComponent } from './book-list/book-list-item/book-list-item.component';
