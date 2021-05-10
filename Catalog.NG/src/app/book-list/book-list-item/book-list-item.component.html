@@ -12,7 +12,7 @@
         </div>
     </button> 
 </h2>
-<div id="book-panel-collapse-{{book.bookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.bookID}}" data-bs-parent="#booklist">
+<div id="book-panel-collapse-{{book.bookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.bookID}}" >
     <div class="accordion-body">
         <div *ngIf="book.description" class="description">{{book.description}}</div>
         <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
