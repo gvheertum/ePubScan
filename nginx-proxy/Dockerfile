@@ -5,4 +5,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx-selfsigned.crt /etc/nginx/certs/nginx-selfsigned.crt
 COPY nginx-selfsigned.key /etc/nginx/certs/nginx-selfsigned.key
 
+COPY CatalogNG/ /www/bookcatalog/frontend/
+
 EXPOSE 80 443

@@ -1,8 +1,7 @@
 namespace Catalog.API.Models
 {
-    public class BookAvailabilityStatusUpdateModel
+    public class BookAvailabilityStatusUpdateModel : BookRequestModel
     {
-        public int BookID { get; set; } 
         public string Status { get; set; } 
         public string StatusRemark { get; set; }
     }

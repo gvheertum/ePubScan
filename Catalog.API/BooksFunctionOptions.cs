@@ -10,11 +10,13 @@ using Catalog.API.ResultObjects;
 namespace Catalog.API
 {
     //TODO: Perhaps a shared interface might work here to ensure both the options as the regular interface have the same functions embedded
-    public class BooksFunctionOptions
+
+	//Function implemenations for the OPTIONS requests, this is only done pre-flight for the post methods, getters do not need this
+    public class BooksFunctionOptions : IBooksWriteFunction
 	{
 		[FunctionName("Options_UpdateBookData")]
 		public async Task<IActionResult<bool>> UpdateBookData(
-		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookData)] Book input,
+		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookData)] BookSaveModel input,
 		   HttpRequest req,
 		   ILogger log,
 		   ExecutionContext context,
@@ -26,6 +28,17 @@ namespace Catalog.API
 		[FunctionName("Options_UpdateAvailabilityStatus")]
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
+			HttpRequest req,
+			ILogger log,
+			ExecutionContext context,
+			int bookIDParam)
+		{
+			return new OkObjectResult<bool>(req, true);
+		}
+
+		[FunctionName("Options_UpdateReadBadge")]
+		public async Task<IActionResult> UpdateReadBadge(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,

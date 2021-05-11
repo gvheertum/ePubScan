@@ -17,6 +17,15 @@ namespace ePubAnalyzer.Shared.BLL
 			return _dal.GetBookRepository().GetBook(bookID);
 		}
 
+		public Entities.Book UpdateReadBadge(int bookID, string readState)
+		{
+			var book = GetBookByID(bookID);
+			if(book == null) { throw new System.Exception($"Unknown bookid: {bookID}"); }
+			book.ReadStatus = readState;
+			book = Save(book);
+			return book;
+		}
+
 		public Entities.Book UpdateReadStatus(int bookID, string readState, string readRemark)
 		{
 			var book = GetBookByID(bookID);
@@ -46,5 +55,7 @@ namespace ePubAnalyzer.Shared.BLL
 		{
 			return new Library.BookSetComparer().GetComparisonContainer(this.GetAllBooks(), books);
 		}
+
+		//TODO: validate the read status against a fixed list
 	}
 }

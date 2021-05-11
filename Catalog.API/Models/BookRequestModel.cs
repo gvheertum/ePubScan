@@ -1,7 +1,7 @@
 namespace Catalog.API.Models
 {
-    public class BookRequestModel
+    public class BookRequestModel : IBookRequestModel
     {
-        public int BookID {get;set;}
+        public int? BookID {get;set;}
     }
 }

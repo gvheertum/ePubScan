@@ -19,13 +19,14 @@ using Catalog.API.Helpers;
 
 namespace Catalog.API
 {
-    public class BooksFunction
+    public class BooksFunction : IBooksReadFunction, IBooksWriteFunction
 	{
 		public class HttpRoutes
 		{
 			public const string GetBooksAll = "Books/All";
 			public const string GetBookDetail = "Book/{bookIDParam:int}/Detail";
 			public const string SetBookData = "Book/{bookIDParam:int}/UpdateBookData";
+			public const string SetBookReadBadge = "Book/{bookIDParam:int}/UpdateReadBadge";
 			public const string SetBookReadStatus = "Book/{bookIDParam:int}/UpdateReadStatus";
 			public const string SetBookAvailabilityStatus = "Book/{bookIDParam:int}/UpdateAvailabilityStatus";
 		}
@@ -40,7 +41,7 @@ namespace Catalog.API
 		}
 
 		[FunctionName("GetBooks")]
-		public IActionResult<IEnumerable<Book>> Books(
+		public async Task<IActionResult<IEnumerable<Book>>> Books(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBooksAll)] HttpRequest req,
 			ILogger log,
 			ExecutionContext context)
@@ -71,21 +72,37 @@ namespace Catalog.API
 
 		[FunctionName("UpdateBookData")]
 		public async Task<IActionResult<bool>> UpdateBookData(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] Book input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] BookSaveModel input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>(req, $"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
 
 			log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
-			input = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
-			bookLogic.Save(input);
+			var combined = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
+			bookLogic.Save(combined);
 
 			return new OkObjectResult<bool>(req, true);
 		}
 		
+		[FunctionName("UpdateReadBadge")]
+		public async Task<IActionResult> UpdateReadBadge(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
+			HttpRequest req,
+			ILogger log,
+			ExecutionContext context,
+			int bookIDParam)
+		{
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
+
+			log.LogInformation($"UpdateReadBadge: {input.ReadStatus}  with id {input.BookID}");
+			bookLogic.UpdateReadBadge(input.BookID.Value, input.ReadStatus);
+
+			return new OkObjectResult<bool>(req, true);
+		}
+
 		[FunctionName("UpdateReadStatus")]
 		public async Task<IActionResult> UpdateReadStatus(
 		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
@@ -94,10 +111,10 @@ namespace Catalog.API
 		ExecutionContext context,
 		int bookIDParam)
 		{
-			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>(req, $"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
 
 			log.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
-			bookLogic.UpdateReadStatus(input.BookID, input.ReadStatus, input.ReadRemark);
+			bookLogic.UpdateReadStatus(input.BookID.Value, input.ReadStatus, input.ReadRemark);
 
 			return new OkObjectResult<bool>(req, true);
 		}
@@ -110,12 +127,32 @@ namespace Catalog.API
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if (bookIDParam != input.BookID) { return new BadRequestObjectResult<bool>(req, $"ID in post and url were not equal: {bookIDParam} vs {input.BookID}"); }
-
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
+			
 			log.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
-			bookLogic.UpdateAvailability(input.BookID, input.Status, input.StatusRemark);
+			bookLogic.UpdateAvailability(input.BookID.Value, input.Status, input.StatusRemark);
 
 			return new OkObjectResult<bool>(req, true);
 		}		
+
+		//Validate a bookId from a request against a model, if failed returning the bad request result
+		private bool TryValidateBookId<T>(int bookIDFromRoute, IBookRequestModel bookModel, HttpRequest req, out BadRequestObjectResult<T> errorModel)
+		{
+			if(bookIDFromRoute <= 0 || bookModel?.BookID == null) 
+			{
+				errorModel = new BadRequestObjectResult<T>(req, $"ID in post or url were not set: {bookIDFromRoute} / {bookModel?.BookID}"); 
+				return false;
+			}
+			
+			if (bookIDFromRoute != bookModel?.BookID) 
+			{ 
+				errorModel = new BadRequestObjectResult<T>(req, $"ID in post and url were not equal: {bookIDFromRoute} vs {bookModel?.BookID}"); 
+				return false; 
+			}
+
+			//All is well
+			errorModel = null;
+			return true;
+		}
 	}
 }

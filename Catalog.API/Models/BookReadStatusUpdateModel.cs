@@ -1,9 +1,7 @@
 namespace Catalog.API.Models
 {
-    public class BookReadStatusUpdateModel
+    public class BookReadStatusUpdateModel : BookReadBadgeUpdateModel
     {
-        public int BookID {get; set; }  
-        public string ReadStatus { get; set; } 
         public string ReadRemark { get; set; }
     }
 }
