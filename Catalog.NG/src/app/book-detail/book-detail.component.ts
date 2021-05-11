@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IBook } from 'src/book';
 import { BookService } from 'src/book.service';
 import { Location } from '@angular/common';
@@ -14,6 +14,7 @@ export class BookDetailComponent implements OnInit {
   constructor(
     private bookService: BookService,
     private route: ActivatedRoute,
+    private router: Router,
     private location: Location
 
   ) { 

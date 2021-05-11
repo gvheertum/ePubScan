@@ -13,6 +13,7 @@ import { BookDetailReadstatusComponent } from './book-detail/book-detail-readsta
 import { BookDetailAvailabilitystatusComponent } from './book-detail/book-detail-availabilitystatus/book-detail-availabilitystatus.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MasterContentComponent } from './master-content/master-content.component';
+import { BookReadstatusUpdaterComponent } from './book-readstatus-updater/book-readstatus-updater.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MasterContentComponent } from './master-content/master-content.componen
     BookDetailGeneralComponent,
     BookDetailReadstatusComponent,
     BookDetailAvailabilitystatusComponent,
-    MasterContentComponent
+    MasterContentComponent,
+    BookReadstatusUpdaterComponent
   ],
   imports: [
     BrowserModule,

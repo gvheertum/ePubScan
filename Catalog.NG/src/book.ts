@@ -18,6 +18,22 @@ export interface IBook
 	nrOfPages?: number;
 }
 
+export interface IBookSaveModel extends IBook
+{
+}
+
+export interface IBookReadBadgeUpdateModel
+{  
+    bookID?: number;
+    readStatus?: string;
+}
+
+export interface IBookReadStatusUpdateModel extends IBookReadBadgeUpdateModel
+{
+	readRemark?: string;
+}
+
+
 export class ReadStates
 {
     Read  = new ReadStateElement("Read", "read");
