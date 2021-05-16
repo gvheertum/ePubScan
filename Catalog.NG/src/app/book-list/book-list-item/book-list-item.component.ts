@@ -13,8 +13,4 @@ export class BookListItemComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  updateStatus(status: ReadStateElement) {
-    alert(`Change status to: ${status.display} code: ${status.code}`);
-  }
 }

@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { IBook, IBookReadBadgeUpdateModel } from './book';
-import { Secrets } from './secrets';
+import { Settings } from './settings';
 
 
 @Injectable({ providedIn: 'root' })
@@ -18,9 +18,9 @@ export class BookService {
 
   constructor(
     private http: HttpClient,
-    secrets: Secrets,
+    settings: Settings,
    ) { 
-     this.booksUrl = secrets.getBooksUrl();
+     this.booksUrl = settings.getSecrets().getBooksUrl();
    }
 
    getBooks() : Observable<IBook[]> {

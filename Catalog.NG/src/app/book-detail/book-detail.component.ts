@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IBook } from 'src/book';
 import { BookService } from 'src/book.service';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
+import { Settings } from 'src/settings';
 
 @Component({
   selector: 'app-book-detail',
@@ -15,8 +17,9 @@ export class BookDetailComponent implements OnInit {
     private bookService: BookService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
-
+    private location: Location,
+    private titleService: Title,
+    private settings : Settings
   ) { 
     route.params.subscribe(val => {
       this.getBook();
@@ -33,6 +36,9 @@ export class BookDetailComponent implements OnInit {
 
   getBook() : void {
     const bookId = Number(this.route.snapshot.paramMap.get('bookid'));
-    this.bookService.getBook(bookId).subscribe(b => this.book = b);
+    this.bookService.getBook(bookId).subscribe(b => { 
+      this.book = b;
+      this.titleService.setTitle(`${b.title} - ${b.author} | ${this.settings.getApplicationTitle()}`);
+    });
   }
 }
