@@ -4,6 +4,7 @@ import { IBook } from 'src/book';
 import { BookService } from 'src/book.service';
 import { Title } from '@angular/platform-browser';
 import { Settings } from 'src/settings';
+import { textChangeRangeIsUnchanged } from 'typescript';
 
 @Component({
   selector: 'app-book-list',
@@ -35,26 +36,30 @@ export class BookListComponent implements OnInit {
     // Get the books and filter if applicable
     console.debug(`statusFilter:${status}`);
     this.titleService.setTitle(`${status ?? "All books"} | ${this.settings.getApplicationTitle()}`);
+    
     if(!this.allBooks) {
       console.debug("Retrieving full list, nothing in memory");
       this.bookService.getBooks().subscribe(b => { 
         console.debug("Retrieved booklist");
         this.allBooks = b;
-        this.books = this.filterBooks(this.allBooks, status); 
+        this.books = this.filterBooks(this.allBooks, status).reverse(); 
       });      
     } else {
       console.debug("Already have a list of books, using in-mem filter");
-      this.books = this.filterBooks(this.allBooks, status);
+      this.books = this.filterBooks(this.allBooks, status).reverse();
     }
   }
 
   filterBooks(books: IBook[], status: string | null) : IBook[] {
     console.debug(`Starting filter: ${status}`);
-    if(!status) {
-      console.debug("No filter, here is the whole list!");
-      return books; 
-    }
+    
+    if(!status) { return books; }
+    if(status.toLowerCase() == "newly added") { return this.filterNewlyCreatedBooks(books); }
+    return this.filterStatusBooks(books,status);
+  }
 
+  //Get books filtered per status
+  filterStatusBooks(books: IBook[], status: string | null) : IBook[] {
     let matchingBooks = new Array<IBook>();
     for(let b of books) {
       if(b.readStatus?.toLocaleLowerCase() == status?.toLocaleLowerCase()) { matchingBooks.push(b); }
@@ -62,4 +67,16 @@ export class BookListComponent implements OnInit {
     console.debug(`Kept ${matchingBooks.length} of ${books.length}`);
     return matchingBooks;
   }
+
+  //Get newly created books, these typically dont have a read status and no description or page count
+  filterNewlyCreatedBooks(books: IBook[]) : IBook[] {
+    console.debug("Filtering newly created")
+    let matchingBooks = new Array<IBook>();
+    for(let b of books) {
+      if(b.bookID >= this.settings.getNewBookOffset() && (!b.nrOfPages || !b.description)) { matchingBooks.push(b); }
+    }
+    console.debug(`Kept ${matchingBooks.length} of ${books.length}`);
+    return matchingBooks;
+  }
+    
 }

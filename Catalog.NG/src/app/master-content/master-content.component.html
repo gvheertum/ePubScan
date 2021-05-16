@@ -7,19 +7,22 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link active" routerLink="books/">All books</a>
+            <a class="nav-link active btn btn-secondary" routerLink="books/">All books</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" [routerLink]="['books', readStates.Read.display]">Books already read</a>
+            <a class="nav-link active btn btn-success" [routerLink]="['books', readStates.Read.display]">Already read</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" [routerLink]="['books', readStates.Reading.display]">Books currently reading</a>
+            <a class="nav-link active btn btn-primary" [routerLink]="['books', readStates.Reading.display]">Currently reading</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" [routerLink]="['books', readStates.ToRead.display]">Books to read next</a>
+            <a class="nav-link active btn btn-info" [routerLink]="['books', readStates.ToRead.display]">To read next</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" [routerLink]="['books', readStates.WontRead.display]">Books that will not be read</a>
+            <a class="nav-link active btn btn-danger" [routerLink]="['books', readStates.WontRead.display]">Won't be read</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn btn-light text-dark" routerLink="books/Newly Added/">Newly added</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">

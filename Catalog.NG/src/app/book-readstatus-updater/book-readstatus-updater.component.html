@@ -1,7 +1,7 @@
 <div class="readstatus btn-group btn-group-sm" role="group" aria-label="Actions">
     <button type="button" class="btn bg-light text-dark">Update read status to:</button>
     <button type="button" (click)="updateStatus(book, readStates.Read)" class="btn btn-success">Read</button>
-    <button type="button" (click)="updateStatus(book, readStates.ToRead)" class="btn btn-info text-dark">To Read</button>
+    <button type="button" (click)="updateStatus(book, readStates.ToRead)" class="btn btn-info">To Read</button>
     <button type="button" (click)="updateStatus(book, readStates.Reading)" class="btn btn-primary">Reading</button>
     <button type="button" (click)="updateStatus(book, readStates.WontRead)" class="btn btn-danger">Won't read</button>
     <button type="button" (click)="updateStatus(book, readStates.Unknown)" class="btn btn-secondary">Unknown</button>
