@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IBook, ReadStates, ReadStateElement } from 'src/book';
+import { IBook } from 'src/book';
+import { ReadStates } from "src/ReadStates";
 
 @Component({
   selector: '[book-list-item]',

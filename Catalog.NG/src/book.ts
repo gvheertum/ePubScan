@@ -1,5 +1,4 @@
-export interface IBook
-{
+export interface IBook {
 	author?: string;
 	bookID: number;
 	category?: string;
@@ -18,45 +17,27 @@ export interface IBook
 	nrOfPages?: number;
 }
 
-export interface IBookSaveModel extends IBook
-{
+// Default update model (exposint bookId)
+export interface IBookUpdateModel {
+    bookID?: number;
 }
 
-export interface IBookReadBadgeUpdateModel
-{  
-    bookID?: number;
+// Model for saving book details (like the regular book interface)
+export interface IBookDetailUpdateModel extends IBook {
+}
+
+// Update the read status badge (no desc)
+export interface IBookReadBadgeUpdateModel extends IBookUpdateModel {  
     readStatus?: string;
 }
 
-export interface IBookReadStatusUpdateModel extends IBookReadBadgeUpdateModel
-{
+// Full read status update model (including comment)
+export interface IBookReadStatusUpdateModel extends IBookReadBadgeUpdateModel {
 	readRemark?: string;
 }
 
-
-export class ReadStates
-{
-    Read  = new ReadStateElement("Read", "read");
-    ToRead = new ReadStateElement("To read", "toread");
-    Reading = new ReadStateElement("Reading", "reading");
-    WontRead  = new ReadStateElement("Not going to read", "notgoingtoread");
-    Unknown : ReadStateElement =  { 
-        display: "", 
-        code: "", 
-        matches(input?:string) : boolean { 
-            var ns = new ReadStates();
-            return !ns.Read.matches(input) && 
-                !ns.ToRead.matches(input) &&
-                !ns.WontRead.matches(input) &&
-                !ns.Reading.matches(input);
-        } 
-    }
-}
-
-export class ReadStateElement {
-    constructor(public display: string, public code: string) { }
-    matches(input?:string) : boolean { 
-        return input?.toLocaleLowerCase() == this.code.toLocaleLowerCase() || 
-            input?.toLocaleLowerCase() == this.display.toLocaleLowerCase();
-    }
+// Update the availability status
+export interface IBookAvailabilityStatusUpdateModel extends IBookUpdateModel {
+    status?: string;
+    statusRemark?: string;
 }

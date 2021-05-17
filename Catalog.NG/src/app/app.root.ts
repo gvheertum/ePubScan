@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ReadStates } from '../book'
 
 @Component({
   selector: 'app-root',

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IBook, ReadStateElement, ReadStates } from 'src/book';
+import { IBook } from 'src/book';
+import { ReadStateElement, ReadStates } from "src/ReadStates";
 import { BookService } from 'src/book.service';
 
 @Component({

@@ -1,13 +1,13 @@
 <div class="card border-dark">
     <div class="card-header">Read status</div>
-    <form>
+    <form [formGroup]="readStatusForm">
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Read status</span>
             </div>
-            <input type="text" class="form-control" value="{{book.readStatus}}">
+            <input type="text" class="form-control" formControlName="readStatus" value="{{book.readStatus}}">
 
-            <select id="readStatus" class="form-control"> <!-- TODO: Make -->
+            <select id="readStatus" formControlName="readStatus" class="form-control"> <!-- TODO: Make -->
                 <option></option>
                 <option class="read">Read</option>
                 <option class="reading">Reading</option>
@@ -20,7 +20,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Read remark</span>
             </div>
-            <textarea id="readRemark" class="form-control">{{book.readRemark}}</textarea>
+            <textarea id="readRemark" formControlName="readRemark" class="form-control">{{book.readRemark}}</textarea>
         </div>
         
         <div class="card-footer text-muted">

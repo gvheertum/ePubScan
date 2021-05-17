@@ -14,6 +14,7 @@ import { BookDetailAvailabilitystatusComponent } from './book-detail/book-detail
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MasterContentComponent } from './master-content/master-content.component';
 import { BookReadstatusUpdaterComponent } from './book-readstatus-updater/book-readstatus-updater.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { BookReadstatusUpdaterComponent } from './book-readstatus-updater/book-r
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     NgbModule
   ],
   providers: [Title],

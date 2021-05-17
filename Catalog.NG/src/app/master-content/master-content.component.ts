@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ReadStates } from 'src/book';
+import { ReadStates } from "src/ReadStates";
 
 @Component({
   selector: 'app-master-content',

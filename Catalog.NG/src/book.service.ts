@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { IBook, IBookReadBadgeUpdateModel } from './book';
+import { IBook, IBookAvailabilityStatusUpdateModel, IBookDetailUpdateModel, IBookReadBadgeUpdateModel, IBookReadStatusUpdateModel } from './book';
 import { Settings } from './settings';
 
 
@@ -45,39 +45,35 @@ export class BookService {
 
     return this.http.post<boolean>(this.booksUrl + `Book/${bookId}/UpdateReadBadge`, postData)
       .pipe(
-      tap(_ => this.log('fetched book')),
+      tap(_ => this.log('Updated read badge')),
       catchError(this.handleError<boolean>('updateBookReadBadge', null))
       );
    }
+
+   updateBookReadStatus(bookReadStatusModel : IBookReadStatusUpdateModel) : Observable<boolean> {
+    return this.http.post<boolean>(this.booksUrl + `Book/${bookReadStatusModel.bookID}/UpdateReadStatus`, bookReadStatusModel)
+      .pipe(
+      tap(_ => this.log('Updated bookReadStatus')),
+      catchError(this.handleError<boolean>('updateBookReadStatus', null))
+      );
+   }
+
+   updateBookDetails(bookDetailModel: IBookDetailUpdateModel) : Observable<boolean> {
+    return this.http.post<boolean>(this.booksUrl + `Book/${bookDetailModel.bookID}/UpdateBookData`, bookDetailModel)
+      .pipe(
+      tap(_ => this.log('Updated bookDetails')),
+      catchError(this.handleError<boolean>('updateBookDetails', null))
+      );
+   }
+
+   updateBookAvailabilityStatus(bookAvailabilityModel: IBookAvailabilityStatusUpdateModel) : Observable<boolean> {
+    return this.http.post<boolean>(this.booksUrl + `Book/${bookAvailabilityModel.bookID}/UpdateAvailabilityStatus`, bookAvailabilityModel)
+      .pipe(
+      tap(_ => this.log('Updated bookDetails')),
+      catchError(this.handleError<boolean>('updateBookDetails', null))
+      );
+   }
    
-  //////// Save methods //////////
-
-  /** POST: add a new hero to the server */
-//   addHero(hero: Hero): Observable<Hero> {
-//     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
-//       tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
-//       catchError(this.handleError<Hero>('addHero'))
-//     );
-//   }
-
-  /** DELETE: delete the hero from the server */
-//   deleteHero(id: number): Observable<Hero> {
-//     const url = `${this.heroesUrl}/${id}`;
-
-//     return this.http.delete<Hero>(url, this.httpOptions).pipe(
-//       tap(_ => this.log(`deleted hero id=${id}`)),
-//       catchError(this.handleError<Hero>('deleteHero'))
-//     );
-//   }
-
-  /** PUT: update the hero on the server */
-//   updateHero(hero: Hero): Observable<any> {
-//     return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
-//       tap(_ => this.log(`updated hero id=${hero.id}`)),
-//       catchError(this.handleError<any>('updateHero'))
-//     );
-//   }
-
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -99,6 +95,6 @@ export class BookService {
   }
 
   private log(message: string) {
-    console.log(`Book: ${message}`);
+    console.debug(`Book: ${message}`);
   }
 }
