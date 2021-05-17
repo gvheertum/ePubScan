@@ -23,7 +23,14 @@ export interface IBookUpdateModel {
 }
 
 // Model for saving book details (like the regular book interface)
-export interface IBookDetailUpdateModel extends IBook {
+export interface IBookDetailUpdateModel extends IBookUpdateModel {
+	
+    identifier?: string;
+    title?: string;
+    author?: string;
+    description?: string;
+    medium?: string;
+    nrOfPages?: number;
 }
 
 // Update the read status badge (no desc)
