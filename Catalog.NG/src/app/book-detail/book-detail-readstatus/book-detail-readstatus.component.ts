@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { IBook } from 'src/book';
+import { IBook, IBookReadStatusUpdateModel } from 'src/book';
 import { BookService } from 'src/book.service';
 
 @Component({
@@ -18,13 +18,27 @@ export class BookDetailReadstatusComponent implements OnInit {
   });
 
   constructor(
-    bookService : BookService
+    private bookService : BookService
   ) { }
 
   ngOnInit(): void {
     this.readStatusForm.patchValue(this.book);
   }
-  updateData() : void {
-    alert("Not yet implemented");
+  
+  updateData() : void { 
+    var formData = this.readStatusForm.value;
+    var updatedData : IBookReadStatusUpdateModel = {  
+      bookID: this.book.bookID,
+      readRemark: formData.readRemark,
+      readStatus: formData.readStatus
+    };
+    console.debug("Sending: ", updatedData);
+
+    this.bookService.updateBookReadStatus(updatedData).subscribe((r) => {
+      if(r) { 
+        alert("The readstatus was changed!");
+      } else { 
+        alert("Could not update the book readstatus!"); 
+      }});
   }
 }

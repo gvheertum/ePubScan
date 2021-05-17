@@ -28,8 +28,7 @@ export class BookReadstatusUpdaterComponent implements OnInit {
   updateStatus(book: IBook, status: ReadStateElement) {
     //TODO: Make a nice confirmation dialog and response messages
     //TODO: The binding is not two way yet
-    if(confirm(`Do you want to change the status for book ${book.bookID}: ${book.author} ${book.title}?\r\nNew status will become: ${status.display} (was: ${book.readStatus})`)) {
-      //TODO: We use the display value, is the code for the status used somewhere?
+    if(confirm(`Do you want to change the status for book ${book.bookID}: ${book.author} ${book.title}?\r\nNew status will become: ${status.display} (was: ${book.readStatus})`)) {      
       this.bookService.updateBookReadBadge(book.bookID, status.display).subscribe((r) => {
         if(r) { 
           alert("The bookstatus was changed!");

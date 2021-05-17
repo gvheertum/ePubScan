@@ -1,13 +1,11 @@
 <div class="card border-dark">
     <div class="card-header">Read status</div>
-    <form [formGroup]="readStatusForm">
+    <form [formGroup]="readStatusForm" (ngSubmit)="updateData()">
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Read status</span>
             </div>
-            <input type="text" class="form-control" formControlName="readStatus" value="{{book.readStatus}}">
-
-            <select id="readStatus" formControlName="readStatus" class="form-control"> <!-- TODO: Make -->
+            <select id="readStatus" formControlName="readStatus" class="form-control">
                 <option></option>
                 <option class="read">Read</option>
                 <option class="reading">Reading</option>
@@ -20,11 +18,11 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Read remark</span>
             </div>
-            <textarea id="readRemark" formControlName="readRemark" class="form-control">{{book.readRemark}}</textarea>
+            <textarea id="readRemark" formControlName="readRemark" class="form-control"></textarea>
         </div>
         
         <div class="card-footer text-muted">
-            <button class="btn btn-info" (click)="updateData()" type="button">Update read status</button> <!-- TODO: Make -->
+            <button class="btn btn-info" (click)="updateData()" type="button">Update read status</button>
         </div>
     </form>
 </div>

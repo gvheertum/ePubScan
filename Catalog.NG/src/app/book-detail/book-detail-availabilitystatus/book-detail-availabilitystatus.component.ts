@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { IBook } from 'src/book';
+import { IBook, IBookAvailabilityStatusUpdateModel } from 'src/book';
 import { BookService } from 'src/book.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class BookDetailAvailabilitystatusComponent implements OnInit {
   });
 
   constructor(
-    bookService : BookService
+    private bookService : BookService
   ) { }
 
   ngOnInit(): void {
@@ -25,6 +25,19 @@ export class BookDetailAvailabilitystatusComponent implements OnInit {
   }
   
   updateData() : void {
-    alert("Not yet implemented");
+    var formData = this.availabilityStatusForm.value;
+    var updatedData : IBookAvailabilityStatusUpdateModel = {  
+      bookID: this.book.bookID,
+      status: formData.status,
+      statusRemark: formData.statusRemark
+    };
+    console.debug("Sending: ", updatedData);
+
+    this.bookService.updateBookAvailabilityStatus(updatedData).subscribe((r) => {
+      if(r) { 
+        alert("The availability was changed!");
+      } else { 
+        alert("Could not update the book availability!"); 
+      }});
   }
 }

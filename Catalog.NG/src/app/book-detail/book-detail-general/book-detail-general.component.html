@@ -1,48 +1,46 @@
 <div class="card border-dark">
     <div class="card-header">Book details</div>	
-    <form>
+    <form [formGroup]="bookDetailForm">
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">BookID (db)</span>
             </div>
-            <input type="text" value="{{book.bookID}}" readonly="readonly" class="form-control" />
+            <input type="text" formControlName="bookID" readonly="readonly" class="form-control" />
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Identifier</span>
             </div>
-            <input type="text" class="form-control" value="{{book.identifier}}" />
+            <input type="text" formControlName="identifier" class="form-control" />
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
             </div>
-            <input type="text" class="form-control" value="{{book.title}}">
+            <input type="text" class="form-control" formControlName="title">
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Author</span>
             </div>
-            <input type="text" class="form-control" value="{{book.author}}">
+            <input type="text" class="form-control" formControlName="author">
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Description</span>
             </div>
-            <textarea id="readRemark" class="form-control" >{{book.description}}</textarea>
+            <textarea id="readRemark" class="form-control" formControlName="description"></textarea>
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Medium</span>
             </div>
-            <input type="text" class="form-control" value="{{book.medium}}">
-
-            <select id="medium" class="form-control"> <!-- TODO: Implement -->
+            <select id="medium" class="form-control" formControlName="medium">
                     <option></option>
                     <option>ebook</option>
                     <option>Physical</option>
@@ -54,7 +52,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Nr. of pages</span>
             </div>
-            <input type="text" class="form-control" value="{{book.nrOfPages}}">
+            <input type="number" class="form-control" formControlName="nrOfPages">
 
         </div>
         

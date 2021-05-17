@@ -41,12 +41,12 @@ export class BookListComponent implements OnInit {
       console.debug("Retrieving full list, nothing in memory");
       this.bookService.getBooks().subscribe(b => { 
         console.debug("Retrieved booklist");
-        this.allBooks = b;
-        this.books = this.filterBooks(this.allBooks, status).reverse(); 
+        this.allBooks = b.reverse();
+        this.books = this.filterBooks(this.allBooks, status); 
       });      
     } else {
       console.debug("Already have a list of books, using in-mem filter");
-      this.books = this.filterBooks(this.allBooks, status).reverse();
+      this.books = this.filterBooks(this.allBooks, status);
     }
   }
 
