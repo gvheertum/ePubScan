@@ -1,18 +1,16 @@
 <div *ngIf="!books || books.length <= 0">
-    <ngb-alert type="info" [dismissible]="false">
+    <div class="alert alert-info" role="alert">
         Loading booklist
-    </ngb-alert>
+    </div>
 </div>
 
 
 
 <div *ngIf="books && books.length > 0">
-    <p>
-        <ngb-alert type="success" [dismissible]="false">
-            {{books.length}} books found
-        </ngb-alert>
-    </p>
-
+    <div class="alert alert-success" role="alert">
+        {{books.length}} books found
+    </div>
+    
 	<div class="accordion" id="booklist">
 		<div class="accordion-item" book-list-item id="book-panel-{{book.bookID}}" *ngFor="let book of books" [book]="book" [attr.state]="book.readStatus" [attr.bookidx]="book.bookID"></div>
 	</div>
