@@ -11,7 +11,7 @@ namespace ePubAnalyzer
 {
 	class Program
     {
-		private const string TestEpubFolder = "/Users/gertjan/Desktop/ebooks/";
+		private const string TestEpubFolder = "/Users/gertjan/Desktop/ebooks/ToCatalog/";
 		private const string TestEpubOutput = "/Users/gertjan/Desktop/epub-output/";
         static void Main(string[] args)
         {
@@ -31,8 +31,9 @@ namespace ePubAnalyzer
 			var parser = new EpubFileParser();
 			var epubDetails = files.Select(f => parser.GetDataFromFile(f)).ToList();
 			
-			if(AskConfirmOnAction("Echo results to console?")) { EchoToOutput(epubDetails); }
-			if(AskConfirmOnAction("Perform database compare?"))
+			EchoToOutput(epubDetails);
+			
+			if(AskConfirmOnAction("Perform database actions?"))
 			{
 				var compareHelper = new DatabaseComparisonHelper();
 				var compareResults = compareHelper.CompareSetWithDatabase(epubDetails);
@@ -49,7 +50,7 @@ namespace ePubAnalyzer
 					compareHelper.SaveExistingItems(compareResults);
 				}
 			}
-			if(AskConfirmOnAction("Write output file?")) { WriteOutputFile(epubDetails); }			
+			//if(AskConfirmOnAction("Write output file?")) { WriteOutputFile(epubDetails); }			
         }
 
 		private static bool AskConfirmOnAction(string request)
