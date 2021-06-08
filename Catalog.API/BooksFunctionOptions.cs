@@ -16,6 +16,16 @@ namespace Catalog.API
 	//Function implemenations for the OPTIONS requests, this is only done pre-flight for the post methods, getters do not need this
     public class BooksFunctionOptions : IBooksWriteFunction
 	{
+		[FunctionName("Options_AddBook")]
+        public async Task<IActionResult<Book>> AddBook(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.AddBook)] Book input, 
+			HttpRequest req, 
+			ILogger log, 
+			ExecutionContext context)
+        {
+			return new OkObjectResult<Book>(req, new Book());
+        }
+
 		[FunctionName("Options_UpdateBookData")]
 		public async Task<IActionResult<Book>> UpdateBookData(
 		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookData)] BookSaveModel input,
@@ -59,15 +69,5 @@ namespace Catalog.API
 		{
 			return new OkObjectResult<bool>(req, true);
 		}
-
-		[FunctionName("Options_AddBook")]
-        public async Task<IActionResult<Book>> AddBook(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.AddBook)] BookSaveModel input, 
-			HttpRequest req, 
-			ILogger log, 
-			ExecutionContext context)
-        {
-			return new OkObjectResult<Book>(req, new Book());
-        }
     }
 }

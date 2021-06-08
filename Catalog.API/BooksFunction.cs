@@ -82,7 +82,7 @@ namespace Catalog.API
 		
 		[FunctionName("AddBook")]
 		public async Task<IActionResult<Book>> AddBook(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)] BookSaveModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)] Book input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context)

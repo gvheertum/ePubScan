@@ -12,7 +12,7 @@ namespace Catalog.API
     public interface IBooksWriteFunction
 	{
 		Task<IActionResult<Book>> AddBook(
-			BookSaveModel input,
+			Book input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context);
