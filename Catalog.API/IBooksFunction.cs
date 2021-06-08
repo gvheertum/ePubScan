@@ -17,7 +17,7 @@ namespace Catalog.API
 			ILogger log,
 			ExecutionContext context);
 
-		Task<IActionResult<bool>> UpdateBookData(
+		Task<IActionResult<Book>> UpdateBookData(
 			BookSaveModel input,
 			HttpRequest req,
 			ILogger log,

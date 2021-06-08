@@ -32,7 +32,8 @@ namespace ePubAnalyzer
 
 		public async Task<Book> UpdateBook(Book book)
 		{
-			return await ApiPost<Book, Book>(HttpRoutes.SetBookData, book);
+            string url = HttpRoutes.SetBookData.Replace("{bookIDParam:int}", $"{book.BookID}");
+			return await ApiPost<Book, Book>(url, book);
         }
 
         private async Task<T> ApiGet<T>(string endPoint)
@@ -41,7 +42,6 @@ namespace ePubAnalyzer
             Console.Write($"Communicating to: {fullUrl}");
 
             var message = await httpClient.GetStringAsync(fullUrl);
-            Console.WriteLine(message);
             return JsonConvert.DeserializeObject<T>(message);
         }
 
@@ -54,7 +54,6 @@ namespace ePubAnalyzer
             StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
             var message = await (await httpClient.PostAsync(fullUrl, httpContent)).Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return JsonConvert.DeserializeObject<T>(message);
         }
 	}

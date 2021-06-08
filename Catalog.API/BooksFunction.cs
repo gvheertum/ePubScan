@@ -64,20 +64,20 @@ namespace Catalog.API
 
 		
 		[FunctionName("UpdateBookData")]
-		public async Task<IActionResult<bool>> UpdateBookData(
+		public async Task<IActionResult<Book>> UpdateBookData(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] BookSaveModel input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam)
 		{
-			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
+			if(!TryValidateBookId<Book>(bookIDParam, input, req, out var result)) { return result; }
 
 			log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
 			var combined = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
 			bookLogic.Save(combined);
 
-			return new OkObjectResult<bool>(req, true);
+			return new OkObjectResult<Book>(req, combined);
 		}
 		
 		[FunctionName("AddBook")]
@@ -90,8 +90,8 @@ namespace Catalog.API
 			if((input?.BookID ?? 0) > 0) { return new BadRequestObjectResult<Book>(req, "Newly added book should NOT have an ID set"); }
 
 			log.LogInformation($"Saving: {input.Title}");
-			//bookLogic.Save(input);
-			log.LogInformation($"ID= {input.BookID}");
+			bookLogic.Save(input);
+			log.LogInformation($"Received Id= {input.BookID}");
 
 			return new OkObjectResult<Book>(req, input);
 		}

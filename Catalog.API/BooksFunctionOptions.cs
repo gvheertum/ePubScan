@@ -17,14 +17,14 @@ namespace Catalog.API
     public class BooksFunctionOptions : IBooksWriteFunction
 	{
 		[FunctionName("Options_UpdateBookData")]
-		public async Task<IActionResult<bool>> UpdateBookData(
+		public async Task<IActionResult<Book>> UpdateBookData(
 		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookData)] BookSaveModel input,
 		   HttpRequest req,
 		   ILogger log,
 		   ExecutionContext context,
 		   int bookIDParam)
 		{
-			return new OkObjectResult<bool>(req, true);
+			return new OkObjectResult<Book>(req, new Book());
 		}
 
 		[FunctionName("Options_UpdateAvailabilityStatus")]
