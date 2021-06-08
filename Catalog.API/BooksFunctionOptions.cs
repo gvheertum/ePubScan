@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using ePubAnalyzer.Shared.Entities;
 using Catalog.API.Models;
 using Catalog.API.ResultObjects;
+using ePubAnalyzer.Shared.API;
+
 namespace Catalog.API
 {
     //TODO: Perhaps a shared interface might work here to ensure both the options as the regular interface have the same functions embedded
@@ -16,7 +18,7 @@ namespace Catalog.API
 	{
 		[FunctionName("Options_UpdateBookData")]
 		public async Task<IActionResult<bool>> UpdateBookData(
-		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookData)] BookSaveModel input,
+		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookData)] BookSaveModel input,
 		   HttpRequest req,
 		   ILogger log,
 		   ExecutionContext context,
@@ -27,7 +29,7 @@ namespace Catalog.API
 
 		[FunctionName("Options_UpdateAvailabilityStatus")]
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
@@ -37,8 +39,8 @@ namespace Catalog.API
 		}
 
 		[FunctionName("Options_UpdateReadBadge")]
-		public async Task<IActionResult> UpdateReadBadge(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
+		public async Task<IActionResult<bool>> UpdateReadBadge(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
@@ -48,8 +50,8 @@ namespace Catalog.API
 		}
 
 		[FunctionName("Options_UpdateReadStatus")]
-		public async Task<IActionResult> UpdateReadStatus(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = BooksFunction.HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
+		public async Task<IActionResult<bool>> UpdateReadStatus(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
@@ -57,5 +59,15 @@ namespace Catalog.API
 		{
 			return new OkObjectResult<bool>(req, true);
 		}
-	}
+
+		[FunctionName("Options_AddBook")]
+        public async Task<IActionResult<Book>> AddBook(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.AddBook)] BookSaveModel input, 
+			HttpRequest req, 
+			ILogger log, 
+			ExecutionContext context)
+        {
+			return new OkObjectResult<Book>(req, new Book());
+        }
+    }
 }

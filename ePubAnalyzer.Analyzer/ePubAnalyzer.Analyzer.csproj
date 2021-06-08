@@ -22,9 +22,6 @@
     <Content Include="FileParsing\EpubOpfReader.cs" />
     <Content Include="FileParsing\EpubReaderBase.cs" />
     <Content Include="FileParsing\EpubNcxReader.cs" />
-    <Content Include="connectionstrings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="CatalogSync\CatalogSyncHelper.cs" />
     <Content Include="DatabaseComparisonHelper.cs" />
     <Content Include="OutputHtmlWriter.cs" />

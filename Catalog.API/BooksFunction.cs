@@ -16,21 +16,13 @@ using Microsoft.Extensions.DependencyInjection;
 using ePubAnalyzer.Shared.BLL;
 using Catalog.API.ResultObjects;
 using Catalog.API.Helpers;
+using ePubAnalyzer.Shared.API;
 
 namespace Catalog.API
 {
     public class BooksFunction : IBooksReadFunction, IBooksWriteFunction
 	{
-		public class HttpRoutes
-		{
-			public const string GetBooksAll = "Books/All";
-			public const string GetBookDetail = "Book/{bookIDParam:int}/Detail";
-			public const string SetBookData = "Book/{bookIDParam:int}/UpdateBookData";
-			public const string SetBookReadBadge = "Book/{bookIDParam:int}/UpdateReadBadge";
-			public const string SetBookReadStatus = "Book/{bookIDParam:int}/UpdateReadStatus";
-			public const string SetBookAvailabilityStatus = "Book/{bookIDParam:int}/UpdateAvailabilityStatus";
-		}
-
+		
 		private readonly BookLogic bookLogic;
 		private readonly BookPartialDataUpdateHelper bookPartialDataUpdateHelper;
 
@@ -70,6 +62,7 @@ namespace Catalog.API
 			return new OkObjectResult<Book>(req, bookLogic.GetBookByID(bookIDParam));
 		}
 
+		
 		[FunctionName("UpdateBookData")]
 		public async Task<IActionResult<bool>> UpdateBookData(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] BookSaveModel input,
@@ -87,8 +80,25 @@ namespace Catalog.API
 			return new OkObjectResult<bool>(req, true);
 		}
 		
+		[FunctionName("AddBook")]
+		public async Task<IActionResult<Book>> AddBook(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)] BookSaveModel input,
+			HttpRequest req,
+			ILogger log,
+			ExecutionContext context)
+		{
+			if((input?.BookID ?? 0) > 0) { return new BadRequestObjectResult<Book>(req, "Newly added book should NOT have an ID set"); }
+
+			log.LogInformation($"Saving: {input.Title}");
+			//bookLogic.Save(input);
+			log.LogInformation($"ID= {input.BookID}");
+
+			return new OkObjectResult<Book>(req, input);
+		}
+
+
 		[FunctionName("UpdateReadBadge")]
-		public async Task<IActionResult> UpdateReadBadge(
+		public async Task<IActionResult<bool>> UpdateReadBadge(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
 			HttpRequest req,
 			ILogger log,
@@ -104,7 +114,7 @@ namespace Catalog.API
 		}
 
 		[FunctionName("UpdateReadStatus")]
-		public async Task<IActionResult> UpdateReadStatus(
+		public async Task<IActionResult<bool>> UpdateReadStatus(
 		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
 		HttpRequest req,
 		ILogger log,

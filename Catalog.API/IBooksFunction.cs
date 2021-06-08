@@ -11,6 +11,12 @@ namespace Catalog.API
 {
     public interface IBooksWriteFunction
 	{
+		Task<IActionResult<Book>> AddBook(
+			BookSaveModel input,
+			HttpRequest req,
+			ILogger log,
+			ExecutionContext context);
+
 		Task<IActionResult<bool>> UpdateBookData(
 			BookSaveModel input,
 			HttpRequest req,
@@ -18,14 +24,14 @@ namespace Catalog.API
 			ExecutionContext context,
 			int bookIDParam);
 		
-		Task<IActionResult> UpdateReadStatus(
+		Task<IActionResult<bool>> UpdateReadStatus(
 			BookReadStatusUpdateModel input,
 			HttpRequest req,
 			ILogger log,
 			ExecutionContext context,
 			int bookIDParam);
 
-		Task<IActionResult> UpdateReadBadge(
+		Task<IActionResult<bool>> UpdateReadBadge(
 			BookReadBadgeUpdateModel input,
 			HttpRequest req,
 			ILogger log,

@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using EpubAnalyzer.Entities;
 using ePubAnalyzer.Shared.BLL;
 using ePubAnalyzer.Shared.Entities;
+using System.Threading.Tasks;
 
 namespace ePubAnalyzer
 {
-	public class DatabaseComparisonHelper
+    public class DatabaseComparisonHelper
 	{
+        private BookLogicApiHandler apiLogic;
+
+        public DatabaseComparisonHelper(BookLogicApiHandler apiLogic)
+		{
+			this.apiLogic = apiLogic;
+		}
+
 		public ComparisonContainer<Book> CompareSetWithDatabase(IEnumerable<EbookData> books)
 		{
 			var bData = books.Select(b => b.BookDetail);
-			var bookLogic = GetBookLogic();
-			var comparisonResults = bookLogic.CompareBooksWithExistingCollection(bData.ToList());
-			return comparisonResults;
+			var currBooksInSystem = apiLogic.GetBooks().GetAwaiter().GetResult();
+			var booksToSave = books.Select(b=> b.BookDetail).ToList();
+			return new Shared.Library.BookSetComparer().GetComparisonContainer(currBooksInSystem, booksToSave);
 		}
 
 		public void EchoComparisonSetDetails(ComparisonContainer<Book> container)
@@ -32,22 +40,22 @@ namespace ePubAnalyzer
 			}
 		}
 
-		public void SaveExistingItems(ComparisonContainer<Book> container)
+		public async Task SaveExistingItems(ComparisonContainer<Book> container)
 		{
 			System.Console.WriteLine($"Saving {container.ExistingItems.Count()} existing books");
 			foreach(var book in container.ExistingItems)
 			{
-				var savedBook = GetBookLogic().Save(book);
+				var savedBook = await apiLogic.UpdateBook(book);
 				EchoWrittenBook(savedBook);
 			} 
 		}
 
-		public void SaveNewItems(ComparisonContainer<Book> container)
+		public async Task SaveNewItems(ComparisonContainer<Book> container)
 		{
 			System.Console.WriteLine($"Saving {container.NewItems.Count()} new books");
 			foreach(var book in container.NewItems)
 			{
-				var savedBook = GetBookLogic().Save(book);
+				var savedBook = await apiLogic.AddBook(book);
 				EchoWrittenBook(savedBook);
 			} 
 		}
@@ -55,13 +63,6 @@ namespace ePubAnalyzer
 		private void EchoWrittenBook(Book book)
 		{
 			System.Console.WriteLine($"Wrote book: {book.Author} - {book.Title} (Identifier {book.Identifier}-> ID: {book.BookID}");
-		}
-
-		private BookLogic GetBookLogic()
-		{
-			var cs = new EpubAnalyzer.CatalogSync.CatalogSyncDatabaseSettingsRetriever().GetConnectionString();
-			var dal = new ePubAnalyzer.Shared.DAL.DALImplementation(cs);
-			return new LogicFactory(dal).GetBookLogic();
 		}
 	}
 }

@@ -6,14 +6,16 @@ using System.Xml.Linq;
 using System.IO;
 using EpubAnalyzer.FileParsing;
 using EpubAnalyzer.Entities;
+using System.Threading.Tasks;
 
 namespace ePubAnalyzer
 {
-	class Program
+    class Program
     {
 		private const string TestEpubFolder = "/Users/gertjan/Desktop/ebooks/ToCatalog/";
 		private const string TestEpubOutput = "/Users/gertjan/Desktop/epub-output/";
-        static void Main(string[] args)
+
+        static async Task Main(string[] args)
         {
             Console.WriteLine("Epub data parser");
             Console.WriteLine("****************");
@@ -35,19 +37,19 @@ namespace ePubAnalyzer
 			
 			if(AskConfirmOnAction("Perform database actions?"))
 			{
-				var compareHelper = new DatabaseComparisonHelper();
+				var compareHelper = new DatabaseComparisonHelper(new BookLogicApiHandler(Secrets.ApiLocation));
 				var compareResults = compareHelper.CompareSetWithDatabase(epubDetails);
 				compareHelper.EchoComparisonSetDetails(compareResults);
 				
 				//Check if we want and need to take action to save new and/or existing items
 				if(compareResults.NewItems.Any() && AskConfirmOnAction("Store new books to database?"))
 				{
-					compareHelper.SaveNewItems(compareResults);
+					await compareHelper.SaveNewItems(compareResults);
 				}
 
 				if(compareResults.ExistingItems.Any() && AskConfirmOnAction("Overwrite existing books to database?"))
 				{
-					compareHelper.SaveExistingItems(compareResults);
+					await compareHelper.SaveExistingItems(compareResults);
 				}
 			}
 			//if(AskConfirmOnAction("Write output file?")) { WriteOutputFile(epubDetails); }			
