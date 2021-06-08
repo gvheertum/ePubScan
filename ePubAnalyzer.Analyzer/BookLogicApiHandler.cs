@@ -5,6 +5,7 @@ using System.Net.Http;
 using ePubAnalyzer.Shared.API;
 using System;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace ePubAnalyzer
 {
@@ -16,7 +17,12 @@ namespace ePubAnalyzer
         public BookLogicApiHandler(string rootUrl)
 		{
 			this.rootUrl = rootUrl + (rootUrl.EndsWith("/") ? "" : "/"); 
-            this.httpClient = new HttpClient();
+            
+            //Ignore cert errors
+            var cliHandler = new HttpClientHandler();
+            cliHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+            this.httpClient = new HttpClient(cliHandler);
+  
             httpClient.DefaultRequestHeaders.Add("User-Agent", "ePub catalog analyzer");
 		}
 
@@ -52,7 +58,7 @@ namespace ePubAnalyzer
 
             string json = JsonConvert.SerializeObject(data);
             StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
+            
             var message = await (await httpClient.PostAsync(fullUrl, httpContent)).Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(message);
         }

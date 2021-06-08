@@ -7,6 +7,7 @@ using System.IO;
 using EpubAnalyzer.FileParsing;
 using EpubAnalyzer.Entities;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace ePubAnalyzer
 {
