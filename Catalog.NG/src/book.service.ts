@@ -20,7 +20,7 @@ export class BookService {
     private http: HttpClient,
     settings: Settings,
    ) { 
-     this.booksUrl = settings.getSecrets().getBooksUrl();
+     this.booksUrl = settings.getApiUrl();
    }
 
    getBooks() : Observable<IBook[]> {
