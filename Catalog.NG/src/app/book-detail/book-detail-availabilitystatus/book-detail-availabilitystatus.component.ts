@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ToastService } from 'src/app/toast/toast.service';
 import { IBook, IBookAvailabilityStatusUpdateModel } from 'src/book';
 import { BookService } from 'src/book.service';
 
@@ -17,7 +18,8 @@ export class BookDetailAvailabilitystatusComponent implements OnInit {
   });
 
   constructor(
-    private bookService : BookService
+    private bookService : BookService,
+    private toastService : ToastService
   ) { }
 
   ngOnInit(): void {
@@ -35,9 +37,9 @@ export class BookDetailAvailabilitystatusComponent implements OnInit {
 
     this.bookService.updateBookAvailabilityStatus(updatedData).subscribe((r) => {
       if(r) { 
-        alert("The availability was changed!");
+        this.toastService.info("The availability was changed!");
       } else { 
-        alert("Could not update the book availability!"); 
+        this.toastService.warn("Could not update the book availability!"); 
       }});
   }
 }

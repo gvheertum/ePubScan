@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IBook } from 'src/book';
 import { ReadStateElement, ReadStates } from "src/ReadStates";
 import { BookService } from 'src/book.service';
+import { ToastService } from '../toast/toast.service';
 
 @Component({
   selector: 'app-book-readstatus-updater',
@@ -16,7 +17,8 @@ export class BookReadstatusUpdaterComponent implements OnInit {
   constructor(
     private bookService: BookService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastService : ToastService
   ) { 
     
   }
@@ -31,9 +33,9 @@ export class BookReadstatusUpdaterComponent implements OnInit {
     if(confirm(`Do you want to change the status for book ${book.bookID}: ${book.author} ${book.title}?\r\nNew status will become: ${status.display} (was: ${book.readStatus})`)) {      
       this.bookService.updateBookReadBadge(book.bookID, status.display).subscribe((r) => {
         if(r) { 
-          alert("The bookstatus was changed!");
+          this.toastService.info("The bookstatus was changed!");
         } else { 
-          alert("Could not update the book details!"); 
+          this.toastService.warn("Could not update the book details!"); 
         }
       });
     }

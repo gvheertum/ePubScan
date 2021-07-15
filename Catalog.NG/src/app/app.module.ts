@@ -13,6 +13,7 @@ import { BookDetailAvailabilitystatusComponent } from './book-detail/book-detail
 import { MasterContentComponent } from './master-content/master-content.component';
 import { BookReadstatusUpdaterComponent } from './book-readstatus-updater/book-readstatus-updater.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from './toast/toast.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     HttpClientModule,
+    ToastModule,
     AppRoutingModule,
     ReactiveFormsModule,
   ],
