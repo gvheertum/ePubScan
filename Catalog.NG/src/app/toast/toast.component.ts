@@ -21,78 +21,46 @@ export class ToastComponent implements OnInit, OnDestroy {
         // subscribe to new alert notifications
         this.toastSubscription = this.toastService.onToast(this.id)
             .subscribe(toast => {
-                // clear alerts when an empty alert is received
-                if (!toast.message) {
-                    // filter out alerts without 'keepAfterRouteChange' flag
-                    this.toasts = this.toasts.filter(x => x.keepAfterRouteChange);
 
-                    // remove 'keepAfterRouteChange' flag on the rest
-                    this.toasts.forEach(x => delete x.keepAfterRouteChange);
+                // If an empty item is pushed we need to purge the list
+                if(!toast || !toast.message) {
+                    this.toasts = []; //TODO: Why is this implemented this way?
                     return;
                 }
 
-                // add alert to array
                 this.toasts.push(toast);
-
-                // auto close alert if required
-                if (toast.autoClose) {
-                    setTimeout(() => this.removeToast(toast), 3000);
-                }
+                setTimeout(() => this.removeToast(toast), 10000);
            });
 
-        // clear alerts on location change
+        // On change of route purge all toasts
         this.routeSubscription = this.router.events.subscribe(event => {
             if (event instanceof NavigationStart) {
                 this.toastService.clear(this.id);
             }
         });
+
+        console.debug("Toasts:", this.toasts.length, this.toasts);
     }
 
     ngOnDestroy() {
-        // unsubscribe to avoid memory leaks
         this.toastSubscription!.unsubscribe();
         this.routeSubscription!.unsubscribe();
     }
 
     removeToast(toast: Toast) {
-        console.debug("Toast be gone!");
-
-        // check if already removed to prevent error on auto close
         if (!this.toasts.includes(toast)) return;
-
-        console.debug("It was found!");
-        if (this.fade) {
-            // fade out alert
-            this.toasts!.find(x => x === toast)!.fade = true;
-
-            // remove alert after faded out
-            setTimeout(() => {
-                this.toasts = this.toasts.filter(x => x !== toast);
-            }, 250);
-        } else {
-            // remove alert
-            this.toasts = this.toasts.filter(x => x !== toast);
-        }
+        this.toasts = this.toasts.filter(x => x !== toast);
     }
 
-    cssClass(toast: Toast) {
-        if (!toast) return;
-
-        const classes = ['alert', 'alert-dismissable'];
-                
-        const toastTypeClass = {
-            [ToastType.Success]: 'alert alert-success',
-            [ToastType.Error]: 'alert alert-danger',
-            [ToastType.Info]: 'alert alert-info',
-            [ToastType.Warning]: 'alert alert-warning'
+    messageType(toast: Toast) {
+        if(!toast || !toast.type) { return null; }
+        switch(toast.type)
+        {
+            case ToastType.Success: return "✔ Success";
+            case ToastType.Error: return "❌ Success";
+            case ToastType.Info: return "ℹ️ Information";
+            case ToastType.Warning: return "⚠️ Warning";
+            default: return "Unknown Message Type";
         }
-
-        classes.push(toastTypeClass[toast.type!]);
-
-        if (toast.fade) {
-            classes.push('fade');
-        }
-
-        return classes.join(' ');
     }
 }
