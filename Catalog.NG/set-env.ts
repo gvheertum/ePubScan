@@ -1,6 +1,6 @@
 const targetPath = './src/environments/environment.ts';// Load node modules
 
-require('dotenv').load();// `environment.ts` file structure
+require('dotenv').config();// `environment.ts` file structure
 const fs = require('fs');
 const writeFile = fs.writeFile;
 
