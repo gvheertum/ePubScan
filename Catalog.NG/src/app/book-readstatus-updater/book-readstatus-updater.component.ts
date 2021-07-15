@@ -30,10 +30,11 @@ export class BookReadstatusUpdaterComponent implements OnInit {
   updateStatus(book: IBook, status: ReadStateElement) {
     //TODO: Make a nice confirmation dialog and response messages
     //TODO: The binding is not two way yet
+    var bookDisplay = `${book.author} - ${book.title}`;
     if(confirm(`Do you want to change the status for book ${book.bookID}: ${book.author} ${book.title}?\r\nNew status will become: ${status.display} (was: ${book.readStatus})`)) {      
       this.bookService.updateBookReadBadge(book.bookID, status.display).subscribe((r) => {
         if(r) { 
-          this.toastService.info("The bookstatus was changed!");
+          this.toastService.info(`${bookDisplay} marked with read status: ${status.display}`);
         } else { 
           this.toastService.warn("Could not update the book details!"); 
         }
