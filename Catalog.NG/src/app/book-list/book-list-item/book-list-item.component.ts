@@ -14,4 +14,8 @@ export class BookListItemComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  getBookDescriptionHtml() {
+    return this.book.description?.replaceAll("\n", "<br/>");
+  }
 }

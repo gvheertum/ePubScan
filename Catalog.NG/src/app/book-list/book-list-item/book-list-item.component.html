@@ -14,7 +14,7 @@
 </h2>
 <div id="book-panel-collapse-{{book.bookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.bookID}}" >
     <div class="accordion-body">
-        <div *ngIf="book.description" class="description">{{book.description}}</div>
+        <div *ngIf="book.description" class="description" [innerHTML]="getBookDescriptionHtml()"></div>
         <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
             <a [routerLink]="['/book', book.bookID]" type="button" class="btn btn-primary">Edit book details</a>
         </div>
