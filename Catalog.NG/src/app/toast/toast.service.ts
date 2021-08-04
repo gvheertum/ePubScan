@@ -33,7 +33,6 @@ export class ToastService {
 
     // main alert method    
     toast(toast: Toast) {
-        console.debug("Logging stuff to toast: ", toast);
         if(!toast || !toast.message) { console.debug("Skipping empty toast"); return; }
         toast.id = toast.id || this.defaultId;
         this.subject.next(toast);

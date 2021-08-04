@@ -4,6 +4,7 @@ import { IBook } from 'src/book';
 import { ReadStateElement, ReadStates } from "src/ReadStates";
 import { BookService } from 'src/book.service';
 import { ToastService } from '../toast/toast.service';
+import { ModalService } from '../modal/modal.service';
 
 @Component({
   selector: 'app-book-readstatus-updater',
@@ -18,7 +19,8 @@ export class BookReadstatusUpdaterComponent implements OnInit {
     private bookService: BookService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastService : ToastService
+    private toastService : ToastService,
+    private modalService : ModalService
   ) { 
     
   }
@@ -28,10 +30,10 @@ export class BookReadstatusUpdaterComponent implements OnInit {
 
 
   updateStatus(book: IBook, status: ReadStateElement) {
-    //TODO: Make a nice confirmation dialog and response messages
-    //TODO: The binding is not two way yet
+    
     var bookDisplay = `${book.author} - ${book.title}`;
-    if(confirm(`Do you want to change the status for book ${book.bookID}: ${book.author} ${book.title}?\r\nNew status will become: ${status.display} (was: ${book.readStatus})`)) {      
+    var message = `Do you want to change the status for book ${book.bookID}: ${bookDisplay} ${status.display}?\r\nOld state was: ${book.readStatus}`;
+    var action = () => {
       this.bookService.updateBookReadBadge(book.bookID, status.display).subscribe((r) => {
         if(r) { 
           this.toastService.info(`${bookDisplay} marked with read status: ${status.display}`);
@@ -39,6 +41,8 @@ export class BookReadstatusUpdaterComponent implements OnInit {
           this.toastService.warn("Could not update the book details!"); 
         }
       });
-    }
+    };
+
+    this.modalService.confirm(message, action);
   }
 }

@@ -14,6 +14,7 @@ import { MasterContentComponent } from './master-content/master-content.componen
 import { BookReadstatusUpdaterComponent } from './book-readstatus-updater/book-readstatus-updater.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from './toast/toast.module';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ToastModule } from './toast/toast.module';
     BookDetailReadstatusComponent,
     BookDetailAvailabilitystatusComponent,
     MasterContentComponent,
-    BookReadstatusUpdaterComponent
+    BookReadstatusUpdaterComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
