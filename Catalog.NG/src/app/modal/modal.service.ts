@@ -7,19 +7,21 @@ import { ModalMessage, } from './modal.model';
 @Injectable({ providedIn: 'root' })
 export class ModalService {
     private subject = new Subject<ModalMessage>();
-    private defaultId = 'default-modal';
+    
+    onChange(): Observable<ModalMessage> {
+        return this.subject.asObservable().pipe();
+    }
+    
+    confirm(message: string, actionConfirmed: Function, actionNotConfirmed: Function) {
+        
+        var msgModel : ModalMessage = {
+            message: message,
+            buttons: [ { text: "No", action: actionNotConfirmed }, { text: "Yes", action: actionConfirmed } ]
+        };
+        this.showModal(msgModel);
+    }
 
-    confirm(message: string, actionConfirmed?: Function, actionNotConfirmed?: Function) {
-        console.debug("Asking confirmation for: ", message);
-        if(window.confirm(message))
-        {
-            console.debug("Confirmed!");
-            if(actionConfirmed) { actionConfirmed(); }
-        }
-        else
-        {
-            console.debug("NOT Confirmed!");
-            if(actionNotConfirmed) { actionNotConfirmed(); }
-        }
+    showModal(modalModel: ModalMessage) {
+        this.subject.next(modalModel);
     }
 }

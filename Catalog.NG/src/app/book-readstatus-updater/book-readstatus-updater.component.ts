@@ -43,6 +43,6 @@ export class BookReadstatusUpdaterComponent implements OnInit {
       });
     };
 
-    this.modalService.confirm(message, action);
+    this.modalService.confirm(message, action, () => {});
   }
 }
