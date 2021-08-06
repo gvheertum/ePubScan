@@ -16,7 +16,8 @@ export class ModalService {
         
         var msgModel : ModalMessage = {
             message: message,
-            buttons: [ { text: "No", action: actionNotConfirmed }, { text: "Yes", action: actionConfirmed } ]
+            title: "Please confirm",
+            buttons: [ { text: "No", action: actionNotConfirmed, buttonType: "danger" }, { text: "Yes", action: actionConfirmed, buttonType: "success" } ]
         };
         this.showModal(msgModel);
     }

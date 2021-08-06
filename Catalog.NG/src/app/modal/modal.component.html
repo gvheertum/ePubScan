@@ -10,7 +10,7 @@
             {{modalToShow.message}}
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" *ngFor="let button of modalToShow.buttons" (click)="button.action()">{{button.text}}</button>
+            <button type="button" *ngFor="let button of modalToShow.buttons" (click)="performAction(button)" class="btn btn-{{button.buttonType}}">{{button.text}}</button>
         </div>
         </div>
     </div>

@@ -12,7 +12,8 @@ export class ModalMessage {
 
 export class ModalButton {
     text: string = "";
-    action: Function = () => {};
+    action?: Function;
+    buttonType: string = "primary";
 
     constructor(init?:Partial<ModalMessage>) {
         Object.assign(this, init);
