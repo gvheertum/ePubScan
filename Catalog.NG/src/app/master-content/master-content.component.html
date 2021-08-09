@@ -10,22 +10,25 @@
     <div class="filter-buttons" id="">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link active btn btn-secondary" routerLink="books/">All books</a>
+            <a class="nav-link active btn btn-secondary" title="All books" routerLink="books/">All</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active btn btn-success" [routerLink]="['books', readStates.Read.display]">Already read</a>
+            <a class="nav-link active btn btn-success" title="Already read" [routerLink]="['books', readStates.Read.display]">Read</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active btn btn-primary" [routerLink]="['books', readStates.Reading.display]">Currently reading</a>
+            <a class="nav-link active btn btn-primary" title="Currently Reading" [routerLink]="['books', readStates.Reading.display]">Reading</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active btn btn-info" [routerLink]="['books', readStates.ToRead.display]">To read next</a>
+            <a class="nav-link active btn btn-info" title="To read next" [routerLink]="['books', readStates.ToRead.display]">Next</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active btn btn-danger" [routerLink]="['books', readStates.WontRead.display]">Won't be read</a>
+            <a class="nav-link active btn btn-danger" title="Won't be read" [routerLink]="['books', readStates.WontRead.display]">Won't</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active btn btn-light text-dark" routerLink="books/Newly Added/">Newly added</a>
+            <a class="nav-link active btn btn-light text-dark" title="Newly added" routerLink="books/Newly Added/">New</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn btn-secondary" title="Refresh" routerLink="books/reload"><i class="bi bi-arrow-down-up"></i></a>
           </li>
         </ul>
         
