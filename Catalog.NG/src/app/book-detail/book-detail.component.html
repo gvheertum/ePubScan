@@ -11,7 +11,7 @@
     </div>
     <div class="buttons">
         <a class="btn btn-dark" role="button" (click)="goBack()">Back</a> 
-        <app-book-readstatus-updater [book]="book"></app-book-readstatus-updater>
+        <app-book-readstatus-updater [(book)]="book"></app-book-readstatus-updater>
     </div>
     
     <app-book-detail-general [book]="book"></app-book-detail-general>
