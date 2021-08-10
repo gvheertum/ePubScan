@@ -8,7 +8,7 @@
 
 <div *ngIf="books && books.length > 0">
     <div class="alert alert-success" role="alert">
-        {{books.length}} books found
+        {{books.length}} books found <a class="reload" (click)="reloadBookList()"><i class="bi bi-arrow-down-up">Reload</i></a>
     </div>
     
 	<div class="accordion" id="booklist">

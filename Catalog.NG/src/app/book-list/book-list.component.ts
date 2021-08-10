@@ -14,6 +14,7 @@ import { textChangeRangeIsUnchanged } from 'typescript';
 export class BookListComponent implements OnInit {
   books? : IBook[];
   allBooks? : IBook[];
+  selectedStatus? : string;
   constructor(
     private bookService: BookService,
     private route: ActivatedRoute,
@@ -36,21 +37,30 @@ export class BookListComponent implements OnInit {
     // Get the books and filter if applicable
     console.debug(`statusFilter:${status}`);
     this.titleService.setTitle(`${status ?? "All books"} | ${this.settings.getApplicationTitle()}`);
-    
-    if(!this.allBooks) {
-      console.debug("Retrieving full list, nothing in memory");
+
+    this.selectedStatus = status ?? undefined;
+    this.loadBookList(this.selectedStatus);
+  }
+
+  reloadBookList() {
+    this.allBooks = [];
+    this.loadBookList(this.selectedStatus);
+  }
+
+  loadBookList(status?: string) {
+    if(!this.allBooks?.length) {
+      // Perform request to fill our cache and perform a filter for ouir display
       this.bookService.getBooks().subscribe(b => { 
-        console.debug("Retrieved booklist");
         this.allBooks = b.reverse();
         this.books = this.filterBooks(this.allBooks, status); 
       });      
     } else {
-      console.debug("Already have a list of books, using in-mem filter");
+      // Cache already present, filter on the current cache
       this.books = this.filterBooks(this.allBooks, status);
     }
   }
 
-  filterBooks(books: IBook[], status: string | null) : IBook[] {
+  filterBooks(books: IBook[], status?: string) : IBook[] {
     console.debug(`Starting filter: ${status}`);
     
     if(!status) { return books; }
