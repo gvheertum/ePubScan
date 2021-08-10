@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { IBook } from 'src/book';
 import { ReadStates } from "src/ReadStates";
 
@@ -9,6 +9,7 @@ import { ReadStates } from "src/ReadStates";
 })
 export class BookListItemComponent implements OnInit {
   @Input() book! : IBook;
+  @Output() bookChange = new EventEmitter<IBook>();
   readStates : ReadStates = new ReadStates();
   constructor() { }
 

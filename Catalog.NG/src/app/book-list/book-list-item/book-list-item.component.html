@@ -18,6 +18,6 @@
         <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
             <a [routerLink]="['/book', book.bookID]" type="button" class="btn btn-primary">Edit book details</a>
         </div>
-        <app-book-readstatus-updater [book]="book"></app-book-readstatus-updater>
+        <app-book-readstatus-updater [(book)]="book"></app-book-readstatus-updater>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IBook } from 'src/book';
 import { ReadStateElement, ReadStates } from "src/ReadStates";
@@ -14,6 +14,8 @@ import { ModalService } from '../modal/modal.service';
 export class BookReadstatusUpdaterComponent implements OnInit {
 
   @Input() book! : IBook;
+  @Output() bookChange = new EventEmitter<IBook>();
+
   readStates : ReadStates = new ReadStates();
   constructor(
     private bookService: BookService,
@@ -34,12 +36,18 @@ export class BookReadstatusUpdaterComponent implements OnInit {
     var bookDisplay = `${book.author} - ${book.title}`;
     var message = `Do you want to change the status for book ${book.bookID}: ${bookDisplay} ${status.display}?\r\nOld state was: ${book.readStatus}`;
     var action = () => {
+      book.readStatus = status.display;
+      
       this.bookService.updateBookReadBadge(book.bookID, status.display).subscribe((r) => {
         if(r) { 
           this.toastService.info(`${bookDisplay} marked with read status: ${status.display}`);
         } else { 
           this.toastService.warn("Could not update the book details!"); 
         }
+        
+        //Call an update of the book
+        console.debug("Emit change!");
+        this.bookChange.emit(book);
       });
     };
 
