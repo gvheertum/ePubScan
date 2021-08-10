@@ -14,6 +14,7 @@ import { textChangeRangeIsUnchanged } from 'typescript';
 export class BookListComponent implements OnInit {
   books? : IBook[];
   allBooks? : IBook[];
+  selectedStatus? : string;
   constructor(
     private bookService: BookService,
     private route: ActivatedRoute,
@@ -36,16 +37,17 @@ export class BookListComponent implements OnInit {
     // Get the books and filter if applicable
     console.debug(`statusFilter:${status}`);
     this.titleService.setTitle(`${status ?? "All books"} | ${this.settings.getApplicationTitle()}`);
-    
-    // Force a reload if requested
-    if(status == "reload") {
-      this.allBooks = [];
-      status = null;
-      // TODO: Handle in case of other routes (perhaps have /reload everywhere as optional)
-      // TODO: Reset the route to the non reload schema
-    }
 
+    this.selectedStatus = status ?? undefined;
+    this.loadBookList(this.selectedStatus);
+  }
 
+  reloadBookList() {
+    this.allBooks = [];
+    this.loadBookList(this.selectedStatus);
+  }
+
+  loadBookList(status?: string) {
     if(!this.allBooks?.length) {
       // Perform request to fill our cache and perform a filter for ouir display
       this.bookService.getBooks().subscribe(b => { 
@@ -58,7 +60,7 @@ export class BookListComponent implements OnInit {
     }
   }
 
-  filterBooks(books: IBook[], status: string | null) : IBook[] {
+  filterBooks(books: IBook[], status?: string) : IBook[] {
     console.debug(`Starting filter: ${status}`);
     
     if(!status) { return books; }
