@@ -15,6 +15,13 @@ import { BookReadstatusUpdaterComponent } from './book-readstatus-updater/book-r
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from './toast/toast.module';
 import { ModalComponent } from './modal/modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+import { MatCommonModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -35,6 +42,11 @@ import { ModalComponent } from './modal/modal.component';
     ToastModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatCommonModule, /* WARNING! The module must be imported! Not the component!! */
+    MatButtonModule,
+    MatExpansionModule,
+    MatCheckboxModule
   ],
   providers: [Title],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-<h2 class="accordion-header" id="book-panel-header-{{book.bookID}}">
+<h2 style="display: none;" class="accordion-header" id="book-panel-header-{{book.bookID}}">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" attr.data-bs-target="#book-panel-collapse-{{book.bookID}}" aria-expanded="true" attr.aria-controls="book-panel-collapse-{{book.bookID}}">
         <span class="author">{{book.author}}</span>&nbsp;-&nbsp;<span class="title">{{book.title}}</span>
         <div class="labels">
@@ -12,7 +12,7 @@
         </div>
     </button> 
 </h2>
-<div id="book-panel-collapse-{{book.bookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.bookID}}" >
+<div  style="display: none;" id="book-panel-collapse-{{book.bookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.bookID}}" >
     <div class="accordion-body">
         <div *ngIf="book.description" class="description" [innerHTML]="getBookDescriptionHtml()"></div>
         <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
@@ -21,3 +21,30 @@
         <app-book-readstatus-updater [(book)]="book"></app-book-readstatus-updater>
     </div>
 </div>
+
+
+
+<mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span class="author">{{book.author}}</span>&nbsp;-&nbsp;<span class="title">{{book.title}}</span>
+        
+      </mat-panel-title>
+      <mat-panel-description>
+        <div class="labels">
+            <span *ngIf="book.nrOfPages" class="pagecount badge bg-light text-dark">{{book.nrOfPages}} pages</span>
+            
+            <span class="readstatus badge bg-primary" *ngIf="readStates.Reading.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-book-half"></i> Reading</span>
+            <span class="readstatus badge bg-info text-dark" *ngIf="readStates.ToRead.matches(book.readStatus)" ><i title="{{book.readRemark}}" style="color: white;" class="bi bi-book"></i> To Read</span>
+            <span class="readstatus badge bg-success" *ngIf="readStates.Read.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-book-fill"></i> Read</span>
+            <span class="readstatus badge bg-danger" *ngIf="readStates.WontRead.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-x"></i> Won't read</span>
+            <span class="readstatus badge bg-secondary" *ngIf="readStates.Unknown.matches(book.readStatus)"><i title="{{book.readRemark}}" style="color: white;" class="bi bi-patch-question"></i> Unknown</span>
+        </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div *ngIf="book.description" class="description" [innerHTML]="getBookDescriptionHtml()"></div>
+        <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
+            <a [routerLink]="['/book', book.bookID]" type="button" class="btn btn-primary">Edit book details</a>
+        </div>
+    <app-book-readstatus-updater [(book)]="book"></app-book-readstatus-updater>
+  </mat-expansion-panel>

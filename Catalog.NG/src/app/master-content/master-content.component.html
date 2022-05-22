@@ -3,10 +3,9 @@
       <a class="navbar-brand" href="#">📚 Book catalog</a>
       <form class="form-inline my-2 my-lg-0 search-area">
         <input class="form-control mr-sm-2 search" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Search</button>
       </form>
     </div>
-
     <div class="filter-buttons" id="">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
@@ -19,7 +18,7 @@
             <a class="nav-link active btn btn-primary" title="Currently Reading" [routerLink]="['books', readStates.Reading.display]">Reading</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active btn btn-info" title="To read next" [routerLink]="['books', readStates.ToRead.display]">Next</a>
+            <a class="nav-link active btn btn-info"  title="To read next" [routerLink]="['books', readStates.ToRead.display]">Next</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active btn btn-danger" title="Won't be read" [routerLink]="['books', readStates.WontRead.display]">Won't</a>
@@ -28,6 +27,5 @@
             <a class="nav-link active btn btn-light text-dark" title="Newly added" routerLink="books/Newly Added/">New</a>
           </li>
         </ul>
-        
-    </div>
+    </div> 
   </nav>
