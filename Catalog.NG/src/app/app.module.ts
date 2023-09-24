@@ -21,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 import { MatCommonModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
@@ -46,7 +47,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCommonModule, /* WARNING! The module must be imported! Not the component!! */
     MatButtonModule,
     MatExpansionModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatInputModule
   ],
   providers: [Title],
   bootstrap: [AppComponent]

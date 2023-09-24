@@ -1,5 +1,5 @@
 export const environment = { 
-   apiUrl: 'http://localhost/api/',
+   apiUrl: 'https://books-api.heertum.net/api/',
    production: true,
    generated: true,
 };
