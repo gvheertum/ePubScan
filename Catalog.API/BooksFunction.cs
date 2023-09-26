@@ -58,9 +58,10 @@ namespace Catalog.API
 		
 		[Function("UpdateBookData")]
 		public async Task<HttpResponseData> UpdateBookData(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] BookSaveModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] 
 			HttpRequestData req,
             FunctionContext context,
+			BookSaveModel input,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<Book>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
@@ -74,9 +75,10 @@ namespace Catalog.API
 		
 		[Function("AddBook")]
 		public async Task<HttpResponseData> AddBook(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)] Book input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)]
 			HttpRequestData req,
-            FunctionContext context)
+            FunctionContext context,
+			Book input)
 		{
 			if((input?.BookID ?? 0) > 0) { return await new BadHttpResponseResult<string>().GetResponseData(req, "Newly added book should NOT have an ID set"); }
 
@@ -90,9 +92,10 @@ namespace Catalog.API
 
 		[Function("UpdateReadBadge")]
 		public async Task<HttpResponseData> UpdateReadBadge(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadBadge)] 
 			HttpRequestData req,
             FunctionContext context,
+			BookReadBadgeUpdateModel input,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
@@ -105,9 +108,10 @@ namespace Catalog.API
 
 		[Function("UpdateReadStatus")]
 		public async Task<HttpResponseData> UpdateReadStatus(
-		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
+		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] 
 		HttpRequestData req,
         FunctionContext context,
+		BookReadStatusUpdateModel input,
 		int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
@@ -120,9 +124,10 @@ namespace Catalog.API
 
 		[Function("UpdateAvailabilityStatus")]
 		public async Task<HttpResponseData> UpdateAvailabilityStatus(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] 
 			HttpRequestData req,
             FunctionContext context,
+			BookAvailabilityStatusUpdateModel input,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }

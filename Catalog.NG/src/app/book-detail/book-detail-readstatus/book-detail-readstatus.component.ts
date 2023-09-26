@@ -14,8 +14,8 @@ export class BookDetailReadstatusComponent implements OnInit {
   @Input() book!: IBook;
 
   readStatusForm = new FormGroup({
-    readRemark: new FormControl(''),
-    readStatus: new FormControl(''),
+    ReadRemark: new FormControl(''),
+    ReadStatus: new FormControl(''),
   });
 
   constructor(
@@ -31,8 +31,8 @@ export class BookDetailReadstatusComponent implements OnInit {
     var formData = this.readStatusForm.value;
     var updatedData : IBookReadStatusUpdateModel = {  
       BookID: this.book.BookID,
-      ReadRemark: formData.readRemark,
-      ReadStatus: formData.readStatus
+      ReadRemark: formData.ReadRemark,
+      ReadStatus: formData.ReadStatus
     };
     console.debug("Sending: ", updatedData);
 

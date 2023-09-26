@@ -13,8 +13,8 @@ export class BookDetailAvailabilitystatusComponent implements OnInit {
   @Input() book!: IBook;
 
   availabilityStatusForm = new FormGroup({
-    status: new FormControl(''),
-    statusRemark: new FormControl(''),
+    Status: new FormControl(''),
+    StatusRemark: new FormControl(''),
   });
 
   constructor(

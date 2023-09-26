@@ -51,6 +51,7 @@ export class BookService {
    }
 
    updateBookReadStatus(bookReadStatusModel : IBookReadStatusUpdateModel) : Observable<boolean> {
+    console.log("doing: update read:", bookReadStatusModel)
     return this.http.post<boolean>(this.booksUrl + `Book/${bookReadStatusModel.BookID}/UpdateReadStatus`, bookReadStatusModel)
       .pipe(
       tap(_ => this.log('Updated bookReadStatus')),

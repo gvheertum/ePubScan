@@ -13,13 +13,13 @@ export class BookDetailGeneralComponent implements OnInit {
   @Input() book!: IBook;
 
   bookDetailForm = new FormGroup({
-    bookID: new FormControl(''),
-    identifier: new FormControl(''),
-    title: new FormControl(''),
-    author: new FormControl(''),
-    description: new FormControl(''),
-    medium: new FormControl(''),
-    nrOfPages: new FormControl(''),
+    BookID: new FormControl(''),
+    Identifier: new FormControl(''),
+    Title: new FormControl(''),
+    Author: new FormControl(''),
+    Description: new FormControl(''),
+    Medium: new FormControl(''),
+    NrOfPages: new FormControl(''),
   });
 
   constructor(
@@ -36,12 +36,12 @@ export class BookDetailGeneralComponent implements OnInit {
     var formData = this.bookDetailForm.value;
     var updatedData : IBookDetailUpdateModel = {  
       BookID: this.book.BookID,
-      Identifier: formData.identifier,
-      Title: formData.title,
-      Author: formData.author,
-      Description: formData.description,
-      Medium: formData.medium,
-      NrOfPages: formData.nrOfPages
+      Identifier: formData.Identifier,
+      Title: formData.Title,
+      Author: formData.Author,
+      Description: formData.Description,
+      Medium: formData.Medium,
+      NrOfPages: formData.NrOfPages
     };
     console.debug("Sending: ", updatedData);
 

@@ -11,32 +11,32 @@ namespace Catalog.API
     public interface IBooksWriteFunction
 	{
 		Task<HttpResponseData/*IActionResult<Book>*/> AddBook(
-			Book input,
             HttpRequestData req,
-            FunctionContext context);
+			FunctionContext context,
+			Book input);
 
 		Task<HttpResponseData/*IActionResult<Book>*/> UpdateBookData(
-			BookSaveModel input,
             HttpRequestData req,
             FunctionContext context,
+			BookSaveModel input,
 			int bookIDParam);
 		
 		Task<HttpResponseData/*IActionResult<bool>*/> UpdateReadStatus(
-			BookReadStatusUpdateModel input,
             HttpRequestData req,
             FunctionContext context,
+			BookReadStatusUpdateModel input,
 			int bookIDParam);
 
 		Task<HttpResponseData/*IActionResult<bool>*/> UpdateReadBadge(
-			BookReadBadgeUpdateModel input,
             HttpRequestData req,
             FunctionContext context,
+			BookReadBadgeUpdateModel input,
 			int bookIDParam);
 
 		Task<HttpResponseData/*IActionResult<bool>*/> UpdateAvailabilityStatus(
-			BookAvailabilityStatusUpdateModel input,
 			HttpRequestData req,
             FunctionContext context,
+			BookAvailabilityStatusUpdateModel input,
 			int bookIDParam);
 	}
 }

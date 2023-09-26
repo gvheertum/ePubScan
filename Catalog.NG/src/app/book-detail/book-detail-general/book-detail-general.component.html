@@ -5,42 +5,42 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">BookID (db)</span>
             </div>
-            <input type="text" formControlName="bookID" readonly="readonly" class="form-control" />
+            <input type="text" formControlName="BookID" readonly="readonly" class="form-control" />
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Identifier</span>
             </div>
-            <input type="text" formControlName="identifier" class="form-control" />
+            <input type="text" formControlName="Identifier" class="form-control" />
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
             </div>
-            <input type="text" class="form-control" formControlName="title">
+            <input type="text" class="form-control" formControlName="Title">
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Author</span>
             </div>
-            <input type="text" class="form-control" formControlName="author">
+            <input type="text" class="form-control" formControlName="Author">
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Description</span>
             </div>
-            <textarea id="readRemark" class="form-control" formControlName="description"></textarea>
+            <textarea id="readRemark" class="form-control" formControlName="Description"></textarea>
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Medium</span>
             </div>
-            <select id="medium" class="form-control" formControlName="medium">
+            <select id="medium" class="form-control" formControlName="Medium">
                     <option></option>
                     <option>ebook</option>
                     <option>Physical</option>
@@ -52,12 +52,12 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Nr. of pages</span>
             </div>
-            <input type="number" class="form-control" formControlName="nrOfPages">
+            <input type="number" class="form-control" formControlName="NrOfPages">
 
         </div>
         
         <div class="card-footer text-muted">
-            <button class="btn btn-info" (click)="updateData()" type="button">Update book data</button> <!-- TODO: Implement -->
+            <button class="btn btn-info" (click)="updateData()" type="button">Update book data</button>
         </div>
     </form>
 </div>
