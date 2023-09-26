@@ -1,44 +1,38 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using ePubAnalyzer.Shared.Entities;
-using ePubAnalyzer.Shared.DAL;
-using Microsoft.Extensions.Configuration;
 using Catalog.API.Models;
-using Microsoft.Extensions.DependencyInjection;
 using ePubAnalyzer.Shared.BLL;
 using Catalog.API.ResultObjects;
 using Catalog.API.Helpers;
 using ePubAnalyzer.Shared.API;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Catalog.API
 {
     public class BooksFunction : IBooksReadFunction, IBooksWriteFunction
 	{
-		
-		private readonly BookLogic bookLogic;
+        
+        private readonly BookLogic bookLogic;
 		private readonly BookPartialDataUpdateHelper bookPartialDataUpdateHelper;
+        private ILogger<BooksFunction> logger;
 
-		public BooksFunction(BookLogic bookLogic, BookPartialDataUpdateHelper bookPartialDataUpdateHelper)
+        public BooksFunction(ILogger<BooksFunction> logger, BookLogic bookLogic, BookPartialDataUpdateHelper bookPartialDataUpdateHelper)
 		{
+			this.logger = logger;
 			this.bookLogic = bookLogic;
 			this.bookPartialDataUpdateHelper = bookPartialDataUpdateHelper;
 		}
 
-		[FunctionName("GetBooks")]
+		[Function("GetBooks")]
 		public async Task<IActionResult<IEnumerable<Book>>> Books(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBooksAll)] HttpRequest req,
-			ILogger log,
-			ExecutionContext context)
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBooksAll)] HttpRequestData req,
+			FunctionContext context)
 		{
-			log.LogInformation($"Retrieving all books");
+			logger.LogInformation($"Retrieving all books");
 			try
 			{
 				return new OkObjectResult<IEnumerable<Book>>(req, bookLogic.GetAllBooks());
@@ -49,104 +43,98 @@ namespace Catalog.API
 			}
 		}
 
-		[FunctionName("GetBookDetail")]
+		[Function("GetBookDetail")]
 		public async Task<IActionResult<Book>> Details(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBookDetail)] HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBookDetail)] HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam)
 		{
 			if (bookIDParam == 0) { return new BadRequestObjectResult<Book>(req, "Please fill the bookID"); }
 
-			log.LogInformation($"Retrieving details for id {bookIDParam}");;
+			logger.LogInformation($"Retrieving details for id {bookIDParam}");;
 			return new OkObjectResult<Book>(req, bookLogic.GetBookByID(bookIDParam));
 		}
 
 		
-		[FunctionName("UpdateBookData")]
+		[Function("UpdateBookData")]
 		public async Task<IActionResult<Book>> UpdateBookData(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] BookSaveModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+			HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<Book>(bookIDParam, input, req, out var result)) { return result; }
 
-			log.LogInformation($"Saving: {input.Title} with id {input.BookID}");
+			logger.LogInformation($"Saving: {input.Title} with id {input.BookID}");
 			var combined = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
 			bookLogic.Save(combined);
 
 			return new OkObjectResult<Book>(req, combined);
 		}
 		
-		[FunctionName("AddBook")]
+		[Function("AddBook")]
 		public async Task<IActionResult<Book>> AddBook(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)] Book input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context)
+			HttpRequestData req,
+            FunctionContext context)
 		{
 			if((input?.BookID ?? 0) > 0) { return new BadRequestObjectResult<Book>(req, "Newly added book should NOT have an ID set"); }
 
-			log.LogInformation($"Saving: {input.Title}");
+			logger.LogInformation($"Saving: {input.Title}");
 			bookLogic.Save(input);
-			log.LogInformation($"Received Id= {input.BookID}");
+			logger.LogInformation($"Received Id= {input.BookID}");
 
 			return new OkObjectResult<Book>(req, input);
 		}
 
 
-		[FunctionName("UpdateReadBadge")]
+		[Function("UpdateReadBadge")]
 		public async Task<IActionResult<bool>> UpdateReadBadge(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+			HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam)
 		{
-			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return new BadRequestObjectResult<bool>(req, "Failed", false); }
 
-			log.LogInformation($"UpdateReadBadge: {input.ReadStatus}  with id {input.BookID}");
+			logger.LogInformation($"UpdateReadBadge: {input.ReadStatus}  with id {input.BookID}");
 			bookLogic.UpdateReadBadge(input.BookID.Value, input.ReadStatus);
 
 			return new OkObjectResult<bool>(req, true);
 		}
 
-		[FunctionName("UpdateReadStatus")]
+		[Function("UpdateReadStatus")]
 		public async Task<IActionResult<bool>> UpdateReadStatus(
 		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
-		HttpRequest req,
-		ILogger log,
-		ExecutionContext context,
+		HttpRequestData req,
+        FunctionContext context,
 		int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
 
-			log.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
+			logger.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
 			bookLogic.UpdateReadStatus(input.BookID.Value, input.ReadStatus, input.ReadRemark);
 
 			return new OkObjectResult<bool>(req, true);
 		}
 
-		[FunctionName("UpdateAvailabilityStatus")]
+		[Function("UpdateAvailabilityStatus")]
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+			HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
 			
-			log.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
+			logger.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
 			bookLogic.UpdateAvailability(input.BookID.Value, input.Status, input.StatusRemark);
 
 			return new OkObjectResult<bool>(req, true);
 		}		
 
 		//Validate a bookId from a request against a model, if failed returning the bad request result
-		private bool TryValidateBookId<T>(int bookIDFromRoute, IBookRequestModel bookModel, HttpRequest req, out BadRequestObjectResult<T> errorModel)
+		private bool TryValidateBookId<T>(int bookIDFromRoute, IBookRequestModel bookModel, HttpRequestData req, out BadRequestObjectResult<T> errorModel)
 		{
 			if(bookIDFromRoute <= 0 || bookModel?.BookID == null) 
 			{

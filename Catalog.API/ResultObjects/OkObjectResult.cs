@@ -1,13 +1,20 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+
 using Catalog.API.ResultObjects;
+using Microsoft.Azure.Functions.Worker.Http;
+
 namespace Catalog.API.ResultObjects
 {
-    public class OkObjectResult<T> : OkObjectResult, IActionResult<T>
+    public class OkObjectResult<T> : IActionResult<T>
     {
-        public OkObjectResult(HttpRequest req, T value) : base(value)
+        public OkObjectResult(HttpRequestData req, T value)
         {
             req.AddCorsHeadersToRespone();
+            ResponseCode = 200;
+            Data = value;
+            //TODO: Is broken?
         }
+
+        public T Data { get; set; }
+        public int ResponseCode { get; set; }
     }
 }

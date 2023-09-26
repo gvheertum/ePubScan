@@ -1,11 +1,10 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ePubAnalyzer.Shared.Entities;
 using Catalog.API.Models;
 using Catalog.API.ResultObjects;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Catalog.API
 {
@@ -13,36 +12,31 @@ namespace Catalog.API
 	{
 		Task<IActionResult<Book>> AddBook(
 			Book input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context);
+            HttpRequestData req,
+            FunctionContext context);
 
 		Task<IActionResult<Book>> UpdateBookData(
 			BookSaveModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+            HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam);
 		
 		Task<IActionResult<bool>> UpdateReadStatus(
 			BookReadStatusUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+            HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam);
 
 		Task<IActionResult<bool>> UpdateReadBadge(
 			BookReadBadgeUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+            HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam);
 
 		Task<IActionResult<bool>> UpdateAvailabilityStatus(
 			BookAvailabilityStatusUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+			HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam);
 	}
 }

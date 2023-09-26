@@ -1,13 +1,11 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ePubAnalyzer.Shared.Entities;
 using Catalog.API.Models;
 using Catalog.API.ResultObjects;
 using ePubAnalyzer.Shared.API;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Catalog.API
 {
@@ -16,55 +14,57 @@ namespace Catalog.API
 	//Function implemenations for the OPTIONS requests, this is only done pre-flight for the post methods, getters do not need this
     public class BooksFunctionOptions : IBooksWriteFunction
 	{
-		[FunctionName("Options_AddBook")]
+        private ILogger<BooksFunctionOptions> logger;
+
+        public BooksFunctionOptions(ILogger<BooksFunctionOptions> logger)
+        {
+            this.logger = logger;
+        }
+
+        [Function("Options_AddBook")]
         public async Task<IActionResult<Book>> AddBook(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.AddBook)] Book input, 
-			HttpRequest req, 
-			ILogger log, 
-			ExecutionContext context)
+			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.AddBook)] Book input,
+            HttpRequestData req, 
+            FunctionContext context)
         {
 			return new OkObjectResult<Book>(req, new Book());
         }
 
-		[FunctionName("Options_UpdateBookData")]
+		[Function("Options_UpdateBookData")]
 		public async Task<IActionResult<Book>> UpdateBookData(
 		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookData)] BookSaveModel input,
-		   HttpRequest req,
-		   ILogger log,
-		   ExecutionContext context,
+           HttpRequestData req,
+           FunctionContext context,
 		   int bookIDParam)
 		{
 			return new OkObjectResult<Book>(req, new Book());
 		}
 
-		[FunctionName("Options_UpdateAvailabilityStatus")]
+		[Function("Options_UpdateAvailabilityStatus")]
 		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+			HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam)
 		{
 			return new OkObjectResult<bool>(req, true);
 		}
 
-		[FunctionName("Options_UpdateReadBadge")]
+		[Function("Options_UpdateReadBadge")]
 		public async Task<IActionResult<bool>> UpdateReadBadge(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+            HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam)
 		{
 			return new OkObjectResult<bool>(req, true);
 		}
 
-		[FunctionName("Options_UpdateReadStatus")]
+		[Function("Options_UpdateReadStatus")]
 		public async Task<IActionResult<bool>> UpdateReadStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
-			HttpRequest req,
-			ILogger log,
-			ExecutionContext context,
+            HttpRequestData req,
+            FunctionContext context,
 			int bookIDParam)
 		{
 			return new OkObjectResult<bool>(req, true);
