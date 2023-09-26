@@ -22,52 +22,52 @@ namespace Catalog.API
         }
 
         [Function("Options_AddBook")]
-        public async Task<IActionResult<Book>> AddBook(
+        public async Task<HttpResponseData> AddBook(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.AddBook)] Book input,
             HttpRequestData req, 
             FunctionContext context)
         {
-			return new OkObjectResult<Book>(req, new Book());
+			return await new OkHttpResponseResult<Book>().GetResponseData(req, new Book());
         }
 
 		[Function("Options_UpdateBookData")]
-		public async Task<IActionResult<Book>> UpdateBookData(
+		public async Task<HttpResponseData> UpdateBookData(
 		   [HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookData)] BookSaveModel input,
            HttpRequestData req,
            FunctionContext context,
 		   int bookIDParam)
 		{
-			return new OkObjectResult<Book>(req, new Book());
+			return await new OkHttpResponseResult<Book>().GetResponseData(req, new Book());
 		}
 
 		[Function("Options_UpdateAvailabilityStatus")]
-		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
+		public async Task<HttpResponseData> UpdateAvailabilityStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
 			HttpRequestData req,
             FunctionContext context,
 			int bookIDParam)
 		{
-			return new OkObjectResult<bool>(req, true);
+			return await new OkHttpResponseResult<bool>().GetResponseData(req, true);
 		}
 
 		[Function("Options_UpdateReadBadge")]
-		public async Task<IActionResult<bool>> UpdateReadBadge(
+		public async Task<HttpResponseData> UpdateReadBadge(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
             HttpRequestData req,
             FunctionContext context,
 			int bookIDParam)
 		{
-			return new OkObjectResult<bool>(req, true);
+			return await new OkHttpResponseResult<bool>().GetResponseData(req, true);
 		}
 
 		[Function("Options_UpdateReadStatus")]
-		public async Task<IActionResult<bool>> UpdateReadStatus(
+		public async Task<HttpResponseData> UpdateReadStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "options", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
             HttpRequestData req,
             FunctionContext context,
 			int bookIDParam)
 		{
-			return new OkObjectResult<bool>(req, true);
+			return await new OkHttpResponseResult<bool>().GetResponseData(req, true);
 		}
     }
 }

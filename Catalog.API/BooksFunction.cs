@@ -28,128 +28,128 @@ namespace Catalog.API
 		}
 
 		[Function("GetBooks")]
-		public async Task<IActionResult<IEnumerable<Book>>> Books(
+		public async Task<HttpResponseData> Books(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBooksAll)] HttpRequestData req,
 			FunctionContext context)
 		{
 			logger.LogInformation($"Retrieving all books");
 			try
 			{
-				return new OkObjectResult<IEnumerable<Book>>(req, bookLogic.GetAllBooks());
+				return await new OkHttpResponseResult<IEnumerable<Book>>().GetResponseData(req, bookLogic.GetAllBooks());
 			}
 			catch (Exception e)
 			{
-				return new BadRequestObjectResult<IEnumerable<Book>>(req, e.ToString());
+				return await new BadHttpResponseResult<string>().GetResponseData(req, e.ToString());
 			}
 		}
 
 		[Function("GetBookDetail")]
-		public async Task<IActionResult<Book>> Details(
+		public async Task<HttpResponseData> Details(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = HttpRoutes.GetBookDetail)] HttpRequestData req,
             FunctionContext context,
 			int bookIDParam)
 		{
-			if (bookIDParam == 0) { return new BadRequestObjectResult<Book>(req, "Please fill the bookID"); }
+			if (bookIDParam == 0) { return await new BadHttpResponseResult<string>().GetResponseData(req, "Please fill the bookID"); }
 
 			logger.LogInformation($"Retrieving details for id {bookIDParam}");;
-			return new OkObjectResult<Book>(req, bookLogic.GetBookByID(bookIDParam));
+			return await new OkHttpResponseResult<Book>().GetResponseData(req, bookLogic.GetBookByID(bookIDParam));
 		}
 
 		
 		[Function("UpdateBookData")]
-		public async Task<IActionResult<Book>> UpdateBookData(
+		public async Task<HttpResponseData> UpdateBookData(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] BookSaveModel input,
 			HttpRequestData req,
             FunctionContext context,
 			int bookIDParam)
 		{
-			if(!TryValidateBookId<Book>(bookIDParam, input, req, out var result)) { return result; }
+			if(!TryValidateBookId<Book>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
 
 			logger.LogInformation($"Saving: {input.Title} with id {input.BookID}");
 			var combined = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
 			bookLogic.Save(combined);
 
-			return new OkObjectResult<Book>(req, combined);
+			return await new OkHttpResponseResult<Book>().GetResponseData(req, combined);
 		}
 		
 		[Function("AddBook")]
-		public async Task<IActionResult<Book>> AddBook(
+		public async Task<HttpResponseData> AddBook(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)] Book input,
 			HttpRequestData req,
             FunctionContext context)
 		{
-			if((input?.BookID ?? 0) > 0) { return new BadRequestObjectResult<Book>(req, "Newly added book should NOT have an ID set"); }
+			if((input?.BookID ?? 0) > 0) { return await new BadHttpResponseResult<string>().GetResponseData(req, "Newly added book should NOT have an ID set"); }
 
 			logger.LogInformation($"Saving: {input.Title}");
 			bookLogic.Save(input);
 			logger.LogInformation($"Received Id= {input.BookID}");
 
-			return new OkObjectResult<Book>(req, input);
+			return await new OkHttpResponseResult<Book>().GetResponseData(req, input);
 		}
 
 
 		[Function("UpdateReadBadge")]
-		public async Task<IActionResult<bool>> UpdateReadBadge(
+		public async Task<HttpResponseData> UpdateReadBadge(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadBadge)] BookReadBadgeUpdateModel input,
 			HttpRequestData req,
             FunctionContext context,
 			int bookIDParam)
 		{
-			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return new BadRequestObjectResult<bool>(req, "Failed", false); }
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
 
 			logger.LogInformation($"UpdateReadBadge: {input.ReadStatus}  with id {input.BookID}");
 			bookLogic.UpdateReadBadge(input.BookID.Value, input.ReadStatus);
 
-			return new OkObjectResult<bool>(req, true);
+			return await new OkHttpResponseResult<bool>().GetResponseData(req, true);
 		}
 
 		[Function("UpdateReadStatus")]
-		public async Task<IActionResult<bool>> UpdateReadStatus(
+		public async Task<HttpResponseData> UpdateReadStatus(
 		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] BookReadStatusUpdateModel input,
 		HttpRequestData req,
         FunctionContext context,
 		int bookIDParam)
 		{
-			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
 
 			logger.LogInformation($"UpdateReadStatus: {input.ReadStatus} ({input.ReadRemark}) with id {input.BookID}");
 			bookLogic.UpdateReadStatus(input.BookID.Value, input.ReadStatus, input.ReadRemark);
 
-			return new OkObjectResult<bool>(req, true);
+			return await new OkHttpResponseResult<bool>().GetResponseData(req, true);
 		}
 
 		[Function("UpdateAvailabilityStatus")]
-		public async Task<IActionResult<bool>> UpdateAvailabilityStatus(
+		public async Task<HttpResponseData> UpdateAvailabilityStatus(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] BookAvailabilityStatusUpdateModel input,
 			HttpRequestData req,
             FunctionContext context,
 			int bookIDParam)
 		{
-			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return result; }
+			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
 			
 			logger.LogInformation($"UpdateAvailabilityStatus: {input.Status} ({input.StatusRemark}) with id {input.BookID}");
 			bookLogic.UpdateAvailability(input.BookID.Value, input.Status, input.StatusRemark);
 
-			return new OkObjectResult<bool>(req, true);
+			return await new OkHttpResponseResult<bool>().GetResponseData(req, true);
 		}		
 
 		//Validate a bookId from a request against a model, if failed returning the bad request result
-		private bool TryValidateBookId<T>(int bookIDFromRoute, IBookRequestModel bookModel, HttpRequestData req, out BadRequestObjectResult<T> errorModel)
+		private bool TryValidateBookId<T>(int bookIDFromRoute, IBookRequestModel bookModel, HttpRequestData req, out string errorMessage)
 		{
 			if(bookIDFromRoute <= 0 || bookModel?.BookID == null) 
 			{
-				errorModel = new BadRequestObjectResult<T>(req, $"ID in post or url were not set: {bookIDFromRoute} / {bookModel?.BookID}"); 
+				errorMessage = $"ID in post or url were not set: {bookIDFromRoute} / {bookModel?.BookID}"; 
 				return false;
 			}
 			
 			if (bookIDFromRoute != bookModel?.BookID) 
 			{ 
-				errorModel = new BadRequestObjectResult<T>(req, $"ID in post and url were not equal: {bookIDFromRoute} vs {bookModel?.BookID}"); 
+				errorMessage = $"ID in post and url were not equal: {bookIDFromRoute} vs {bookModel?.BookID}";
 				return false; 
 			}
 
 			//All is well
-			errorModel = null;
+			errorMessage = null;
 			return true;
 		}
 	}

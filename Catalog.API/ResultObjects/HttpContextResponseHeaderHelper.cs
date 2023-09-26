@@ -1,4 +1,5 @@
 
+using Azure.Core;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
@@ -6,16 +7,16 @@ namespace Catalog.API.ResultObjects
 {
     public static class HttpContextResponseHeaderHelper
     {
-        public static void AddCorsHeadersToRespone(this HttpRequestData request)
+        public static void AddCorsHeadersToRespone(this HttpResponseData response)
         {
-            AddOrReplaceHeader(request, "Access-Control-Allow-Headers", "*");
-            AddOrReplaceHeader(request, "Access-Control-Allow-Origin", "*");
+            AddOrReplaceHeader(response, "Access-Control-Allow-Headers", "*");
+            AddOrReplaceHeader(response, "Access-Control-Allow-Origin", "*");
         }
 
-        private static void AddOrReplaceHeader(HttpRequestData request, string headerName, string value)
+        private static void AddOrReplaceHeader(HttpResponseData response, string headerName, string value)
         {
-            //if(request.FunctionContext.GetHttpResponseData().Headers.Contains(headerName)) { request.FunctionContext.GetHttpResponseData().Headers.Remove(headerName); }
-            //request.FunctionContext.GetHttpResponseData().Headers.Add(headerName, value);
+            if(response.Headers.Contains(headerName)) { response.Headers.Remove(headerName); }
+            response.Headers.Add(headerName, value);
         }
     }
 }

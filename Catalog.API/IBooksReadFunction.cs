@@ -11,11 +11,11 @@ namespace Catalog.API
 {
     public interface IBooksReadFunction
 	{
-		Task<IActionResult<IEnumerable<Book>>> Books(
+		Task<HttpResponseData/*IActionResult<IEnumerable<Book>>*/> Books(
 			HttpRequestData req,
             FunctionContext context);
 	
-		Task<IActionResult<Book>> Details(
+		Task<HttpResponseData/*IActionResult<Book>*/> Details(
 			HttpRequestData req,
             FunctionContext context,
 			int bookIDParam);
