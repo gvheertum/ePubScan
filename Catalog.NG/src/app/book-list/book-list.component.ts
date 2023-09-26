@@ -72,7 +72,7 @@ export class BookListComponent implements OnInit {
   filterStatusBooks(books: IBook[], status: string | null) : IBook[] {
     let matchingBooks = new Array<IBook>();
     for(let b of books) {
-      if(b.readStatus?.toLocaleLowerCase() == status?.toLocaleLowerCase()) { matchingBooks.push(b); }
+      if(b.ReadStatus?.toLocaleLowerCase() == status?.toLocaleLowerCase()) { matchingBooks.push(b); }
     }
     console.debug(`Kept ${matchingBooks.length} of ${books.length}`);
     return matchingBooks;
@@ -83,7 +83,7 @@ export class BookListComponent implements OnInit {
     console.debug("Filtering newly created")
     let matchingBooks = new Array<IBook>();
     for(let b of books) {
-      if(b.bookID >= this.settings.getNewBookOffset() && (!b.nrOfPages || !b.description)) { matchingBooks.push(b); }
+      if(b.BookID >= this.settings.getNewBookOffset() && (!b.NrOfPages || !b.Description)) { matchingBooks.push(b); }
     }
     console.debug(`Kept ${matchingBooks.length} of ${books.length}`);
     return matchingBooks;

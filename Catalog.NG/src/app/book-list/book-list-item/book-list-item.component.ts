@@ -17,6 +17,6 @@ export class BookListItemComponent implements OnInit {
   }
 
   getBookDescriptionHtml() {
-    return this.book.description?.replaceAll("\n", "<br/>");
+    return this.book.Description?.replaceAll("\n", "<br/>");
   }
 }
