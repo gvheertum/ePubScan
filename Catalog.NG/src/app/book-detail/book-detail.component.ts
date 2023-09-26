@@ -38,7 +38,7 @@ export class BookDetailComponent implements OnInit {
     const bookId = Number(this.route.snapshot.paramMap.get('bookid'));
     this.bookService.getBook(bookId).subscribe(b => { 
       this.book = b;
-      this.titleService.setTitle(`${b.title} - ${b.author} | ${this.settings.getApplicationTitle()}`);
+      this.titleService.setTitle(`${b.Title} - ${b.Author} | ${this.settings.getApplicationTitle()}`);
     });
   }
 }

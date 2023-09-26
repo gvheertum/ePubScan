@@ -33,12 +33,12 @@ export class BookReadstatusUpdaterComponent implements OnInit {
 
   updateStatus(book: IBook, status: ReadStateElement) {
     
-    var bookDisplay = `${book.author} - ${book.title}`;
-    var message = `Do you want to change the status for book ${book.bookID}: ${bookDisplay} ${status.display}?\r\nOld state was: ${book.readStatus}`;
+    var bookDisplay = `${book.Author} - ${book.Title}`;
+    var message = `Do you want to change the status for book ${book.BookID}: ${bookDisplay} ${status.display}?\r\nOld state was: ${book.ReadStatus}`;
     var action = () => {
-      book.readStatus = status.display;
+      book.ReadStatus = status.display;
       
-      this.bookService.updateBookReadBadge(book.bookID, status.display).subscribe((r) => {
+      this.bookService.updateBookReadBadge(book.BookID, status.display).subscribe((r) => {
         if(r) { 
           this.toastService.info(`${bookDisplay} marked with read status: ${status.display}`);
         } else { 

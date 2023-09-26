@@ -30,9 +30,9 @@ export class BookDetailReadstatusComponent implements OnInit {
   updateData() : void { 
     var formData = this.readStatusForm.value;
     var updatedData : IBookReadStatusUpdateModel = {  
-      bookID: this.book.bookID,
-      readRemark: formData.readRemark,
-      readStatus: formData.readStatus
+      BookID: this.book.BookID,
+      ReadRemark: formData.readRemark,
+      ReadStatus: formData.readStatus
     };
     console.debug("Sending: ", updatedData);
 

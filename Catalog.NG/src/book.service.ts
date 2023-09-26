@@ -41,7 +41,7 @@ export class BookService {
   
    updateBookReadBadge(bookId: number, readBadge: string) : Observable<boolean> {
     
-    var postData : IBookReadBadgeUpdateModel = { bookID: bookId, readStatus: readBadge };
+    var postData : IBookReadBadgeUpdateModel = { BookID: bookId, ReadStatus: readBadge };
 
     return this.http.post<boolean>(this.booksUrl + `Book/${bookId}/UpdateReadBadge`, postData)
       .pipe(
@@ -51,7 +51,7 @@ export class BookService {
    }
 
    updateBookReadStatus(bookReadStatusModel : IBookReadStatusUpdateModel) : Observable<boolean> {
-    return this.http.post<boolean>(this.booksUrl + `Book/${bookReadStatusModel.bookID}/UpdateReadStatus`, bookReadStatusModel)
+    return this.http.post<boolean>(this.booksUrl + `Book/${bookReadStatusModel.BookID}/UpdateReadStatus`, bookReadStatusModel)
       .pipe(
       tap(_ => this.log('Updated bookReadStatus')),
       catchError(this.handleError<boolean>('updateBookReadStatus', null))
@@ -59,7 +59,7 @@ export class BookService {
    }
 
    updateBookDetails(bookDetailModel: IBookDetailUpdateModel) : Observable<boolean> {
-    return this.http.post<boolean>(this.booksUrl + `Book/${bookDetailModel.bookID}/UpdateBookData`, bookDetailModel)
+    return this.http.post<boolean>(this.booksUrl + `Book/${bookDetailModel.BookID}/UpdateBookData`, bookDetailModel)
       .pipe(
       tap(_ => this.log('Updated bookDetails')),
       catchError(this.handleError<boolean>('updateBookDetails', null))
@@ -67,7 +67,7 @@ export class BookService {
    }
 
    updateBookAvailabilityStatus(bookAvailabilityModel: IBookAvailabilityStatusUpdateModel) : Observable<boolean> {
-    return this.http.post<boolean>(this.booksUrl + `Book/${bookAvailabilityModel.bookID}/UpdateAvailabilityStatus`, bookAvailabilityModel)
+    return this.http.post<boolean>(this.booksUrl + `Book/${bookAvailabilityModel.BookID}/UpdateAvailabilityStatus`, bookAvailabilityModel)
       .pipe(
       tap(_ => this.log('Updated bookDetails')),
       catchError(this.handleError<boolean>('updateBookDetails', null))

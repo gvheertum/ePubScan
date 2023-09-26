@@ -35,13 +35,13 @@ export class BookDetailGeneralComponent implements OnInit {
     //TODO: Find a way to reverse patch the data
     var formData = this.bookDetailForm.value;
     var updatedData : IBookDetailUpdateModel = {  
-      bookID: this.book.bookID,
-      identifier: formData.identifier,
-      title: formData.title,
-      author: formData.author,
-      description: formData.description,
-      medium: formData.medium,
-      nrOfPages: formData.nrOfPages
+      BookID: this.book.BookID,
+      Identifier: formData.identifier,
+      Title: formData.title,
+      Author: formData.author,
+      Description: formData.description,
+      Medium: formData.medium,
+      NrOfPages: formData.nrOfPages
     };
     console.debug("Sending: ", updatedData);
 

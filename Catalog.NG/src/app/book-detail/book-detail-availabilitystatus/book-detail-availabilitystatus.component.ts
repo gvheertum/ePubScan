@@ -29,9 +29,9 @@ export class BookDetailAvailabilitystatusComponent implements OnInit {
   updateData() : void {
     var formData = this.availabilityStatusForm.value;
     var updatedData : IBookAvailabilityStatusUpdateModel = {  
-      bookID: this.book.bookID,
-      status: formData.status,
-      statusRemark: formData.statusRemark
+      BookID: this.book.BookID,
+      Status: formData.status,
+      StatusRemark: formData.statusRemark
     };
     console.debug("Sending: ", updatedData);
 

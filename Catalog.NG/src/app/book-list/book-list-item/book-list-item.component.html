@@ -1,5 +1,5 @@
 <h2 style="display: none;" class="accordion-header" id="book-panel-header-{{book.BookID}}">
-    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" attr.data-bs-target="#book-panel-collapse-{{book.BookID}}" aria-expanded="true" attr.aria-controls="book-panel-collapse-{{book.bookID}}">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" attr.data-bs-target="#book-panel-collapse-{{book.BookID}}" aria-expanded="true" attr.aria-controls="book-panel-collapse-{{book.BookID}}">
         <span class="author">{{book.Author}}</span>&nbsp;-&nbsp;<span class="title">{{book.Title}}</span>
         <div class="labels">
             <span *ngIf="book.NrOfPages" class="pagecount badge bg-light text-dark">{{book.NrOfPages}} pages</span>
@@ -12,13 +12,13 @@
         </div>
     </button> 
 </h2>
-<div  style="display: none;" id="book-panel-collapse-{{book.BookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.bookID}}" >
+<div  style="display: none;" id="book-panel-collapse-{{book.BookID}}" class="accordion-collapse collapse collapsed" attr.aria-labelledby="book-panel-header-{{book.BookID}}" >
     <div class="accordion-body">
         <div *ngIf="book.Description" class="description" [innerHTML]="getBookDescriptionHtml()"></div>
         <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
             <a [routerLink]="['/book', book.BookID]" type="button" class="btn btn-primary">Edit book details</a>
         </div>
-        <app-book-ReadStatus-updater [(book)]="book"></app-book-ReadStatus-updater>
+        <app-book-readstatus-updater [(book)]="book"></app-book-readstatus-updater>
     </div>
 </div>
 
@@ -46,5 +46,5 @@
         <div class="edit btn-group btn-group-sm " role="group" aria-label="Actions">
             <a [routerLink]="['/book', book.BookID]" type="button" class="btn btn-primary">Edit book details</a>
         </div>
-    <app-book-ReadStatus-updater [(book)]="book"></app-book-ReadStatus-updater>
+    <app-book-readstatus-updater [(book)]="book"></app-book-readstatus-updater>
   </mat-expansion-panel>

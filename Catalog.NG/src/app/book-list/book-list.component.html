@@ -12,7 +12,7 @@
     </div>
     
 	<div class="accordion" id="booklist">
-		<div class="accordion-item" book-list-item id="book-panel-{{book.bookID}}" *ngFor="let book of books;let i = index" [(book)]="books[i]" [attr.state]="book.readStatus" [attr.bookidx]="book.bookID"></div>
+		<div class="accordion-item" book-list-item id="book-panel-{{book.BookID}}" *ngFor="let book of books;let i = index" [(book)]="books[i]" [attr.state]="book.ReadStatus" [attr.bookidx]="book.BookID"></div>
 	</div>
 
 </div>
