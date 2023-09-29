@@ -61,7 +61,7 @@ namespace Catalog.API
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookData)] 
 			HttpRequestData req,
             FunctionContext context,
-			BookSaveModel input,
+			[FromBody] BookSaveModel input,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<Book>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
@@ -78,7 +78,7 @@ namespace Catalog.API
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.AddBook)]
 			HttpRequestData req,
             FunctionContext context,
-			Book input)
+            [FromBody] Book input)
 		{
 			if((input?.BookID ?? 0) > 0) { return await new BadHttpResponseResult<string>().GetResponseData(req, "Newly added book should NOT have an ID set"); }
 
@@ -95,7 +95,7 @@ namespace Catalog.API
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadBadge)] 
 			HttpRequestData req,
             FunctionContext context,
-			BookReadBadgeUpdateModel input,
+			[FromBody] BookReadBadgeUpdateModel input,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
@@ -111,7 +111,7 @@ namespace Catalog.API
 		[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookReadStatus)] 
 		HttpRequestData req,
         FunctionContext context,
-		BookReadStatusUpdateModel input,
+		[FromBody] BookReadStatusUpdateModel input,
 		int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
@@ -127,7 +127,7 @@ namespace Catalog.API
 			[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = HttpRoutes.SetBookAvailabilityStatus)] 
 			HttpRequestData req,
             FunctionContext context,
-			BookAvailabilityStatusUpdateModel input,
+            [FromBody] BookAvailabilityStatusUpdateModel input,
 			int bookIDParam)
 		{
 			if(!TryValidateBookId<bool>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }

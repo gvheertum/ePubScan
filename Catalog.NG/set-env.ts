@@ -5,7 +5,7 @@ const fs = require('fs');
 const writeFile = fs.writeFile;
 
 const envConfigFile = `export const environment = { 
-   apiUrl: '${process.env.API_URL ? process.env.API_URL : "http://localhost/api/"}',
+   apiUrl: '${process.env.API_URL ? process.env.API_URL : "http://localhost:7071/api/"}',
    production: true,
    generated: true,
 };
