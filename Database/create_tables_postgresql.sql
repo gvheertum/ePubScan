@@ -16,3 +16,11 @@ CREATE TABLE "Book" (
 	"Medium" varchar(500) NULL,
 	"NrOfPages" int NULL
 ) 
+
+CREATE TABLE "VideoGame" (
+	"VideoGameID" int PRIMARY KEY NOT NULL,
+	"Name" varchar(255) NOT NULL,
+	"Platform" varchar(100) NOT NULL,
+	"Remark" varchar(500) NULL,
+	"Status" varchar(255) NULL
+) 
