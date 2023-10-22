@@ -22,3 +22,5 @@ Catalog/bin
 .vs/ePubScan/v15/.suo
 ePubAnalyzer.Analyzer/Secrets.cs
 Catalog.NG/.angular/cache/*
+*.local
+Catalog.Next/catalog/.next/*

@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Book {
+  BookID       Int     @id
+  ReadStatus   String? @db.VarChar(255)
+  ReadRemark   String? @db.VarChar(255)
+  Title        String? @db.VarChar(1000)
+  Author       String? @db.VarChar(1000)
+  Identifier   String? @db.VarChar(1000)
+  Language     String? @db.VarChar(255)
+  Category     String? @db.VarChar(255)
+  Subject      String?
+  Description  String?
+  Folder       String? @db.VarChar(1000)
+  FileName     String? @db.VarChar(1000)
+  Status       String? @db.VarChar(500)
+  StatusRemark String? @db.VarChar(500)
+  Medium       String? @db.VarChar(500)
+  NrOfPages    Int?
+}
+
+model VideoGame {
+  VideoGameID Int     @id
+  Name        String  @db.VarChar(255)
+  Platform    String  @db.VarChar(100)
+  Remark      String? @db.VarChar(500)
+  Status      String? @db.VarChar(255)
+}
