@@ -4,6 +4,8 @@ namespace ePubAnalyzer.Shared.DAL
 {
 	public class EpubCatalogContext : Microsoft.EntityFrameworkCore.DbContext
 	{
+		private const string PostgresqlLookup = "Provider=Postgresql";
+
 		public EpubCatalogContext(DbContextOptions<EpubCatalogContext> options) : base(options)
         {
         }
@@ -17,20 +19,19 @@ namespace ePubAnalyzer.Shared.DAL
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			// IConfigurationRoot configuration = new ConfigurationBuilder()
-			// 	.SetBasePath("/Users/gertjan/Development/EpubAnalyzer/Catalog")
-			// 	.AddJsonFile("appsettings.json")
-			// 	.AddJsonFile("connectionstrings.json")
-			// 	.Build();
-			//optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-			//optionsBuilder
-			//return optionsBuilder;
-		}
-
+		}	
 		public static DbContextOptions<EpubCatalogContext> GetConfig(string connectionString)
 		{
 			var optionsBuilder = new DbContextOptionsBuilder<EpubCatalogContext>();
-			optionsBuilder.UseSqlServer(connectionString);
+			if(connectionString.Contains(PostgresqlLookup, StringComparison.InvariantCultureIgnoreCase)) 
+			{
+				connectionString = connectionString.Replace(PostgresqlLookup, "", StringComparison.OrdinalIgnoreCase); //remove postgres prefix
+				connectionString = connectionString.StartsWith(";") ? connectionString.Substring(1) : connectionString; //remove leading ;
+				optionsBuilder.UseNpgsql(connectionString);
+			}
+			else{
+				optionsBuilder.UseSqlServer(connectionString);
+			}
 			return optionsBuilder.Options;
 		}
 	}

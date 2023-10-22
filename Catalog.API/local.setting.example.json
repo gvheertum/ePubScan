@@ -5,6 +5,7 @@
         "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
     },
     "ConnectionStrings": {
-        "DefaultConnection": "THE ROAD TO SQL"   
+        // By default we use SQL, if you want to use a Postgresql database use: "Provider=Postgresql;Host=x;Database=y;Username=z;Password=a"
+        "DefaultConnection": "THE ROAD TO SQL"    
     }
 }

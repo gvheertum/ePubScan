@@ -27,5 +27,6 @@
     <Content Include="Entities\ComparisonContainer.cs" />
     <Content Include="Entities\ComparisonResult.cs" />
     <Content Include="Library\BookSetComparer.cs" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
   </ItemGroup>
 </Project>
