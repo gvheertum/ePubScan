@@ -8,8 +8,9 @@ export default class BookRepository {
         return feed;
     }
 
-    async getBook(bookID : number) :  Promise<IBook> {
-        var book : IBook = await prisma.book.findFirst({where: {
+    async getBook(bookID : number) :  Promise<IBook | null> {
+        console.log("bookid:", bookID);
+        let book : IBook | null = await prisma.book.findFirst({where: {
             BookID: bookID,
           }});
         return book;        
