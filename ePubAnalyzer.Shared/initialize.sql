@@ -1,23 +1,35 @@
-CREATE TABLE [dbo].[Book](
-	[BookID] [int] IDENTITY(1,1) NOT NULL,
-	[ReadStatus] [nvarchar](255) NULL,
-	[ReadRemark] [nvarchar](255) NULL,
-	[Title] [nvarchar](1000) NULL,
-	[Author] [nvarchar](1000) NULL,
-	[Identifier] [nvarchar](1000) NULL,
-	[Language] [nvarchar](255) NULL,
-	[Category] [nvarchar](255) NULL,
-	[Subject] [nvarchar](max) NULL,
-	[Description] [nvarchar](max) NULL,
-	[Folder] [nvarchar](1000) NULL,
-	[FileName] [nvarchar](1000) NULL,
-	[Status] [nvarchar](500) NULL,
-	[StatusRemark] [nvarchar](500) NULL,
-	[Medium] [nvarchar](500) NULL,
-	[NrOfPages] [int] NULL,
-PRIMARY KEY CLUSTERED 
+-- Table: public.Book
+
+-- DROP TABLE IF EXISTS public."Book";
+
+CREATE TABLE IF NOT EXISTS public."Book"
 (
-	[BookID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+    "BookID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    "ReadStatus" character varying(255) COLLATE pg_catalog."default",
+    "ReadRemark" character varying(255) COLLATE pg_catalog."default",
+    "Title" character varying(1000) COLLATE pg_catalog."default",
+    "Author" character varying(1000) COLLATE pg_catalog."default",
+    "Identifier" character varying(1000) COLLATE pg_catalog."default",
+    "Language" character varying(255) COLLATE pg_catalog."default",
+    "Category" character varying(255) COLLATE pg_catalog."default",
+    "Subject" text COLLATE pg_catalog."default",
+    "Description" text COLLATE pg_catalog."default",
+    "Folder" character varying(1000) COLLATE pg_catalog."default",
+    "FileName" character varying(1000) COLLATE pg_catalog."default",
+    "Status" character varying(500) COLLATE pg_catalog."default",
+    "StatusRemark" character varying(500) COLLATE pg_catalog."default",
+    "Medium" character varying(500) COLLATE pg_catalog."default",
+    "NrOfPages" integer,
+    CONSTRAINT "Book_pkey" PRIMARY KEY ("BookID")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Book"
+    OWNER to "default";
+
+REVOKE ALL ON TABLE public."Book" FROM catalogconsumer;
+
+GRANT UPDATE, INSERT, SELECT ON TABLE public."Book" TO catalogconsumer;
+
+GRANT ALL ON TABLE public."Book" TO "default";
