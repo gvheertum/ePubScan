@@ -11,7 +11,7 @@ export default async function Book({ params }: { params: { slug: string } }) {
         <BookDetail book={book!} /> 
         }
         {book === null && 
-            <p>No book!</p>
+            <p>No book with this ID!</p>
         }
     </>
  }

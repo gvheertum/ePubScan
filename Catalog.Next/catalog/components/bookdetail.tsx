@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 
-import IBook from "../lib/IBook"
+import { IBook } from "../lib/IBook"
 import { useState } from 'react'
+import ApiConsumer from "../lib/apiconsumer";
+import { read } from "fs";
 
 export default function BookDetail({
   book,
@@ -21,10 +23,37 @@ export default function BookDetail({
   const [readStatus, setReadStatus] = useState(book?.ReadStatus);
   const [status, setStatus] = useState(book?.Status);
   const [statusRemark, setStatusRemark] = useState(book?.StatusRemark);
+  const apiConsumer = new ApiConsumer();
 
-  function updateData() { console.log("Update data!", book); }
-  function updateReadData() { console.log("Update data!", book); }
-  function updateStatusData() { console.log("Update data!", book); }
+  async function updateData() { 
+
+    await apiConsumer.updateDetails({
+        BookID: bookId,
+        Author: author,
+        Description: description,
+        Identifier: identifier,
+        Medium: medium,
+        NrOfPages: nrOfPages,
+        Title: title
+    });
+  }
+  
+  async function updateReadData() { 
+    await apiConsumer.updateReadStatus({
+        BookID: bookId,
+        ReadStatus: readStatus,
+        ReadRemark: readRemark,
+    });
+  }
+
+  async function updateAvailabilityData() { 
+    await apiConsumer.updateAvailability({
+        BookID: bookId,
+        Status: status ,
+        StatusRemark: statusRemark,
+    });
+  }
+
 
   return <>
       
@@ -32,7 +61,7 @@ export default function BookDetail({
             <div className="input-group-prepend">
                 <span className="input-group-text" id="inputGroup-sizing-sm">BookID (db)</span>
             </div>
-            <input type="text" value={bookId} className="form-control" />
+            <input type="text" value={bookId} className="form-control" readOnly />
         </div>
 
         <div className="input-group input-group-sm mb-3">
@@ -79,7 +108,7 @@ export default function BookDetail({
             <div className="input-group-prepend">
                 <span className="input-group-text" id="inputGroup-sizing-sm">Nr. of pages</span>
             </div>
-            <input type="number" className="form-control" value={nrOfPages} onChange={(e) => { setNrOfPages(e.target.value) }} />
+            <input type="number" className="form-control" value={nrOfPages} onChange={(e) => { setNrOfPages(parseInt(e.target.value)) }} />
 
         </div>
          
@@ -134,7 +163,7 @@ export default function BookDetail({
             <textarea className="form-control" id="statusRemark" value={statusRemark} onChange={(e) => { setStatusRemark(e.target.value) }}></textarea>
         </div>
         <div className="card-footer text-muted">
-            <button className="btn btn-info" onClick={updateStatusData} type="button">Update availability status</button>
+            <button className="btn btn-info" onClick={updateAvailabilityData} type="button">Update availability status</button>
         </div>
     
 
