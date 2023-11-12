@@ -33,7 +33,6 @@ export default function BookLine({
     <TableCell align="right">{book!.Author}</TableCell>
     <TableCell align="right">
       <ReadStatusBadge readStatus={book?.ReadStatus} nrOfPages={book?.NrOfPages} />
-    
     </TableCell>
     <TableCell align="right"><Link href={"book/" + book?.BookID}>Details</Link></TableCell>
   </TableRow>
