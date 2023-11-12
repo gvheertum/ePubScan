@@ -20,28 +20,25 @@ export default function ReadStatusBadge({
 }) {
   var states = new ReadStates();
   return <>
-  <Tooltip title={readStatus ?? "Unknown"}>
-    {states.Read.matches(readStatus) &&
-      <><BookmarkAddedIcon color="success" /></>
-    }
-    {states.Reading.matches(readStatus) &&
-      <><LocalLibraryIcon color="primary" /></>
-    }
-    {states.WontRead.matches(readStatus) &&
-      <><BookmarkRemoveIcon color="error" /></>
-    }
-    {states.ToRead.matches(readStatus) &&
-      <><BookmarkAddIcon color="success" /></>
-    }
-    {states.Unknown.matches(readStatus) &&
-      <><BookmarkBorderIcon color="disabled" /></>
-    }
+    <Tooltip title={readStatus ?? "Unknown"}>
+      {states.Read.matches(readStatus) &&
+        <><BookmarkAddedIcon color="success" /></>
+      }
+      {states.Reading.matches(readStatus) &&
+        <><LocalLibraryIcon color="primary" /></>
+      }
+      {states.WontRead.matches(readStatus) &&
+        <><BookmarkRemoveIcon color="error" /></>
+      }
+      {states.ToRead.matches(readStatus) &&
+        <><BookmarkAddIcon color="success" /></>
+      }
+      {states.Unknown.matches(readStatus) &&
+        <><BookmarkBorderIcon color="disabled" /></>
+      }
     </Tooltip>
-    {nrOfPages !== null && 
-    <>
-      <Chip label={(nrOfPages ? (nrOfPages + "p") : "")} variant="outlined" />
-      <Badge badgeContent={(nrOfPages ? (nrOfPages + "p") : "")} color="info" ><AutoStoriesIcon color="disabled" /></Badge>
-      </>
+    {nrOfPages !== null &&
+      <Chip label={(nrOfPages ? (nrOfPages + "p") : "")} size="small" variant="outlined" />
     }
   </>
 }
