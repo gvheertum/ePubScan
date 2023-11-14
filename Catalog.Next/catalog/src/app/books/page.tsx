@@ -7,72 +7,88 @@ import { useEffect, useState } from "react";
 import ApiConsumer from "../../../lib/apiconsumer";
 
 export default function BookOverview() {
+    
     const [allbooks, setAllBooks]: [IBook[], any] = useState([]);
     const [books, setBooks]: [IBook[], any] = useState([]);
     const [loading, setLoading]: [boolean, any] = useState(true);
-    const [searchstring, setSearchString] = useState("");
-
+    const [searchstringApplied, setSearchStringApplied] = useState("");
+    const [filterstatus, setFilterStatus] : [ReadStateElement | null, any] = useState(null);
+    
     
 
 //TODO: Add filter logic
 //TODO: Add search
 //TODO: Add logic to set state directly
-
-
-    const getData = () => {
-        console.log("Getting data!");
+    
+    useEffect(() => {
+        console.log("First load!");
         setLoading(true);
         new ApiConsumer().getAllBooks().then(d => {
             var bookData = d?.reverse() ?? [];
             setAllBooks(bookData);
             setBooks(bookData);
+            console.log("allbooks:", bookData);
+            console.log("data:", allbooks)
             setLoading(false);
         })
-    }
+    }, []);
 
-    const filterName = (search: string) => {
+   
+
+    function applyFilter() {
+        if(filterstatus == null && searchstringApplied == "") { console.log("No-op -> "); return; }
         setLoading(true);
-        console.log("filtering on:", search);
+        console.log("filter should be applied");
+        console.log("status", filterstatus);
+        console.log("string", searchstringApplied);
+        setLoading(true);
+        
         let filteredBooks = allbooks;
-        if(search != "") {
-            filteredBooks = allbooks.filter((b,i) => { 
-                return (b.Author && b.Author!.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1) || 
-                    (b.Title && b.Title!.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1) 
+
+        if (filterstatus != null) {
+            filteredBooks = filteredBooks.filter((b,i) => { 
+                return b.ReadStatus == filterstatus.code || b.ReadStatus == filterstatus.display 
             });
-        } 
+        }
         
+        if(searchstringApplied != "") {
+            filteredBooks = filteredBooks.filter((b,i) => { 
+                return (b.Author && b.Author!.toLocaleLowerCase().indexOf(searchstringApplied.toLocaleLowerCase()) > -1) || 
+                    (b.Title && b.Title!.toLocaleLowerCase().indexOf(searchstringApplied.toLocaleLowerCase()) > -1) 
+            });
+        }
+        
+        // Set the books
         setBooks(filteredBooks);
         setLoading(false);
+
+
     }
 
-    const resetFilter = () => {
-        setLoading(true);
-        setBooks(allbooks);
-        setLoading(false);
-    }
 
-    const filterStatus = (status: ReadStateElement) => {
-        setLoading(true);
-        
-        let filteredBooks = allbooks.filter((b,i) => { 
-            return b.ReadStatus == status.code || b.ReadStatus == status.display 
-        });
-        
-        setBooks(filteredBooks);
-        setLoading(false);
-    }
+    
+    // On filter change, apply filter and wait for rebind
+    useEffect(() => { console.log("filter change?"); applyFilter() }, [searchstringApplied, filterstatus])
+    
+    //Defer searching on string by keeping a wait
+    //the search is NOT placed in state since eval took too long
+    var toptr = -1;
+    function deferSearch(searchval: string) {
+        if(toptr != -1) { clearTimeout(toptr!); }
 
-    useEffect(() => { getData() }, [])
+        if(searchval === "") { setSearchStringApplied(""); return; } //Clear directly or wait for a sec
+        toptr = (window.setTimeout(() => { console.log("Setting the string:", searchval); setSearchStringApplied(searchval); }, 1000));
+    }
 
     return <>
-        <Chip variant="outlined" onClick={() => resetFilter()} label="No filter" />
-        <Chip onClick={() => filterStatus(new ReadStates().Read)} color="success" label="Read" />
-        <Chip onClick={() => filterStatus(new ReadStates().Reading)} color="primary" label="Reading" />
-        <Chip onClick={() => filterStatus(new ReadStates().ToRead)} color="success" label="To Read" />
-        <Chip onClick={() => filterStatus(new ReadStates().WontRead)} color="error" label="Wont read" />
-        <Chip onClick={() => filterStatus(new ReadStates().Unknown)} color="default" label="Unknown" /> <br/>
-        <input type="text" placeholder="Search text" id="txtSearch" onBlur={(v)=> setSearchString(v.target.value) } />
-        <button onClick={() => filterName(searchstring) }>Search</button>
+        <Chip variant="outlined" onClick={() => setFilterStatus(null)} label="No filter" />
+        <Chip onClick={() => setFilterStatus(new ReadStates().Read)} color="success" label="Read" />
+        <Chip onClick={() => setFilterStatus(new ReadStates().Reading)} color="primary" label="Reading" />
+        <Chip onClick={() => setFilterStatus(new ReadStates().ToRead)} color="success" label="To Read" />
+        <Chip onClick={() => setFilterStatus(new ReadStates().WontRead)} color="error" label="Wont read" />
+        <Chip onClick={() => setFilterStatus(new ReadStates().Unknown)} color="default" label="Unknown" /> <br/>
+        <input type="text" placeholder="Search text" id="txtSearch" onChange={(v)=> { deferSearch(v.target.value) }} />
+        
 
         {!loading &&
             <TableContainer component={Paper} sx={{ width: '100%', overflow: 'hidden' }}>
