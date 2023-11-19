@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
+import { signOut } from '../../auth';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,6 +37,15 @@ export default function RootLayout({
             BookCatalog
           </Typography>
         </Toolbar>
+       {/* Hide if no session */}
+        <form
+           action={async () => {
+            'use server';
+            await signOut();
+          }}
+        >
+          <input type="submit" value="logout" />
+        </form>
       </AppBar>
     </Box>
         

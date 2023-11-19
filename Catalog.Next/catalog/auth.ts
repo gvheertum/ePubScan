@@ -4,7 +4,10 @@ import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 import UserRepository from './lib/userrepository';
 
-
+interface ICredentialsPost {
+  email : string,
+  password : string
+}
 
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -12,19 +15,13 @@ export const { auth, signIn, signOut } = NextAuth({
     Credentials({
       async authorize(credentials) {
         // ...
-        console.log(credentials);
- 
-        //new UserRepository().getUser(credentials)
-        //   const { email, password } = credentials.data;
-        //   const user = await getUser(email);
-        //   if (!user) return null;
-        //   const passwordsMatch = await bcrypt.compare(password, user.password);
- 
-        //   if (passwordsMatch) return user;
-        
- 
-        console.log('Invalid credentials');
-        return null;
+        // let pCred : ICredentialsPost = credentials;
+        // console.log(credentials);
+        try {
+          const user = await new UserRepository().getUser(credentials.email, credentials.password);
+          console.log("got user:", user);
+          return user;
+        } catch(e) { console.log("e", e);}
       },
     }),    
   ],

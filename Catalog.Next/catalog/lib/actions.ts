@@ -14,6 +14,7 @@ export async function authenticate(
     await signIn('credentials', Object.fromEntries(formData));
   } catch (error) {
     if ((error as Error).message.includes('CredentialsSignin')) {
+      console.log("Invalid cred from actions")
       return 'CredentialsSignin';
     }
     throw error;
