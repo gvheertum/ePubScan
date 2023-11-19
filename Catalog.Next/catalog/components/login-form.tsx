@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
  
 export default function LoginForm() {
   const [state, dispatch] = useFormState(authenticate, undefined);
-  console.log(state,state);
+  
   return (
     <form action={dispatch} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">

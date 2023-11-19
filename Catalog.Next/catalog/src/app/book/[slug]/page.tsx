@@ -1,9 +1,12 @@
+import { useSession } from "next-auth/react";
 import BookDetail from "../../../../components/bookdetail";
 import BookRepository from "../../../../lib/bookrepository"
+
 
 export default async function Book({ params }: { params: { slug: string } }) {
     //new Util().logLine("looking for post:" + params.slug);
     //var post: IPost = new PostRepository().getPost(params.slug);
+    
     let book = await new BookRepository().getBook(parseInt(params.slug, 10));
     return <>
         <h1>Book detail</h1>
@@ -14,4 +17,6 @@ export default async function Book({ params }: { params: { slug: string } }) {
             <p>No book with this ID!</p>
         }
     </>
+    
  }
+ 
