@@ -10,14 +10,12 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
         
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/books'); //Todo all?
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return true;
-      }
-      return true;
+      console.log("Checking state for page: ", nextUrl.pathname);
+      const isOnLogin = nextUrl.pathname.startsWith('/login');
+      if (isOnLogin && isLoggedIn == false) return true; //always allow login
+      if(isOnLogin && isLoggedIn) { return Response.redirect(new URL('/', nextUrl)); }
+      //TODO: CALLBACK IS NOT WORKING CORRECTLY YET
+      return isLoggedIn; // conditional
     },
   },
   providers: [], // Add providers with an empty array for now

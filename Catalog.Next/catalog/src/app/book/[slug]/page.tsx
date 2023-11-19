@@ -19,4 +19,3 @@ export default async function Book({ params }: { params: { slug: string } }) {
     </>
     
  }
- 

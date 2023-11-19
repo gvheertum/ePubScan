@@ -4,6 +4,9 @@ import { NextRequest } from "next/server";
 import { IBookDetailUpdateModel, IBookReadBadgeUpdateModel } from '../../../../../lib/IBook';
 import BookRepository from '../../../../../lib/bookrepository';
 
+// TODO: Handle auth
+
+
 // Handles POST requests to /api/books/all
 export async function GET(
   req: NextRequest
