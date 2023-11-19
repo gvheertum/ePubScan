@@ -24,3 +24,8 @@ CREATE TABLE "VideoGame" (
 	"Remark" varchar(500) NULL,
 	"Status" varchar(255) NULL
 ) 
+
+CREATE TABLE "CatalogUser" (
+	"Email" varchar(255) PRIMARY KEY  NOT NULL,
+	"PasswordHash" varchar(255) NOT NULL
+) 

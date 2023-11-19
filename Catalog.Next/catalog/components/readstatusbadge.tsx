@@ -21,7 +21,7 @@ export default function ReadStatusBadge({
   var states = new ReadStates();
   return <>
     <Tooltip title={readStatus ?? "Unknown"}>
-      {states.Read.matches(readStatus) &&
+      <>{states.Read.matches(readStatus) &&
         <><BookmarkAddedIcon color="success" /></>
       }
       {states.Reading.matches(readStatus) &&
@@ -36,6 +36,7 @@ export default function ReadStatusBadge({
       {states.Unknown.matches(readStatus) &&
         <><BookmarkBorderIcon color="disabled" /></>
       }
+      </>
     </Tooltip>
     {nrOfPages !== null &&
       <Chip label={(nrOfPages ? (nrOfPages + "p") : "")} size="small" variant="outlined" />
