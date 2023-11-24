@@ -9,7 +9,7 @@ interface ICredentialsPost {
   password : string
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({

@@ -12,7 +12,9 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       console.log("Checking state for page: ", nextUrl.pathname);
       const isOnLogin = nextUrl.pathname.startsWith('/login');
-      if (isOnLogin && isLoggedIn == false) return true; //always allow login
+      const isApi = nextUrl.pathname.startsWith("/api");
+      if(isApi) { console.log("is api!"); return true; } 
+      if (isOnLogin && isLoggedIn == false) { return true; } //always allow login
       if(isOnLogin && isLoggedIn) { return Response.redirect(new URL('/', nextUrl)); }
       //TODO: CALLBACK IS NOT WORKING CORRECTLY YET
       return isLoggedIn; // conditional
