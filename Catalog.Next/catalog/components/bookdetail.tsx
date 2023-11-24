@@ -5,13 +5,16 @@ import { IBook } from "../lib/IBook"
 import { useState } from 'react'
 import ApiConsumer from "../lib/apiconsumer";
 import { read } from "fs";
+import { Alert, Button, Snackbar } from "@mui/material";
 
 export default function BookDetail({
   book,
 }: {
   book?: IBook
 }) {
-  
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
   const [bookId, setBookId] = useState(book?.BookID);
   const [identifier, setIdentifier] = useState(book?.Identifier);
   const [title, setTitle] = useState(book?.Title);
@@ -26,7 +29,7 @@ export default function BookDetail({
   const apiConsumer = new ApiConsumer();
 
   async function updateData() { 
-
+    setSaving(true);
     await apiConsumer.updateDetails({
         BookID: bookId,
         Author: author,
@@ -36,22 +39,30 @@ export default function BookDetail({
         NrOfPages: nrOfPages,
         Title: title
     });
+    setSaving(false);
+    setSaved(true);
   }
   
   async function updateReadData() { 
+    setSaving(true);
     await apiConsumer.updateReadStatus({
         BookID: bookId,
         ReadStatus: readStatus,
         ReadRemark: readRemark,
     });
+    setSaving(false);
+    setSaved(true);
   }
 
   async function updateAvailabilityData() { 
+    setSaving(true);
     await apiConsumer.updateAvailability({
         BookID: bookId,
         Status: status ,
         StatusRemark: statusRemark,
     });
+    setSaving(false);
+    setSaved(true);
   }
 
 
@@ -112,10 +123,8 @@ export default function BookDetail({
 
         </div>
          
-        <div className="card-footer text-muted">
-            <button className="btn btn-info" onClick={updateData} type="button">Update book data</button>
-        </div>
-
+        <Button onClick={updateData} variant="contained">Update general data</Button>
+            
       {/* Status */}
         <div className="input-group input-group-sm mb-3">
             <div className="input-group-prepend">
@@ -137,9 +146,8 @@ export default function BookDetail({
             <textarea id="readRemark" value={readRemark} className="form-control" onChange={(e) => { setReadRemark(e.target.value) }}></textarea>
         </div>
         
-        <div className="card-footer text-muted">
-            <button className="btn btn-info" onClick={updateReadData} type="button">Update read status</button>
-        </div>
+        <Button onClick={updateReadData} variant="contained">Update read status</Button>
+
    
     {/* Availability  */}
         <div className="input-group input-group-sm mb-3">
@@ -162,10 +170,21 @@ export default function BookDetail({
             </div>
             <textarea className="form-control" id="statusRemark" value={statusRemark} onChange={(e) => { setStatusRemark(e.target.value) }}></textarea>
         </div>
-        <div className="card-footer text-muted">
-            <button className="btn btn-info" onClick={updateAvailabilityData} type="button">Update availability status</button>
-        </div>
-    
+        <Button onClick={updateAvailabilityData} variant="contained">Update availability status</Button>
+
+
+
+      <Snackbar open={saved} autoHideDuration={5000}>
+          <Alert severity="success" sx={{ width: '100%' }}>
+              Saved
+          </Alert>
+      </Snackbar>
+
+      <Snackbar open={saving} autoHideDuration={5000}>
+          <Alert severity="info" sx={{ width: '100%' }}>
+              Saving
+          </Alert>
+      </Snackbar>
 
     </>
 }
