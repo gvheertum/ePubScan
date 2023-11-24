@@ -4,17 +4,17 @@ import prisma from './prisma';
 export default class BookRepository {
 
   async getAllBooks(): Promise<IBook[]> {
-    var feed: IBook[] = (await prisma.book.findMany({})).sort((a,b) => a.BookID - b.BookID);
+    const feed: IBook[] = (await prisma.book.findMany({})).sort((a,b) => a.BookID - b.BookID) as IBook[];
     return feed;
   }
 
   async getBook(bookID: number): Promise<IBook | null> {
     console.log("bookid:", bookID);
-    let book: IBook | null = await prisma.book.findFirst({
+    const book: IBook | null = await prisma.book.findFirst({
       where: {
         BookID: bookID,
       }
-    });
+    }) as IBook;
     return book;
   }
 
