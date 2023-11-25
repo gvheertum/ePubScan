@@ -1,10 +1,12 @@
 'use client'
-import { Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper, Backdrop, CircularProgress, Chip } from "@mui/material";
+import { Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper, Backdrop, CircularProgress, Chip, IconButton, AppBar, Box, Toolbar, Typography } from "@mui/material";
 import BookLine from "../../../components/bookline";
 import { IBook, ReadStateElement, ReadStates } from "../../../lib/IBook";
 import BookRepository from "../../../lib/bookrepository"
 import { useEffect, useState } from "react";
 import ApiConsumer from "../../../lib/apiconsumer";
+import { signOut } from "next-auth/react";
+import Header from "../../../components/header";
 
 export default function BookOverview() {
     
@@ -81,6 +83,8 @@ export default function BookOverview() {
     }
 
     return <>
+        <Header />
+
         <Chip variant="outlined" onClick={() => setFilterStatus(null)} label="No filter" />
         <Chip onClick={() => setFilterStatus(new ReadStates().Read)} color="success" label="Read" />
         <Chip onClick={() => setFilterStatus(new ReadStates().Reading)} color="primary" label="Reading" />

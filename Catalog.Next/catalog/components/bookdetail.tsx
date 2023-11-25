@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 
-import { IBook } from "../lib/IBook"
+import { IBook, ReadStates } from "../lib/IBook"
 import { useState } from 'react'
 import ApiConsumer from "../lib/apiconsumer";
 import { read } from "fs";
@@ -176,10 +176,10 @@ export default function BookDetail({
                                     onChange={(e) => { setReadStatus(e.target.value) }}
                                 >
                                     <MenuItem value={""}></MenuItem>
-                                    <MenuItem value={"read"}>Read</MenuItem>
-                                    <MenuItem value={"reading"}>Reading</MenuItem>
-                                    <MenuItem value={"toread"}>To read</MenuItem>
-                                    <MenuItem value={"notgoingtoread"}>Not going to read</MenuItem>
+                                    <MenuItem value={new ReadStates().Read.code}>{new ReadStates().Read.display}</MenuItem>
+                                    <MenuItem value={new ReadStates().Reading.code}>{new ReadStates().Reading.display}</MenuItem>
+                                    <MenuItem value={new ReadStates().ToRead.code}>{new ReadStates().ToRead.display}</MenuItem>
+                                    <MenuItem value={new ReadStates().WontRead.code}>{new ReadStates().WontRead.display}</MenuItem>
                                 </Select>
                             </Grid>
                             <Grid xs={6}>

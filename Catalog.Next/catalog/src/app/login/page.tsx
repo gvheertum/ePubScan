@@ -8,7 +8,6 @@ import "./login.css"
 export default function LoginPage() {
   const [state, dispatch] = useFormState(authenticate, undefined);
 
-  console.log("loading login!");
     return (
       <main>
     
