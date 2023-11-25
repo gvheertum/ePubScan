@@ -12,11 +12,9 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 
 
 export default function ReadStatusBadge({
-  readStatus,
-  nrOfPages
+  readStatus
 }: {
   readStatus?: string,
-  nrOfPages?: number
 }) {
   var states = new ReadStates();
   return <>
@@ -38,8 +36,6 @@ export default function ReadStatusBadge({
       }
       </>
     </Tooltip>
-    {nrOfPages !== null &&
-      <Chip label={(nrOfPages ? (nrOfPages + "p") : "")} size="small" variant="outlined" />
-    }
+
   </>
 }

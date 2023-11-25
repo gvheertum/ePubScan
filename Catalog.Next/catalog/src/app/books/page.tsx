@@ -1,5 +1,5 @@
 'use client'
-import { Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper, Backdrop, CircularProgress, Chip, IconButton, AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper, Backdrop, CircularProgress, Chip, IconButton, AppBar, Box, Toolbar, Typography, Link } from "@mui/material";
 import BookLine from "../../../components/bookline";
 import { IBook, ReadStateElement, ReadStates } from "../../../lib/IBook";
 import BookRepository from "../../../lib/bookrepository"
@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import ApiConsumer from "../../../lib/apiconsumer";
 import { signOut } from "next-auth/react";
 import Header from "../../../components/header";
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import ReadStatusBadge from "../../../components/readstatusbadge";
 
 export default function BookOverview() {
     
@@ -47,13 +49,13 @@ export default function BookOverview() {
         
         let filteredBooks = allbooks;
 
-        if (filterstatus != null) {
+        if (filterstatus !== null && !filterstatus.matches(new ReadStates().All.code)) {
             filteredBooks = filteredBooks.filter((b,i) => { 
                 return b.ReadStatus == filterstatus.code || b.ReadStatus == filterstatus.display 
             });
         }
         
-        if(searchstringApplied != "") {
+        if(searchstringApplied !== "") {
             filteredBooks = filteredBooks.filter((b,i) => { 
                 return (b.Author && b.Author!.toLocaleLowerCase().indexOf(searchstringApplied.toLocaleLowerCase()) > -1) || 
                     (b.Title && b.Title!.toLocaleLowerCase().indexOf(searchstringApplied.toLocaleLowerCase()) > -1) 
@@ -82,10 +84,24 @@ export default function BookOverview() {
         toptr = (window.setTimeout(() => { console.log("Setting the string:", searchval); setSearchStringApplied(searchval); }, 1000));
     }
 
+    const columns: GridColDef[] = [
+        { field: 'Title', headerName: 'Title', width: 150 },
+        { field: 'Author', headerName: 'Author', width: 150 },
+        { field: 'ReadStatus', headerName: 'Status', width: 150, renderCell: (params: GridRenderCellParams<any, string | undefined>) => (
+            <><ReadStatusBadge readStatus={params.value} /></>
+          ), 
+        },
+        { field: 'NrOfPages', headerName: 'Pgs', width: 150 },
+        { field: 'BookID', headerName: 'Id', renderCell: (params: GridRenderCellParams<any, number>) => (
+            <><Link href={"book/" + params.value}>Details</Link></>
+          ), 
+        },
+      ];
+      
     return <>
         <Header />
 
-        <Chip variant="outlined" onClick={() => setFilterStatus(null)} label="No filter" />
+        <Chip variant="outlined" onClick={() => setFilterStatus(new ReadStates().All)} label="No filter" />
         <Chip onClick={() => setFilterStatus(new ReadStates().Read)} color="success" label="Read" />
         <Chip onClick={() => setFilterStatus(new ReadStates().Reading)} color="primary" label="Reading" />
         <Chip onClick={() => setFilterStatus(new ReadStates().ToRead)} color="success" label="To Read" />
@@ -95,23 +111,7 @@ export default function BookOverview() {
         
 
         {!loading &&
-            <TableContainer component={Paper} sx={{ width: '100%', overflow: 'hidden' }}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Title</TableCell>
-                            <TableCell>Author</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell align="right">Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {books.map((b: IBook, i) => (
-                            <BookLine key={b.BookID} book={b} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <DataGrid getRowId={(b:IBook) => b.BookID} rows={books} columns={columns} />
         }
         {loading &&
             <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>

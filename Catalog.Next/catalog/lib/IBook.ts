@@ -57,6 +57,7 @@ export class ReadStates {
     ToRead = new ReadStateElement("To read", "toread");
     Reading = new ReadStateElement("Reading", "reading");
     WontRead = new ReadStateElement("Not going to read", "notgoingtoread");
+    All = new ReadStateElement("All", "all");
     Unknown: ReadStateElement = {
         display: "",
         code: "",
