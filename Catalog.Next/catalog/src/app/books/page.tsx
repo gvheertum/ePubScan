@@ -131,7 +131,7 @@ export default function BookOverview() {
                         <Button variant="contained" fullWidth onClick={() => setFilterStatus(new ReadStates().ToRead)} color="success">To Read</Button>
                     </Grid>
                     <Grid xs={1}>
-                        <Button variant="contained" fullWidth onClick={() => setFilterStatus(new ReadStates().WontRead)} color="error">Won't</Button>
+                        <Button variant="contained" fullWidth onClick={() => setFilterStatus(new ReadStates().WontRead)} color="error">Won&apos;t</Button>
                     </Grid>
                     <Grid xs={1}>
                         <Button fullWidth onClick={() => setFilterStatus(new ReadStates().Unknown)}>Unknown</Button>
