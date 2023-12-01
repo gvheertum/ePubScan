@@ -67,6 +67,7 @@ export default function BookDetail({
         setSaved(true);
     }
 console.log("rs", readStatus);
+
     return <>
 
 
