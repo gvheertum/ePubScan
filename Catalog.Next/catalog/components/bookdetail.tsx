@@ -66,8 +66,7 @@ export default function BookDetail({
         setSaving(false);
         setSaved(true);
     }
-
-
+console.log("rs", readStatus);
     return <>
 
 
@@ -176,10 +175,10 @@ export default function BookDetail({
                                     onChange={(e) => { setReadStatus(e.target.value) }}
                                 >
                                     <MenuItem value={""}></MenuItem>
-                                    <MenuItem value={new ReadStates().Read.code}>{new ReadStates().Read.display}</MenuItem>
-                                    <MenuItem value={new ReadStates().Reading.code}>{new ReadStates().Reading.display}</MenuItem>
-                                    <MenuItem value={new ReadStates().ToRead.code}>{new ReadStates().ToRead.display}</MenuItem>
-                                    <MenuItem value={new ReadStates().WontRead.code}>{new ReadStates().WontRead.display}</MenuItem>
+                                    <MenuItem value={new ReadStates().Read.display}>{new ReadStates().Read.display}</MenuItem>
+                                    <MenuItem value={new ReadStates().Reading.display}>{new ReadStates().Reading.display}</MenuItem>
+                                    <MenuItem value={new ReadStates().ToRead.display}>{new ReadStates().ToRead.display}</MenuItem>
+                                    <MenuItem value={new ReadStates().WontRead.display}>{new ReadStates().WontRead.display}</MenuItem>
                                 </Select>
                             </Grid>
                             <Grid xs={6}>

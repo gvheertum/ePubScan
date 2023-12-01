@@ -54,7 +54,7 @@ export interface IBookAvailabilityStatusUpdateModel extends IBookUpdateModel {
 
 export class ReadStates {
     Read = new ReadStateElement("Read", "read");
-    ToRead = new ReadStateElement("To read", "toread");
+    ToRead = new ReadStateElement("To Read", "toread");
     Reading = new ReadStateElement("Reading", "reading");
     WontRead = new ReadStateElement("Not going to read", "notgoingtoread");
     All = new ReadStateElement("All", "all");
