@@ -10,6 +10,7 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import ReadStatusBadge from "../../../components/readstatusbadge";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import "./books.css"
+import BookDescription from "../../../components/bookdescription";
 
 export default function BookOverview() {
 
@@ -21,8 +22,8 @@ export default function BookOverview() {
 
 
 
-    //TODO: Add filter logic
-    //TODO: Add search
+    //TODO: Mobile friendly
+    //TODO: Filters in popup?
     //TODO: Add logic to set state directly
 
     useEffect(() => {
@@ -86,16 +87,21 @@ export default function BookOverview() {
     }
 
     const columns: GridColDef[] = [
-        { field: 'Title', headerName: 'Title', width: 150 },
-        { field: 'Author', headerName: 'Author', width: 150 },
+        { field: 'Title', flex: 1, headerName: 'Title', width: 300 },
+        { field: 'Author', flex: 1, headerName: 'Author', width: 300 },
         {
-            field: 'ReadStatus', headerName: 'Status', width: 150, renderCell: (params: GridRenderCellParams<any, string | undefined>) => (
+            field: 'Description', width: 60, headerName: 'Desc', renderCell: (params: GridRenderCellParams<any, string | undefined>) => (
+                <><BookDescription bookDescription={params.value} /></>
+            ),
+        },
+        {
+            field: 'ReadStatus', width: 60, headerName: 'Status', renderCell: (params: GridRenderCellParams<any, string | undefined>) => (
                 <><ReadStatusBadge readStatus={params.value} /></>
             ),
         },
-        { field: 'NrOfPages', headerName: 'Pgs', width: 150 },
+        { field: 'NrOfPages', headerName: 'Pgs', width: 40 },
         {
-            field: 'BookID', headerName: 'Id', renderCell: (params: GridRenderCellParams<any, number>) => (
+            field: 'BookID', headerName: 'Id', width: 60, renderCell: (params: GridRenderCellParams<any, number>) => (
                 <><Link href={"book/" + params.value}>Details</Link></>
             ),
         },

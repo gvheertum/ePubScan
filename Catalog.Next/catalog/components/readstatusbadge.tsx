@@ -14,7 +14,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 export default function ReadStatusBadge({
   readStatus
 }: {
-  readStatus?: string,
+  readStatus?: string
 }) {
   var states = new ReadStates();
   return <>
