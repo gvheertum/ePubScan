@@ -2,7 +2,7 @@
 import { Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper, Backdrop, CircularProgress, Chip, IconButton, AppBar, Box, Toolbar, Typography, Link, CardContent, Card, TextField, Button } from "@mui/material";
 import { IBook, ReadStateElement, ReadStates } from "../../../lib/IBook";
 import BookRepository from "../../../lib/bookrepository"
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import ApiConsumer from "../../../lib/apiconsumer";
 import { signOut } from "next-auth/react";
 import Header from "../../../components/header";
@@ -150,15 +150,19 @@ export default function BookOverview() {
         </Card>
 
 
-
         {!loading &&
             <DataGrid getRowId={(b: IBook) => b.BookID} rows={books} columns={columns} />
         }
         {loading &&
-            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
+           <BookOverviewLoading />
         }
 
     </>
+}
+
+function BookOverviewLoading() {
+    return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+        <CircularProgress color="inherit" />
+    </Backdrop>
+
 }
