@@ -1,4 +1,3 @@
-import { signOut, useSession } from "next-auth/react";
 import BookDetail from "../../../../components/bookdetail";
 import BookRepository from "../../../../lib/bookrepository"
 

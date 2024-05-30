@@ -2,14 +2,14 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
-import { signOut } from '../../auth';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'BookCatalog',
   description: 'Bookcatalog - ePub and book catalog system',
-  icons: 
+  icons:
     [
       {
         rel: 'apple-touch-icon',
@@ -43,9 +43,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>  
-        {children}
+        <a href="/api/auth/login">Login</a>
+        <a href="/api/auth/logout">Logout</a>
+      <UserProvider>
+        <body className={inter.className}>
+          {children}
         </body>
+      </UserProvider>
+
     </html>
   )
 }

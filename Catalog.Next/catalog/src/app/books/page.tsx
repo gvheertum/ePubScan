@@ -4,7 +4,6 @@ import { IBook, ReadStateElement, ReadStates } from "../../../lib/IBook";
 import BookRepository from "../../../lib/bookrepository"
 import { Suspense, useEffect, useState } from "react";
 import ApiConsumer from "../../../lib/apiconsumer";
-import { signOut } from "next-auth/react";
 import Header from "../../../components/header";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import ReadStatusBadge from "../../../components/readstatusbadge";

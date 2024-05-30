@@ -3,13 +3,16 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { IBookDetailUpdateModel, IBookReadBadgeUpdateModel } from '../../../../../lib/IBook';
 import BookRepository from '../../../../../lib/bookrepository';
-import { auth } from '../../../../../auth';
+import { getSession } from '@auth0/nextjs-auth0';
+
 
 // Handles POST requests to /api/book/details
 export async function POST(
   req: NextRequest
 ) {
-  if(!(await auth())) { return NextResponse.json("No access", {status: 403}); }
+  const session = await getSession();
+  if(!session || !session.user) { return NextResponse.json({}, { status: 500, statusText: "No auth!"}) }
+  console.log("Session:", session.user);
 
   const formData: IBookDetailUpdateModel = await req.json();
   await new BookRepository().updateDetails(formData);

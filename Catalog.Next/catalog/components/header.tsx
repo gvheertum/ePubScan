@@ -1,6 +1,5 @@
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import { signOut } from "../auth";
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Header() {
