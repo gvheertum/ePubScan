@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { IBookReadBadgeUpdateModel } from '../../../../../lib/IBook';
 import BookRepository from '../../../../../lib/bookrepository';
+import { getSession } from '@auth0/nextjs-auth0';
 
 
 // Handles POST requests to /api/book/readstatusbadge
