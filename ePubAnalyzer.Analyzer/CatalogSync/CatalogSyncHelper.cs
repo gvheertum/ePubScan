@@ -1,6 +1,7 @@
+using ePubAnalyzer;
 using Microsoft.Extensions.Configuration;
 
-namespace EpubAnalyzer.CatalogSync
+namespace EpubAnalyzer.ComparisonHelper
 {
 	public class CatalogSyncHelper
 	{
@@ -14,11 +15,12 @@ namespace EpubAnalyzer.CatalogSync
 		public string GetConnectionString()
 		{
 			var location = GetRunLocation();
-			IConfigurationRoot configuration = new ConfigurationBuilder()
-				.SetBasePath(location)
-				.AddJsonFile("connectionstrings.json")
-				.Build();
-			return configuration.GetConnectionString("DefaultConnection");
+			// IConfigurationRoot configuration = new ConfigurationBuilder()
+			// 	.SetBasePath(location)
+			// 	.AddJsonFile("connectionstrings.json")
+			// 	.Build();
+			// return configuration.GetConnectionString("DefaultConnection");
+			return Secrets.ConnectionString;
 		}
 
 		private string GetRunLocation()

@@ -8,6 +8,7 @@ using EpubAnalyzer.FileParsing;
 using EpubAnalyzer.Entities;
 using System.Threading.Tasks;
 using System.Net;
+using ePubAnalyzer.ComparisonHelper;
 
 namespace ePubAnalyzer
 {
@@ -38,7 +39,14 @@ namespace ePubAnalyzer
 			
 			if(AskConfirmOnAction("Perform database actions?"))
 			{
-				var compareHelper = new DatabaseComparisonHelper(new BookLogicApiHandler(Secrets.ApiLocation));
+				DatabaseComparisonHelperBase compareHelper = null;
+				if(Secrets.UseApi) {
+					compareHelper = new DatabaseComparisonHelperApi(new BookLogicApiHandler(Secrets.ApiLocation));
+				}
+				else {
+					compareHelper = new DatabaseComparisonHelperLocal(Secrets.ConnectionString);
+
+				}
 				var compareResults = compareHelper.CompareSetWithDatabase(epubDetails);
 				compareHelper.EchoComparisonSetDetails(compareResults);
 				

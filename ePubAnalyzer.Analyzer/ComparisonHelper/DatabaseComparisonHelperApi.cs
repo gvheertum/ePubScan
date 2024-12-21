@@ -5,18 +5,18 @@ using ePubAnalyzer.Shared.BLL;
 using ePubAnalyzer.Shared.Entities;
 using System.Threading.Tasks;
 
-namespace ePubAnalyzer
+namespace ePubAnalyzer.ComparisonHelper
 {
-    public class DatabaseComparisonHelper
+    public class DatabaseComparisonHelperApi : DatabaseComparisonHelperBase
 	{
         private BookLogicApiHandler apiLogic;
 
-        public DatabaseComparisonHelper(BookLogicApiHandler apiLogic)
+        public DatabaseComparisonHelperApi(BookLogicApiHandler apiLogic)
 		{
 			this.apiLogic = apiLogic;
 		}
 
-		public ComparisonContainer<Book> CompareSetWithDatabase(IEnumerable<EbookData> books)
+		public override ComparisonContainer<Book> CompareSetWithDatabase(IEnumerable<EbookData> books)
 		{
 			var bData = books.Select(b => b.BookDetail);
 			var currBooksInSystem = apiLogic.GetBooks().GetAwaiter().GetResult();
@@ -24,7 +24,7 @@ namespace ePubAnalyzer
 			return new Shared.Library.BookSetComparer().GetComparisonContainer(currBooksInSystem, booksToSave);
 		}
 
-		public void EchoComparisonSetDetails(ComparisonContainer<Book> container)
+		public  override void EchoComparisonSetDetails(ComparisonContainer<Book> container)
 		{
 			System.Console.WriteLine("Comparison results");
 			System.Console.WriteLine($"** Found {container.NewItems.Count()} new books");
@@ -40,7 +40,7 @@ namespace ePubAnalyzer
 			}
 		}
 
-		public async Task SaveExistingItems(ComparisonContainer<Book> container)
+		public  override async Task SaveExistingItems(ComparisonContainer<Book> container)
 		{
 			System.Console.WriteLine($"Saving {container.ExistingItems.Count()} existing books");
 			foreach(var book in container.ExistingItems)
@@ -50,7 +50,7 @@ namespace ePubAnalyzer
 			} 
 		}
 
-		public async Task SaveNewItems(ComparisonContainer<Book> container)
+		public  override async Task SaveNewItems(ComparisonContainer<Book> container)
 		{
 			System.Console.WriteLine($"Saving {container.NewItems.Count()} new books");
 			foreach(var book in container.NewItems)
