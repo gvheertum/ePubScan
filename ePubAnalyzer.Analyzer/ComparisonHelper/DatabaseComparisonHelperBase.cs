@@ -11,7 +11,5 @@ namespace ePubAnalyzer.ComparisonHelper
 		public abstract void EchoComparisonSetDetails(ComparisonContainer<Book> container);
 		public abstract Task SaveNewItems(ComparisonContainer<Book> container);
 		public abstract Task SaveExistingItems(ComparisonContainer<Book> container);
-
-
 	}
 }

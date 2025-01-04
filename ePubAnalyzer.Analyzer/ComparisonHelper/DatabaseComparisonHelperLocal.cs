@@ -14,7 +14,6 @@ namespace ePubAnalyzer.ComparisonHelper
 		public DatabaseComparisonHelperLocal(string connectionString)
 		{
 			this.connectionString = connectionString;
-			//tODO work directly on the DB
 		}
 
 		public override ComparisonContainer<Book> CompareSetWithDatabase(IEnumerable<EbookData> books)
