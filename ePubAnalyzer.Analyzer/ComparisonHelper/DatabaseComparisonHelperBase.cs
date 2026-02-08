@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace ePubAnalyzer.ComparisonHelper
 {
-    public abstract class DatabaseComparisonHelperBase
+    public abstract class DatabaseComparisonHelperBase : ePubAnalyzer.Shared.ComparisonHelper.DatabaseComparisonHelperBase
 	{
 		public abstract ComparisonContainer<Book> CompareSetWithDatabase(IEnumerable<EbookData> books);
-		public abstract void EchoComparisonSetDetails(ComparisonContainer<Book> container);
-		public abstract Task SaveNewItems(ComparisonContainer<Book> container);
-		public abstract Task SaveExistingItems(ComparisonContainer<Book> container);
 	}
 }
+

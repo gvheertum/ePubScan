@@ -9,60 +9,39 @@ namespace ePubAnalyzer.ComparisonHelper
 {
     public class DatabaseComparisonHelperApi : DatabaseComparisonHelperBase
 	{
-        private BookLogicApiHandler apiLogic;
+        private ePubAnalyzer.Shared.ComparisonHelper.DatabaseComparisonHelperApi sharedApiHelper;
 
         public DatabaseComparisonHelperApi(BookLogicApiHandler apiLogic)
 		{
-			this.apiLogic = apiLogic;
+			this.sharedApiHelper = new ePubAnalyzer.Shared.ComparisonHelper.DatabaseComparisonHelperApi(apiLogic);
 		}
 
 		public override ComparisonContainer<Book> CompareSetWithDatabase(IEnumerable<EbookData> books)
 		{
 			var bData = books.Select(b => b.BookDetail);
-			var currBooksInSystem = apiLogic.GetBooks().GetAwaiter().GetResult();
+			var currBooksInSystem = sharedApiHelper.GetExistingBooks().GetAwaiter().GetResult();
 			var booksToSave = books.Select(b=> b.BookDetail).ToList();
 			return new Shared.Library.BookSetComparer().GetComparisonContainer(currBooksInSystem, booksToSave);
 		}
 
+		public override ComparisonContainer<Book> GetComparisonContainer(IEnumerable<Book> existingBooks, IEnumerable<Book> newBooks)
+		{
+			return sharedApiHelper.GetComparisonContainer(existingBooks, newBooks);
+		}
+
 		public  override void EchoComparisonSetDetails(ComparisonContainer<Book> container)
 		{
-			System.Console.WriteLine("Comparison results");
-			System.Console.WriteLine($"** Found {container.NewItems.Count()} new books");
-			foreach(var i in container.NewItems)
-			{
-				System.Console.WriteLine($"{i.Author} - {i.Title} (identifier: {i.Identifier})");
-			}
-			
-			System.Console.WriteLine($"** Found {container.ExistingItems.Count()} existing books");
-			foreach(var i in container.ExistingItems)
-			{
-				System.Console.WriteLine($"{i.Author} - {i.Title} (identifier: {i.Identifier}, id: {i.BookID})");
-			}
+			sharedApiHelper.EchoComparisonSetDetails(container);
 		}
 
 		public  override async Task SaveExistingItems(ComparisonContainer<Book> container)
 		{
-			System.Console.WriteLine($"Saving {container.ExistingItems.Count()} existing books");
-			foreach(var book in container.ExistingItems)
-			{
-				var savedBook = await apiLogic.UpdateBook(book);
-				EchoWrittenBook(savedBook);
-			} 
+			await sharedApiHelper.SaveExistingItems(container);
 		}
 
 		public  override async Task SaveNewItems(ComparisonContainer<Book> container)
 		{
-			System.Console.WriteLine($"Saving {container.NewItems.Count()} new books");
-			foreach(var book in container.NewItems)
-			{
-				var savedBook = await apiLogic.AddBook(book);
-				EchoWrittenBook(savedBook);
-			} 
-		}
-
-		private void EchoWrittenBook(Book book)
-		{
-			System.Console.WriteLine($"Wrote book: {book.Author} - {book.Title} (Identifier {book.Identifier}-> ID: {book.BookID}");
+			await sharedApiHelper.SaveNewItems(container);
 		}
 	}
 }

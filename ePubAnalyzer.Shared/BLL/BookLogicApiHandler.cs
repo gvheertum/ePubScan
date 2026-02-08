@@ -7,7 +7,7 @@ using System;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace ePubAnalyzer
+namespace ePubAnalyzer.Shared.BLL
 {
     public class BookLogicApiHandler
 	{

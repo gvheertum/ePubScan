@@ -8,7 +8,8 @@ using EpubAnalyzer.FileParsing;
 using EpubAnalyzer.Entities;
 using System.Threading.Tasks;
 using System.Net;
-using ePubAnalyzer.ComparisonHelper;
+using ePubAnalyzer.Shared.ComparisonHelper;
+using ePubAnalyzer.Shared.BLL;
 
 namespace ePubAnalyzer
 {
@@ -36,18 +37,27 @@ namespace ePubAnalyzer
 			var epubDetails = files.Select(f => parser.GetDataFromFile(f)).ToList();
 			
 			EchoToOutput(epubDetails);
-			
 			if(AskConfirmOnAction("Perform database actions?"))
 			{
-				DatabaseComparisonHelperBase compareHelper = null;
-				if(Secrets.UseApi) {
-					compareHelper = new DatabaseComparisonHelperApi(new BookLogicApiHandler(Secrets.ApiLocation));
+				DatabaseComparisonHelperBase compareHelper;
+				IEnumerable<ePubAnalyzer.Shared.Entities.Book> existingBooks;
+				
+				if(Secrets.UseApi)
+				{
+					var apiHandler = new BookLogicApiHandler(Secrets.ApiLocation);
+					var apiHelper = new DatabaseComparisonHelperApi(apiHandler);
+					compareHelper = apiHelper;
+					existingBooks = await apiHelper.GetExistingBooks();
 				}
-				else {
-					compareHelper = new DatabaseComparisonHelperLocal(Secrets.ConnectionString);
-
+				else
+				{
+					var localHelper = new DatabaseComparisonHelperLocal(Secrets.ConnectionString);
+					compareHelper = localHelper;
+					existingBooks = localHelper.GetExistingBooks();
 				}
-				var compareResults = compareHelper.CompareSetWithDatabase(epubDetails);
+				
+				var newBooks = epubDetails.Select(b => b.BookDetail).ToList();
+				var compareResults = compareHelper.GetComparisonContainer(existingBooks, newBooks);
 				compareHelper.EchoComparisonSetDetails(compareResults);
 				
 				//Check if we want and need to take action to save new and/or existing items
