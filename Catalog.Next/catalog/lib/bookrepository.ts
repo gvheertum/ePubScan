@@ -1,21 +1,62 @@
-import { IBook, IBookAvailabilityStatusUpdateModel, IBookDetailUpdateModel, IBookReadBadgeUpdateModel, IBookReadStatusUpdateModel, IBookUpdateModel } from "./IBook";
+import { unstable_cache } from "next/cache";
+import { IBook, IBookAvailabilityStatusUpdateModel, IBookCatalogItem, IBookDetailUpdateModel, IBookReadBadgeUpdateModel, IBookReadStatusUpdateModel, IBookUpdateModel } from "./IBook";
 import prisma from './prisma';
+
+const getCatalogBooksCached = unstable_cache(
+  async (): Promise<IBookCatalogItem[]> => {
+    return await prisma.book.findMany({
+      select: {
+        BookID: true,
+        Title: true,
+        Author: true,
+        ReadStatus: true,
+        Medium: true,
+        Status: true,
+        NrOfPages: true,
+      },
+      orderBy: {
+        BookID: 'desc',
+      },
+    }) as IBookCatalogItem[];
+  },
+  ['book-catalog'],
+  {
+    revalidate: 300,
+    tags: ['books'],
+  }
+);
+
+function getBookCached(bookID: number) {
+  return unstable_cache(
+    async (): Promise<IBook | null> => {
+      return await prisma.book.findUnique({
+        where: {
+          BookID: bookID,
+        },
+      }) as IBook | null;
+    },
+    ['book-detail', String(bookID)],
+    {
+      revalidate: 300,
+      tags: ['books', `book:${bookID}`],
+    }
+  )();
+}
+
+function sanitizeUpdateData<T extends Record<string, unknown>>(input: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(input).filter(([, value]) => value !== undefined)
+  ) as Partial<T>;
+}
 
 export default class BookRepository {
 
-  async getAllBooks(): Promise<IBook[]> {
-    const feed: IBook[] = (await prisma.book.findMany({})).sort((a,b) => a.BookID - b.BookID) as IBook[];
-    return feed;
+  async getBookCatalog(): Promise<IBookCatalogItem[]> {
+    return await getCatalogBooksCached();
   }
 
   async getBook(bookID: number): Promise<IBook | null> {
-    console.log("bookid:", bookID);
-    const book: IBook | null = await prisma.book.findFirst({
-      where: {
-        BookID: bookID,
-      }
-    }) as IBook;
-    return book;
+    return await getBookCached(bookID);
   }
 
   async updateBookReadBadge(updateModel: IBookReadBadgeUpdateModel): Promise<boolean> {
@@ -37,12 +78,14 @@ export default class BookRepository {
   private async coreUpdateFunction(updateModel: IBookUpdateModel): Promise<boolean> {
 
     const { BookID, ...properties } = updateModel; //Explode into the ID and rest
-    console.log("Update exploded: ", BookID, properties);
+    if (!BookID) {
+      return false;
+    }
 
     //Update and profit!
     await prisma.book.update({
       where: { BookID: BookID },
-      data: properties
+      data: sanitizeUpdateData(properties)
     });
     return true;
   }

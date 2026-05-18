@@ -1,11 +1,10 @@
 import BookDetail from "../../../../components/bookdetail";
 import BookRepository from "../../../../lib/bookrepository"
-
 import Header from "../../../../components/header";
-import Head from "next/head";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-    let book = await new BookRepository().getBook(parseInt(params.slug, 10));
+    const bookId = parseInt(params.slug, 10);
+    const book = await new BookRepository().getBook(bookId);
     
     const bookTitle = !!book ? `${book.Title} - ${book.Author}` : "Unknown";
 
@@ -15,20 +14,23 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
 export default async function Book({ params }: { params: { slug: string } }) {
-
-
-    let book = await new BookRepository().getBook(parseInt(params.slug, 10));
+    const bookId = parseInt(params.slug, 10);
+    const book = await new BookRepository().getBook(bookId);
     return <>
 
         <Header />
 
-        <h1>Book detail</h1>
-        {book !== null &&
-            <BookDetail book={book!} />
-        }
-        {book === null &&
-            <p>No book with this ID!</p>
-        }
+        <main className="page-container">
+            {book !== null &&
+                <BookDetail book={book} />
+            }
+            {book === null &&
+                <section className="catalog-empty">
+                    <h1>Book not found</h1>
+                    <p>No book with ID {bookId} exists in the catalog.</p>
+                </section>
+            }
+        </main>
     </>
 
 }

@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import { IBookReadBadgeUpdateModel, IBookReadStatusUpdateModel } from '../../../../../lib/IBook';
+import { revalidateTag } from "next/cache";
+import { IBookReadStatusUpdateModel } from '../../../../../lib/IBook';
 import BookRepository from '../../../../../lib/bookrepository';
 import { getSession } from '@auth0/nextjs-auth0';
 
@@ -12,9 +12,12 @@ export async function POST(
 ) {
   const session = await getSession();
   if(!session || !session.user) { return NextResponse.json({}, { status: 500, statusText: "No auth!"}) }
-  console.log("Session:", session.user);
 
   const formData: IBookReadStatusUpdateModel = await req.json();
   await new BookRepository().updateReadStatus(formData);
+  if (formData.BookID) {
+    revalidateTag('books');
+    revalidateTag(`book:${formData.BookID}`);
+  }
   return NextResponse.json(formData, { status: 200 });
 }

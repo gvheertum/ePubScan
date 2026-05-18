@@ -25,3 +25,4 @@ Catalog.NG/.angular/cache/*
 *.local
 Catalog.Next/catalog/.next/*
 /Catalog.Next/catalog/node_modules
+Catalog.Next/catalog/.env

@@ -6,7 +6,6 @@ using ePubAnalyzer.Shared.Entities;
 using Catalog.API.Models;
 using ePubAnalyzer.Shared.BLL;
 using Catalog.API.ResultObjects;
-using Catalog.API.Helpers;
 using ePubAnalyzer.Shared.API;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -17,14 +16,12 @@ namespace Catalog.API
 	{
         
         private readonly BookLogic bookLogic;
-		private readonly BookPartialDataUpdateHelper bookPartialDataUpdateHelper;
         private ILogger<BooksFunction> logger;
 
-        public BooksFunction(ILogger<BooksFunction> logger, BookLogic bookLogic, BookPartialDataUpdateHelper bookPartialDataUpdateHelper)
+        public BooksFunction(ILogger<BooksFunction> logger, BookLogic bookLogic)
 		{
 			this.logger = logger;
 			this.bookLogic = bookLogic;
-			this.bookPartialDataUpdateHelper = bookPartialDataUpdateHelper;
 		}
 
 		[Function("GetBooks")]
@@ -67,8 +64,7 @@ namespace Catalog.API
 			if(!TryValidateBookId<Book>(bookIDParam, input, req, out var result)) { return await new BadHttpResponseResult<string>().GetResponseData(req, result); }
 
 			logger.LogInformation($"Saving: {input.Title} with id {input.BookID}");
-			var combined = bookPartialDataUpdateHelper.MergeNewDataInOriginal(input);
-			bookLogic.Save(combined);
+			var combined = bookLogic.UpdateDetails(input);
 
 			return await new OkHttpResponseResult<Book>().GetResponseData(req, combined);
 		}

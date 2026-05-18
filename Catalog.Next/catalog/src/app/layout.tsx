@@ -1,10 +1,6 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'BookCatalog',
@@ -43,10 +39,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-        <a href="/api/auth/login">Login</a>
-        <a href="/api/auth/logout">Logout</a>
       <UserProvider>
-        <body className={inter.className}>
+        <body>
           {children}
         </body>
       </UserProvider>

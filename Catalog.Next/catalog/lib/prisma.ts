@@ -1,6 +1,17 @@
-import { PrismaClient, VideoGame, Book } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-let prisma: PrismaClient;
-prisma = new PrismaClient();
+const globalForPrisma = globalThis as typeof globalThis & {
+  prisma?: PrismaClient;
+};
+
+const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['warn', 'error'] : ['error'],
+  });
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}
 
 export default prisma;

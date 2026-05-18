@@ -17,6 +17,16 @@ export interface IBook {
     NrOfPages?: number;
 }
 
+export interface IBookCatalogItem {
+    BookID: number;
+    ReadStatus?: string;
+    Title?: string;
+    Author?: string;
+    Medium?: string;
+    Status?: string;
+    NrOfPages?: number;
+}
+
 
 // Default update model (exposint bookId)
 export interface IBookUpdateModel {

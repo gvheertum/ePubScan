@@ -4,9 +4,9 @@
 import { IBook, ReadStates } from "../lib/IBook"
 import { useState } from 'react'
 import ApiConsumer from "../lib/apiconsumer";
-import { read } from "fs";
-import { Alert, Button, Card, CardContent, Chip, Divider, MenuItem, Select, Snackbar, TextField, Typography } from "@mui/material";
+import { Alert, Button, Card, CardContent, MenuItem, Select, Snackbar, TextField } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import "./bookdetail.css";
 
 
 export default function BookDetail({
@@ -66,18 +66,26 @@ export default function BookDetail({
         setSaving(false);
         setSaved(true);
     }
-console.log("rs", readStatus);
 
     return <>
+        <section className="book-detail-shell">
+        <section className="book-detail-hero">
+            <div>
+                <p className="catalog-eyebrow">Book Detail</p>
+                <h1>{title || "Untitled book"}</h1>
+                <p>{author || "Unknown author"}</p>
+                <p>{identifier || "No identifier set"}</p>
+            </div>
+            <div className="book-detail-hero-aside">
+                <span className="book-detail-id">Book #{bookId}</span>
+            </div>
+        </section>
 
-
-        <Card variant="outlined">
+        <Card variant="outlined" className="book-detail-card">
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid xs={12}>
-                        <Typography variant="h5" component="div">
-                            General data
-                        </Typography>
+                        <h2>General data</h2>
                     </Grid>
                     <Grid xs={6}>
                         <TextField
@@ -119,8 +127,7 @@ console.log("rs", readStatus);
                             label="Description"
                             fullWidth
                             multiline
-                            rows={4}
-                            variant="standard"
+                            rows={6}
                             value={description}
                             onChange={(e) => { setDescription(e.target.value) }}
                         />
@@ -144,7 +151,7 @@ console.log("rs", readStatus);
                         <TextField
                             label="Nr. of pages"
                             fullWidth
-                            variant="standard"
+                            type="number"
                             value={nrOfPages}
                             onChange={(e) => { setNrOfPages(parseInt(e.target.value)) }}
                         />
@@ -157,15 +164,14 @@ console.log("rs", readStatus);
             </CardContent>
         </Card>
 
+        <div className="book-detail-grid">
         <Grid container spacing={2}>
             <Grid xs={6}>
-                <Card variant="outlined">
+                <Card variant="outlined" className="book-detail-card">
                     <CardContent>
                         {/* Status */}
                         <Grid xs={12}>
-                            <Typography variant="h5" component="div">
-                                Read status
-                            </Typography>
+                            <h2>Read status</h2>
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid xs={6}>
@@ -188,7 +194,6 @@ console.log("rs", readStatus);
                                     multiline
                                     fullWidth
                                     rows={4}
-                                    variant="standard"
                                     value={readRemark}
                                     onChange={(e) => { setReadRemark(e.target.value) }}
                                 />
@@ -203,15 +208,13 @@ console.log("rs", readStatus);
                 </Card>
             </Grid>
             <Grid xs={6}>
-                <Card>
+                <Card className="book-detail-card">
                     <CardContent>
 
                         {/* Availability  */}
                         <Grid container spacing={2}>
                             <Grid xs={12}>
-                                <Typography variant="h5" component="div">
-                                    Availability
-                                </Typography>
+                                <h2>Availability</h2>
                             </Grid>
                             <Grid xs={6}>
                                 <Select
@@ -233,7 +236,6 @@ console.log("rs", readStatus);
                                     multiline
                                     fullWidth
                                     rows={4}
-                                    variant="standard"
                                     value={statusRemark}
                                     onChange={(e) => { setStatusRemark(e.target.value) }}
                                 />
@@ -246,6 +248,8 @@ console.log("rs", readStatus);
                 </Card>
             </Grid>
         </Grid>
+        </div>
+        </section>
 
 
         {/* Snackbars for updates */}

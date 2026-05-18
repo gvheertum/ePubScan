@@ -1,2 +1,223 @@
-.filterCard { margin-top: 20px; margin-bottom: 20px; }
-.filterCard button { margin-top: 8px;}
+.catalog-shell {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.catalog-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 32px;
+  border: 1px solid var(--border-soft);
+  background:
+    radial-gradient(circle at top right, rgba(123, 231, 255, 0.2), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(215, 255, 112, 0.18), transparent 30%),
+    linear-gradient(145deg, rgba(12, 18, 30, 0.92), rgba(16, 27, 44, 0.88));
+  box-shadow: var(--shadow-soft);
+}
+
+.catalog-hero h1 {
+  margin: 0.5rem 0 0;
+  font-size: clamp(2.1rem, 4vw, 3.6rem);
+}
+
+.catalog-eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.78rem;
+  color: var(--accent-lime);
+}
+
+.catalog-subtitle {
+  max-width: 48rem;
+  margin: 1rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.catalog-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.catalog-stat-card {
+  padding: 1.1rem 1.2rem;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.catalog-stat-card span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.catalog-stat-card strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 2rem;
+}
+
+.catalog-toolbar {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 28px;
+  border: 1px solid var(--border-soft);
+  background: rgba(9, 14, 24, 0.72);
+  box-shadow: var(--shadow-soft);
+}
+
+.catalog-search span {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.catalog-search input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.catalog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.catalog-filter {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.catalog-filter:hover,
+.catalog-filter.active {
+  transform: translateY(-1px);
+  border-color: rgba(215, 255, 112, 0.45);
+  background: rgba(215, 255, 112, 0.1);
+}
+
+.catalog-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.catalog-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 24px;
+  background: rgba(12, 18, 30, 0.82);
+  box-shadow: var(--shadow-soft);
+}
+
+.catalog-row-main {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.catalog-row-titleline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.catalog-row-titleline h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.catalog-row-titleline p,
+.catalog-row-meta,
+.catalog-book-id {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.catalog-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.catalog-row-meta span {
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.catalog-row-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-width: 8rem;
+}
+
+.catalog-book-id {
+  font-size: 0.9rem;
+}
+
+.catalog-detail-link,
+.landing-secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.15rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.catalog-detail-link {
+  background: linear-gradient(135deg, #d7ff70, #7be7ff);
+  color: #071019;
+}
+
+.landing-secondary-action {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+
+.catalog-empty {
+  padding: 2rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 28px;
+  background: rgba(12, 18, 30, 0.8);
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 900px) {
+  .catalog-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-row {
+    flex-direction: column;
+  }
+
+  .catalog-row-side {
+    align-items: flex-start;
+  }
+}

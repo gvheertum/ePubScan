@@ -1,38 +1,28 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import Link from "next/link";
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Header() {
 
     return <>
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                        href='/'
-                    >
-                        <AutoStoriesIcon />
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        BookCatalog
-                    </Typography>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="Logout"
-                        sx={{ mr: 2 }}
-                        href='/logout/'
-                    >
-                        <LogoutIcon />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-        </Box>
+        <header className="site-header">
+            <div className="site-header-inner">
+                <Link href="/" className="site-brand">
+                    <span className="site-brand-icon"><AutoStoriesIcon /></span>
+                    <span>
+                        <strong>BookCatalog</strong>
+                        <small>Curated shelf management</small>
+                    </span>
+                </Link>
+
+                <nav className="site-nav">
+                    <Link href="/books">Catalog</Link>
+                    <a href="/api/auth/logout" className="site-logout" aria-label="Logout">
+                        <LogoutIcon fontSize="small" />
+                        <span>Logout</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
     </>
 }

@@ -19,36 +19,30 @@ namespace ePubAnalyzer.Shared.BLL
 
 		public Entities.Book UpdateReadBadge(int bookID, string readState)
 		{
-			var book = GetBookByID(bookID);
-			if(book == null) { throw new System.Exception($"Unknown bookid: {bookID}"); }
-			book.ReadStatus = readState;
-			book = Save(book);
-			return book;
+			_dal.GetBookRepository().UpdateReadBadge(bookID, readState);
+			return new Entities.Book { BookID = bookID, ReadStatus = readState };
 		}
 
 		public Entities.Book UpdateReadStatus(int bookID, string readState, string readRemark)
 		{
-			var book = GetBookByID(bookID);
-			if(book == null) { throw new System.Exception($"Unknown bookid: {bookID}"); }
-			book.ReadStatus = readState;
-			book.ReadRemark = readRemark;
-			book = Save(book);
-			return book;
+			_dal.GetBookRepository().UpdateReadStatus(bookID, readState, readRemark);
+			return new Entities.Book { BookID = bookID, ReadStatus = readState, ReadRemark = readRemark };
 		}
 
 		public Entities.Book UpdateAvailability(int bookID, string status, string statusRemark)
 		{
-			var book = GetBookByID(bookID);
-			if(book == null) { throw new System.Exception($"Unknown bookid: {bookID}"); }
-			book.Status = status;
-			book.StatusRemark = statusRemark;
-			book = Save(book);
-			return book;
+			_dal.GetBookRepository().UpdateAvailability(bookID, status, statusRemark);
+			return new Entities.Book { BookID = bookID, Status = status, StatusRemark = statusRemark };
 		}
 
 		public Entities.Book Save(Entities.Book book)
 		{
 			return _dal.GetBookRepository().Save(book);
+		}
+
+		public Entities.Book UpdateDetails(Entities.Book book)
+		{
+			return _dal.GetBookRepository().UpdateDetails(book);
 		}
 
 		public Entities.ComparisonContainer<Entities.Book> CompareBooksWithExistingCollection(List<Entities.Book> books)
