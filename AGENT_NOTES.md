@@ -5,6 +5,7 @@
 - Shared EF Core DAL/BLL lives in `ePubAnalyzer.Shared`.
 - Active frontend is Next.js in `Catalog.Next/catalog`.
 - `Catalog.NG` is an older Angular frontend and was not touched for this round.
+- `ePubAnalyzer.Shared` now multi-targets `net7.0` and `net10.0` so the legacy Azure Function can stay on `net7.0` while the analyzer runs on .NET 10.
 
 ## Findings
 - The Next app was reading Postgres directly through Prisma rather than calling the Azure Functions API for catalog reads/writes.
