@@ -39,12 +39,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <UserProvider>
-        <body>
+      <body>
+        <UserProvider>
           {children}
-        </body>
-      </UserProvider>
-
+        </UserProvider>
+      </body>
     </html>
   )
 }

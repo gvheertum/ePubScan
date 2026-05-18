@@ -22,6 +22,54 @@
   font-size: clamp(2rem, 4vw, 3.4rem);
 }
 
+.book-detail-titleline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.book-detail-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.book-detail-status-pill-read {
+  color: #25753a;
+  background: rgba(88, 179, 104, 0.16);
+  border-color: rgba(88, 179, 104, 0.28);
+}
+
+.book-detail-status-pill-reading {
+  color: #1c5db1;
+  background: rgba(47, 128, 237, 0.14);
+  border-color: rgba(47, 128, 237, 0.24);
+}
+
+.book-detail-status-pill-toread {
+  color: #8c6400;
+  background: rgba(210, 155, 34, 0.16);
+  border-color: rgba(210, 155, 34, 0.26);
+}
+
+.book-detail-status-pill-wontread {
+  color: #a43649;
+  background: rgba(207, 75, 93, 0.14);
+  border-color: rgba(207, 75, 93, 0.24);
+}
+
+.book-detail-status-pill-unknown {
+  color: #607184;
+  background: rgba(138, 153, 171, 0.14);
+  border-color: rgba(138, 153, 171, 0.22);
+}
+
 .book-detail-hero p {
   margin: 0.35rem 0 0;
   color: var(--text-muted);
@@ -84,6 +132,12 @@
 .book-detail-panel-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.book-detail-panel-stack {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
 }
 

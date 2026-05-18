@@ -1,3 +1,4 @@
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import BookDetail from "../../../../components/bookdetail";
 import BookRepository from "../../../../lib/bookrepository"
 import Header from "../../../../components/header";
@@ -13,8 +14,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-export default async function Book({ params }: { params: { slug: string } }) {
-    const bookId = parseInt(params.slug, 10);
+async function Book({ params }: { params?: { slug?: string | string[] } }) {
+    const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
+    const bookId = Number.parseInt(slug ?? "", 10);
     const book = await new BookRepository().getBook(bookId);
     return <>
 
@@ -34,3 +36,7 @@ export default async function Book({ params }: { params: { slug: string } }) {
     </>
 
 }
+
+export default withPageAuthRequired(Book, {
+    returnTo: ({ params }) => `/book/${Array.isArray(params?.slug) ? params.slug[0] : params?.slug ?? ""}`,
+});

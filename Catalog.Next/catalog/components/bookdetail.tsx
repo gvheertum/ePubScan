@@ -8,6 +8,7 @@ import { Alert, Button, Card, CardContent, MenuItem, Select, Snackbar, TextField
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import "./bookdetail.css";
 
+const readStates = new ReadStates();
 
 export default function BookDetail({
     book,
@@ -72,7 +73,12 @@ export default function BookDetail({
         <section className="book-detail-hero">
             <div>
                 <p className="catalog-eyebrow">Book Detail</p>
-                <h1>{title || "Untitled book"}</h1>
+                <div className="book-detail-titleline">
+                    <h1>{title || "Untitled book"}</h1>
+                    <span className={`book-detail-status-pill ${getDetailStatusPillClass(readStatus)}`}>
+                        {getDetailStatusLabel(readStatus)}
+                    </span>
+                </div>
                 <p>{author || "Unknown author"}</p>
                 <p>{identifier || "No identifier set"}</p>
             </div>
@@ -172,7 +178,7 @@ export default function BookDetail({
                         <p>Track whether the book is finished, in progress, or still waiting in the queue.</p>
                     </div>
                     <div className="book-detail-panel-grid">
-                        <div className="book-detail-panel-row">
+                        <div className="book-detail-panel-stack">
                             <Select
                                 value={readStatus}
                                 label="Read status"
@@ -206,7 +212,7 @@ export default function BookDetail({
                         <p>Keep the physical or lending state clear so the catalog is useful at a glance.</p>
                     </div>
                     <div className="book-detail-panel-grid">
-                        <div className="book-detail-panel-row">
+                        <div className="book-detail-panel-stack">
                             <Select
                                 value={status}
                                 label="Status"
@@ -250,4 +256,44 @@ export default function BookDetail({
         </Snackbar>
 
     </>
+}
+
+function getDetailStatusLabel(readStatus?: string): string {
+    if (readStates.Read.matches(readStatus)) {
+        return "Read";
+    }
+
+    if (readStates.Reading.matches(readStatus)) {
+        return "Reading";
+    }
+
+    if (readStates.ToRead.matches(readStatus)) {
+        return "To Read";
+    }
+
+    if (readStates.WontRead.matches(readStatus)) {
+        return "Won't Read";
+    }
+
+    return "Unknown";
+}
+
+function getDetailStatusPillClass(readStatus?: string): string {
+    if (readStates.Read.matches(readStatus)) {
+        return "book-detail-status-pill-read";
+    }
+
+    if (readStates.Reading.matches(readStatus)) {
+        return "book-detail-status-pill-reading";
+    }
+
+    if (readStates.ToRead.matches(readStatus)) {
+        return "book-detail-status-pill-toread";
+    }
+
+    if (readStates.WontRead.matches(readStatus)) {
+        return "book-detail-status-pill-wontread";
+    }
+
+    return "book-detail-status-pill-unknown";
 }

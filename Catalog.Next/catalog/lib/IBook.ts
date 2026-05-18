@@ -28,6 +28,26 @@ export interface IBookCatalogItem {
     NrOfPages?: number;
 }
 
+export interface IBookCatalogQuery {
+    page: number;
+    pageSize: number;
+    search?: string;
+    readStatus?: string;
+}
+
+export interface IBookCatalogPage {
+    books: IBookCatalogItem[];
+    totalBooks: number;
+    filteredBooks: number;
+    readBooks: number;
+    readingBooks: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+    search?: string;
+    readStatus?: string;
+}
+
 
 // Default update model (exposint bookId)
 export interface IBookUpdateModel {

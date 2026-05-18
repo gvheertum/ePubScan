@@ -1,53 +1,73 @@
 'use client'
 
 import Link from "next/link";
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState, useTransition } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ReadStatusBadge from "./readstatusbadge";
-import { IBookCatalogItem, ReadStateElement, ReadStates } from "../lib/IBook";
+import { IBookCatalogPage, ReadStateElement, ReadStates } from "../lib/IBook";
 
 type CatalogProps = {
-  initialBooks: IBookCatalogItem[];
+  catalogPage: IBookCatalogPage;
 };
 
 const readStates = new ReadStates();
 
-export default function BookCatalogClient({ initialBooks }: CatalogProps) {
-  const [searchValue, setSearchValue] = useState("");
-  const [filterStatus, setFilterStatus] = useState<ReadStateElement>(readStates.All);
+export default function BookCatalogClient({ catalogPage }: CatalogProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
+  const [searchValue, setSearchValue] = useState(catalogPage.search ?? "");
+  const [filterStatus, setFilterStatus] = useState<ReadStateElement>(
+    getReadStateFromQuery(catalogPage.readStatus)
+  );
   const deferredSearch = useDeferredValue(searchValue);
-  const normalizedSearch = deferredSearch.trim().toLocaleLowerCase();
+  const pageStart = catalogPage.filteredBooks === 0 ? 0 : (catalogPage.page - 1) * catalogPage.pageSize + 1;
+  const pageEnd = Math.min(catalogPage.page * catalogPage.pageSize, catalogPage.filteredBooks);
+  const pageNumbers = useMemo(
+    () => buildPageNumbers(catalogPage.page, catalogPage.totalPages),
+    [catalogPage.page, catalogPage.totalPages]
+  );
 
-  const books = initialBooks.filter((book) => {
-    const statusMatch =
-      filterStatus.matches(readStates.All.code) ||
-      filterStatus.matches(book.ReadStatus);
+  useEffect(() => {
+    setSearchValue(catalogPage.search ?? "");
+  }, [catalogPage.search]);
 
-    if (!statusMatch) {
-      return false;
+  useEffect(() => {
+    setFilterStatus(getReadStateFromQuery(catalogPage.readStatus));
+  }, [catalogPage.readStatus]);
+
+  useEffect(() => {
+    const normalizedDeferredSearch = deferredSearch.trim();
+    const currentSearch = searchParams.get("q") ?? "";
+
+    if (normalizedDeferredSearch === currentSearch) {
+      return;
     }
 
-    if (normalizedSearch.length === 0) {
-      return true;
+    updateQuery({
+      q: normalizedDeferredSearch,
+      status: searchParams.get("status") ?? getQueryStatusValue(filterStatus),
+      page: "1",
+    });
+  }, [deferredSearch, searchParams]);
+
+  function updateQuery(updates: { q?: string; status?: string; page?: string }) {
+    const params = new URLSearchParams(searchParams.toString());
+
+    for (const [key, value] of Object.entries(updates)) {
+      if (!value || value === "all") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
     }
 
-    const haystack = [
-      book.Title ?? "",
-      book.Author ?? "",
-      book.Medium ?? "",
-      book.Status ?? "",
-    ]
-      .join(" ")
-      .toLocaleLowerCase();
-
-    return haystack.includes(normalizedSearch);
-  });
-
-  const stats = {
-    total: initialBooks.length,
-    visible: books.length,
-    read: initialBooks.filter((book) => readStates.Read.matches(book.ReadStatus)).length,
-    reading: initialBooks.filter((book) => readStates.Reading.matches(book.ReadStatus)).length,
-  };
+    const query = params.toString();
+    startTransition(() => {
+      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    });
+  }
 
   return (
     <div className="catalog-shell">
@@ -62,20 +82,28 @@ export default function BookCatalogClient({ initialBooks }: CatalogProps) {
         <div className="catalog-stats">
           <div className="catalog-stat-card">
             <span>Total</span>
-            <strong>{stats.total}</strong>
+            <strong>{catalogPage.totalBooks}</strong>
           </div>
           <div className="catalog-stat-card">
-            <span>Visible</span>
-            <strong>{stats.visible}</strong>
+            <span>Matches</span>
+            <strong>{catalogPage.filteredBooks}</strong>
           </div>
-          <div className="catalog-stat-card">
+          <button
+            type="button"
+            className={filterStatus.matches(readStates.Read.code) ? "catalog-stat-card catalog-stat-button active" : "catalog-stat-card catalog-stat-button"}
+            onClick={() => applyFilter(readStates.Read)}
+          >
             <span>Read</span>
-            <strong>{stats.read}</strong>
-          </div>
-          <div className="catalog-stat-card">
+            <strong>{catalogPage.readBooks}</strong>
+          </button>
+          <button
+            type="button"
+            className={filterStatus.matches(readStates.Reading.code) ? "catalog-stat-card catalog-stat-button active" : "catalog-stat-card catalog-stat-button"}
+            onClick={() => applyFilter(readStates.Reading)}
+          >
             <span>Reading</span>
-            <strong>{stats.reading}</strong>
-          </div>
+            <strong>{catalogPage.readingBooks}</strong>
+          </button>
         </div>
       </section>
 
@@ -91,17 +119,24 @@ export default function BookCatalogClient({ initialBooks }: CatalogProps) {
         </label>
 
         <div className="catalog-filters">
-          <FilterButton active={filterStatus.matches(readStates.All.code)} label="All" onClick={() => setFilterStatus(readStates.All)} />
-          <FilterButton active={filterStatus.matches(readStates.Read.code)} label="Read" onClick={() => setFilterStatus(readStates.Read)} />
-          <FilterButton active={filterStatus.matches(readStates.Reading.code)} label="Reading" onClick={() => setFilterStatus(readStates.Reading)} />
-          <FilterButton active={filterStatus.matches(readStates.ToRead.code)} label="To Read" onClick={() => setFilterStatus(readStates.ToRead)} />
-          <FilterButton active={filterStatus.matches(readStates.WontRead.code)} label="Won't Read" onClick={() => setFilterStatus(readStates.WontRead)} />
-          <FilterButton active={filterStatus.matches(readStates.Unknown.code)} label="Unknown" onClick={() => setFilterStatus(readStates.Unknown)} />
+          <FilterButton active={filterStatus.matches(readStates.All.code)} label="All" onClick={() => applyFilter(readStates.All)} />
+          <FilterButton active={filterStatus.matches(readStates.Read.code)} label="Read" onClick={() => applyFilter(readStates.Read)} />
+          <FilterButton active={filterStatus.matches(readStates.Reading.code)} label="Reading" onClick={() => applyFilter(readStates.Reading)} />
+          <FilterButton active={filterStatus.matches(readStates.ToRead.code)} label="To Read" onClick={() => applyFilter(readStates.ToRead)} />
+          <FilterButton active={filterStatus.matches(readStates.WontRead.code)} label="Won't Read" onClick={() => applyFilter(readStates.WontRead)} />
+          <FilterButton active={filterStatus.matches(readStates.Unknown.code)} label="Unknown" onClick={() => applyFilter(readStates.Unknown)} />
+        </div>
+
+        <div className="catalog-results-meta">
+          <p>
+            Showing {pageStart}-{pageEnd} of {catalogPage.filteredBooks} matching books
+          </p>
+          {isPending && <span className="catalog-loading-state">Updating…</span>}
         </div>
       </section>
 
       <section className="catalog-list" aria-live="polite">
-        {books.map((book) => (
+        {catalogPage.books.map((book) => (
           <article className={`catalog-row ${getCatalogRowStatusClass(book.ReadStatus)}`} key={book.BookID}>
             <div className="catalog-row-main">
               <div className="catalog-row-titleline">
@@ -112,14 +147,15 @@ export default function BookCatalogClient({ initialBooks }: CatalogProps) {
                     <span className={`catalog-status-pill ${getCatalogStatusPillClass(book.ReadStatus)}`}>
                       {getCatalogStatusLabel(book.ReadStatus)}
                     </span>
+                    <span className="catalog-pages-pill">{book.NrOfPages ? `${book.NrOfPages} pages` : "Page count unknown"}</span>
+                    {hasAvailabilityStatus(book.Status) && (
+                      <span className="catalog-availability-pill">
+                        {book.Status}
+                      </span>
+                    )}
                   </div>
                   <p>{book.Author || "Unknown author"}</p>
                 </div>
-              </div>
-              <div className="catalog-row-meta">
-                <span>{book.Medium || "Unknown medium"}</span>
-                <span>{book.NrOfPages ? `${book.NrOfPages} pages` : "Page count unknown"}</span>
-                <span>{book.Status || "No availability state"}</span>
               </div>
               <details className="catalog-summary">
                 <summary>Summary</summary>
@@ -135,15 +171,72 @@ export default function BookCatalogClient({ initialBooks }: CatalogProps) {
           </article>
         ))}
 
-        {books.length === 0 && (
+        {catalogPage.books.length === 0 && (
           <div className="catalog-empty">
             <h2>No books match this filter</h2>
             <p>Try a broader search or switch back to a wider read-status filter.</p>
           </div>
         )}
       </section>
+
+      {catalogPage.totalPages > 1 && (
+        <nav className="catalog-pagination" aria-label="Catalog pages">
+          <button
+            type="button"
+            className="catalog-page-button"
+            disabled={catalogPage.page <= 1 || isPending}
+            onClick={() => updateQuery({
+              q: deferredSearch.trim(),
+              status: getQueryStatusValue(filterStatus),
+              page: String(catalogPage.page - 1),
+            })}
+          >
+            Previous
+          </button>
+
+          <div className="catalog-page-list">
+            {pageNumbers.map((pageNumber) => (
+              <button
+                key={pageNumber}
+                type="button"
+                className={pageNumber === catalogPage.page ? "catalog-page-button active" : "catalog-page-button"}
+                disabled={pageNumber === catalogPage.page || isPending}
+                onClick={() => updateQuery({
+                  q: deferredSearch.trim(),
+                  status: getQueryStatusValue(filterStatus),
+                  page: String(pageNumber),
+                })}
+              >
+                {pageNumber}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="catalog-page-button"
+            disabled={catalogPage.page >= catalogPage.totalPages || isPending}
+            onClick={() => updateQuery({
+              q: deferredSearch.trim(),
+              status: getQueryStatusValue(filterStatus),
+              page: String(catalogPage.page + 1),
+            })}
+          >
+            Next
+          </button>
+        </nav>
+      )}
     </div>
   );
+
+  function applyFilter(nextFilter: ReadStateElement) {
+    setFilterStatus(nextFilter);
+    updateQuery({
+      q: deferredSearch.trim(),
+      status: getQueryStatusValue(nextFilter),
+      page: "1",
+    });
+  }
 }
 
 function getCatalogRowStatusClass(readStatus?: string): string {
@@ -220,4 +313,61 @@ function FilterButton({
       {label}
     </button>
   );
+}
+
+function getReadStateFromQuery(readStatus?: string): ReadStateElement {
+  if (!readStatus || readStatus === "all") {
+    return readStates.All;
+  }
+
+  if (readStates.Read.matches(readStatus)) {
+    return readStates.Read;
+  }
+
+  if (readStates.Reading.matches(readStatus)) {
+    return readStates.Reading;
+  }
+
+  if (readStates.ToRead.matches(readStatus)) {
+    return readStates.ToRead;
+  }
+
+  if (readStates.WontRead.matches(readStatus)) {
+    return readStates.WontRead;
+  }
+
+  return readStates.Unknown;
+}
+
+function getQueryStatusValue(filterStatus: ReadStateElement): string {
+  if (filterStatus.matches(readStates.All.code)) {
+    return "all";
+  }
+
+  if (filterStatus.matches(readStates.Unknown.code)) {
+    return "unknown";
+  }
+
+  return filterStatus.code;
+}
+
+function buildPageNumbers(page: number, totalPages: number): number[] {
+  const start = Math.max(1, page - 2);
+  const end = Math.min(totalPages, page + 2);
+  const pages: number[] = [];
+
+  for (let currentPage = start; currentPage <= end; currentPage += 1) {
+    pages.push(currentPage);
+  }
+
+  return pages;
+}
+
+function hasAvailabilityStatus(status?: string): boolean {
+  if (!status) {
+    return false;
+  }
+
+  const normalizedStatus = status.trim().toLocaleLowerCase();
+  return normalizedStatus.length > 0 && normalizedStatus !== "n/a";
 }
