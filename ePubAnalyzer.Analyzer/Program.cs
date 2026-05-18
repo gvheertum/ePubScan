@@ -39,22 +39,9 @@ namespace ePubAnalyzer
 			EchoToOutput(epubDetails);
 			if(AskConfirmOnAction("Perform database actions?"))
 			{
-				DatabaseComparisonHelperBase compareHelper;
-				IEnumerable<ePubAnalyzer.Shared.Entities.Book> existingBooks;
-				
-				if(Secrets.UseApi)
-				{
-					var apiHandler = new BookLogicApiHandler(Secrets.ApiLocation);
-					var apiHelper = new DatabaseComparisonHelperApi(apiHandler);
-					compareHelper = apiHelper;
-					existingBooks = await apiHelper.GetExistingBooks();
-				}
-				else
-				{
-					var localHelper = new DatabaseComparisonHelperLocal(Secrets.ConnectionString);
-					compareHelper = localHelper;
-					existingBooks = localHelper.GetExistingBooks();
-				}
+				var localHelper = new DatabaseComparisonHelperLocal(Secrets.ConnectionString);
+				DatabaseComparisonHelperBase compareHelper = localHelper;
+				IEnumerable<ePubAnalyzer.Shared.Entities.Book> existingBooks = localHelper.GetExistingBooks();
 				
 				var newBooks = epubDetails.Select(b => b.BookDetail).ToList();
 				var compareResults = compareHelper.GetComparisonContainer(existingBooks, newBooks);

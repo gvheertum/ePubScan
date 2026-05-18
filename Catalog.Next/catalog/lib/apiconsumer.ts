@@ -5,19 +5,35 @@ import { IBookAvailabilityStatusUpdateModel, IBookDetailUpdateModel, IBookReadBa
  */
 export default class ApiConsumer {
     async updateReadStatusBadge(updateModel: IBookReadBadgeUpdateModel) : Promise<boolean> {
-        return await this.postRequest('book/readstatusbadge', updateModel);
+        if (!updateModel.BookID) {
+            return false;
+        }
+
+        return await this.patchRequest(`books/${updateModel.BookID}/read-status`, updateModel);
     }
 
     async updateReadStatus(updateModel: IBookReadStatusUpdateModel)  : Promise<boolean> {
-        return await this.postRequest('book/readstatus', updateModel);
+        if (!updateModel.BookID) {
+            return false;
+        }
+
+        return await this.patchRequest(`books/${updateModel.BookID}/read-status`, updateModel);
     }
 
     async updateAvailability(updateModel: IBookAvailabilityStatusUpdateModel)  : Promise<boolean> {
-        return await this.postRequest('book/availability', updateModel);
+        if (!updateModel.BookID) {
+            return false;
+        }
+
+        return await this.patchRequest(`books/${updateModel.BookID}/availability`, updateModel);
     }
 
     async updateDetails(updateModel: IBookDetailUpdateModel)  : Promise<boolean> {
-        return await this.postRequest('book/details', updateModel);
+        if (!updateModel.BookID) {
+            return false;
+        }
+
+        return await this.patchRequest(`books/${updateModel.BookID}`, updateModel);
     }
 
     private async getRequest<T>(url: string) : Promise<T | null> {
@@ -36,9 +52,9 @@ export default class ApiConsumer {
         return await res.json();
     }
 
-    private async postRequest(url: string, data: any) : Promise<boolean> {
+    private async patchRequest(url: string, data: any) : Promise<boolean> {
         const res = await fetch("/api/" + url, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'

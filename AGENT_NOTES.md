@@ -8,6 +8,7 @@
 
 ## Findings
 - The Next app was reading Postgres directly through Prisma rather than calling the Azure Functions API for catalog reads/writes.
+- The legacy analyzer/console app previously had an optional API mode, but it now uses direct database access only.
 - The catalog page loaded the full book dataset client-side after mount and filtered in the browser.
 - The list query pulled full rows, including large text fields such as `Description`, even though the overview only needed summary fields.
 - The book detail page queried the same record twice: once in `generateMetadata()` and once again in the page itself.
@@ -19,11 +20,14 @@
 - Next Prisma layer:
   - Added a singleton Prisma client in `Catalog.Next/catalog/lib/prisma.ts`.
   - Added cached catalog-summary reads and cached book-detail reads in `Catalog.Next/catalog/lib/bookrepository.ts`.
+  - Consolidated the Next app into its own direct database API under `Catalog.Next/catalog/src/app/api/books/...`.
+  - Reads and writes in the Next app now clearly go through Next route handlers backed by Prisma, not through `Catalog.API`.
   - Catalog summary now selects only:
     - `BookID`
     - `Title`
     - `Author`
     - `ReadStatus`
+    - `Description`
     - `Medium`
     - `Status`
     - `NrOfPages`
@@ -53,6 +57,8 @@
 - Consider moving the Next write API to batch/optimistic UI flows if users do many successive edits.
 - If the catalog grows a lot, replace client-side filtering of the summary dataset with server-side search parameters and pagination.
 - If you want consistent mutation behavior across clients, decide whether Next should remain the primary app API or whether reads/writes should be routed back through `Catalog.API`.
+- If `Catalog.API` is no longer needed for the web catalog, the next cleanup step is to remove any deployment/runtime dependency on it from infrastructure and documentation.
+- The analyzer no longer needs `ApiLocation` or `UseApi`; only `ConnectionString` is required in `Secrets.cs`.
 
 ## Cautions
 - The worktree was already heavily dirty before these edits. Avoid broad cleanup or line-ending normalization without an explicit request.
