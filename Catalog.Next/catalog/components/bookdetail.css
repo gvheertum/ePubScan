@@ -11,8 +11,9 @@
   border: 1px solid var(--border-soft);
   border-radius: 28px;
   background:
-    radial-gradient(circle at top left, rgba(193, 255, 114, 0.2), transparent 35%),
-    linear-gradient(145deg, rgba(12, 18, 30, 0.9), rgba(17, 27, 42, 0.88));
+    radial-gradient(circle at top left, rgba(193, 231, 98, 0.24), transparent 35%),
+    radial-gradient(circle at right, rgba(116, 207, 255, 0.18), transparent 28%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.95));
   box-shadow: var(--shadow-soft);
 }
 
@@ -37,8 +38,8 @@
 .book-detail-id {
   padding: 0.55rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(37, 58, 84, 0.12);
+  background: rgba(255, 255, 255, 0.78);
   color: var(--text-muted);
 }
 
@@ -46,11 +47,12 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
+  align-items: start;
 }
 
 .book-detail-card {
   border-radius: 26px !important;
-  background: rgba(10, 16, 27, 0.78) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
   border: 1px solid var(--border-soft) !important;
   box-shadow: var(--shadow-soft) !important;
 }
@@ -59,9 +61,30 @@
   padding: 1.5rem;
 }
 
+.book-detail-card-header {
+  margin-bottom: 1rem;
+}
+
 .book-detail-card h2 {
-  margin: 0 0 1rem;
+  margin: 0;
   font-size: 1.25rem;
+}
+
+.book-detail-card-header p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.book-detail-panel-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.book-detail-panel-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .book-detail-card .MuiTextField-root,
@@ -74,6 +97,7 @@
 .book-detail-card .MuiOutlinedInput-root,
 .book-detail-card .MuiSelect-select {
   color: var(--text-main);
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .book-detail-card .MuiInputLabel-root,
@@ -82,17 +106,17 @@
 }
 
 .book-detail-card .MuiOutlinedInput-notchedOutline {
-  border-color: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(37, 58, 84, 0.14) !important;
 }
 
 .book-detail-card .MuiButton-contained {
-  background: linear-gradient(135deg, #d7ff70, #7be7ff);
-  color: #071019;
+  background: linear-gradient(135deg, #c7ec63, #78d4ff);
+  color: #142231;
   font-weight: 700;
 }
 
 .book-detail-card .MuiButton-contained:hover {
-  background: linear-gradient(135deg, #e4ff99, #91ecff);
+  background: linear-gradient(135deg, #d6f28a, #94ddff);
 }
 
 @media (max-width: 900px) {
@@ -105,6 +129,10 @@
   }
 
   .book-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-detail-panel-row {
     grid-template-columns: 1fr;
   }
 }

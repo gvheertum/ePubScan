@@ -22,6 +22,7 @@ export interface IBookCatalogItem {
     ReadStatus?: string;
     Title?: string;
     Author?: string;
+    Description?: string;
     Medium?: string;
     Status?: string;
     NrOfPages?: number;

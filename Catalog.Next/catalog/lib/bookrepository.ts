@@ -10,6 +10,7 @@ const getCatalogBooksCached = unstable_cache(
         Title: true,
         Author: true,
         ReadStatus: true,
+        Description: true,
         Medium: true,
         Status: true,
         NrOfPages: true,

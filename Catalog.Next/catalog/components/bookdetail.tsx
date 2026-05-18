@@ -164,91 +164,75 @@ export default function BookDetail({
             </CardContent>
         </Card>
 
-        <div className="book-detail-grid">
-        <Grid container spacing={2}>
-            <Grid xs={6}>
-                <Card variant="outlined" className="book-detail-card">
-                    <CardContent>
-                        {/* Status */}
-                        <Grid xs={12}>
-                            <h2>Read status</h2>
-                        </Grid>
-                        <Grid container spacing={2}>
-                            <Grid xs={6}>
-                                <Select
-                                    value={readStatus}
-                                    label="Read status"
-                                    fullWidth
-                                    onChange={(e) => { setReadStatus(e.target.value) }}
-                                >
-                                    <MenuItem value={""}></MenuItem>
-                                    <MenuItem value={new ReadStates().Read.display}>{new ReadStates().Read.display}</MenuItem>
-                                    <MenuItem value={new ReadStates().Reading.display}>{new ReadStates().Reading.display}</MenuItem>
-                                    <MenuItem value={new ReadStates().ToRead.display}>{new ReadStates().ToRead.display}</MenuItem>
-                                    <MenuItem value={new ReadStates().WontRead.display}>{new ReadStates().WontRead.display}</MenuItem>
-                                </Select>
-                            </Grid>
-                            <Grid xs={6}>
-                                <TextField
-                                    label="Read remark"
-                                    multiline
-                                    fullWidth
-                                    rows={4}
-                                    value={readRemark}
-                                    onChange={(e) => { setReadRemark(e.target.value) }}
-                                />
+        <section className="book-detail-grid">
+            <Card variant="outlined" className="book-detail-card">
+                <CardContent>
+                    <div className="book-detail-card-header">
+                        <h2>Read status</h2>
+                        <p>Track whether the book is finished, in progress, or still waiting in the queue.</p>
+                    </div>
+                    <div className="book-detail-panel-grid">
+                        <div className="book-detail-panel-row">
+                            <Select
+                                value={readStatus}
+                                label="Read status"
+                                fullWidth
+                                onChange={(e) => { setReadStatus(e.target.value) }}
+                            >
+                                <MenuItem value={""}></MenuItem>
+                                <MenuItem value={new ReadStates().Read.display}>{new ReadStates().Read.display}</MenuItem>
+                                <MenuItem value={new ReadStates().Reading.display}>{new ReadStates().Reading.display}</MenuItem>
+                                <MenuItem value={new ReadStates().ToRead.display}>{new ReadStates().ToRead.display}</MenuItem>
+                                <MenuItem value={new ReadStates().WontRead.display}>{new ReadStates().WontRead.display}</MenuItem>
+                            </Select>
+                            <TextField
+                                label="Read remark"
+                                multiline
+                                fullWidth
+                                rows={4}
+                                value={readRemark}
+                                onChange={(e) => { setReadRemark(e.target.value) }}
+                            />
+                        </div>
+                        <Button fullWidth onClick={updateReadData} variant="contained">Update read status</Button>
+                    </div>
+                </CardContent>
+            </Card>
 
-                            </Grid>
-                            <Grid xs={12}>
-                                <Button fullWidth onClick={updateReadData} variant="contained">Update read status</Button>
-                            </Grid>
-
-                        </Grid>
-                    </CardContent>
-                </Card>
-            </Grid>
-            <Grid xs={6}>
-                <Card className="book-detail-card">
-                    <CardContent>
-
-                        {/* Availability  */}
-                        <Grid container spacing={2}>
-                            <Grid xs={12}>
-                                <h2>Availability</h2>
-                            </Grid>
-                            <Grid xs={6}>
-                                <Select
-                                    value={status}
-                                    label="Status"
-                                    fullWidth
-                                    onChange={(e) => { setStatus(e.target.value) }}
-                                >
-                                    <MenuItem value={""}></MenuItem>
-                                    <MenuItem value={"N/A"}>N/A</MenuItem>
-                                    <MenuItem value={"Available"}>Available</MenuItem>
-                                    <MenuItem value={"Lend-out"}>Lend-out</MenuItem>
-                                    <MenuItem value={"Available at other location"}>Available at other location</MenuItem>
-                                </Select>
-                            </Grid>
-                            <Grid xs={6}>
-                                <TextField
-                                    label="Status remark"
-                                    multiline
-                                    fullWidth
-                                    rows={4}
-                                    value={statusRemark}
-                                    onChange={(e) => { setStatusRemark(e.target.value) }}
-                                />
-                            </Grid>
-                            <Grid xs={12}>
-                                <Button fullWidth onClick={updateAvailabilityData} variant="contained">Update availability status</Button>
-                            </Grid>
-                        </Grid>
-                    </CardContent>
-                </Card>
-            </Grid>
-        </Grid>
-        </div>
+            <Card variant="outlined" className="book-detail-card">
+                <CardContent>
+                    <div className="book-detail-card-header">
+                        <h2>Availability</h2>
+                        <p>Keep the physical or lending state clear so the catalog is useful at a glance.</p>
+                    </div>
+                    <div className="book-detail-panel-grid">
+                        <div className="book-detail-panel-row">
+                            <Select
+                                value={status}
+                                label="Status"
+                                fullWidth
+                                onChange={(e) => { setStatus(e.target.value) }}
+                            >
+                                <MenuItem value={""}></MenuItem>
+                                <MenuItem value={"N/A"}>N/A</MenuItem>
+                                <MenuItem value={"Available"}>Available</MenuItem>
+                                <MenuItem value={"Lend-out"}>Lend-out</MenuItem>
+                                <MenuItem value={"Available at other location"}>Available at other location</MenuItem>
+                            </Select>
+                            <TextField
+                                label="Status remark"
+                                multiline
+                                fullWidth
+                                rows={4}
+                                value={statusRemark}
+                                onChange={(e) => { setStatusRemark(e.target.value) }}
+                            />
+                        </div>
+                        <Button fullWidth onClick={updateAvailabilityData} variant="contained">Update availability status</Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </section>
         </section>
 
 

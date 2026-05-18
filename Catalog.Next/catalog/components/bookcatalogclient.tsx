@@ -102,12 +102,17 @@ export default function BookCatalogClient({ initialBooks }: CatalogProps) {
 
       <section className="catalog-list" aria-live="polite">
         {books.map((book) => (
-          <article className="catalog-row" key={book.BookID}>
+          <article className={`catalog-row ${getCatalogRowStatusClass(book.ReadStatus)}`} key={book.BookID}>
             <div className="catalog-row-main">
               <div className="catalog-row-titleline">
                 <ReadStatusBadge readStatus={book.ReadStatus} />
                 <div>
-                  <h2>{book.Title || "Untitled book"}</h2>
+                  <div className="catalog-row-heading">
+                    <h2>{book.Title || "Untitled book"}</h2>
+                    <span className={`catalog-status-pill ${getCatalogStatusPillClass(book.ReadStatus)}`}>
+                      {getCatalogStatusLabel(book.ReadStatus)}
+                    </span>
+                  </div>
                   <p>{book.Author || "Unknown author"}</p>
                 </div>
               </div>
@@ -116,6 +121,10 @@ export default function BookCatalogClient({ initialBooks }: CatalogProps) {
                 <span>{book.NrOfPages ? `${book.NrOfPages} pages` : "Page count unknown"}</span>
                 <span>{book.Status || "No availability state"}</span>
               </div>
+              <details className="catalog-summary">
+                <summary>Summary</summary>
+                <p>{book.Description || "No summary available for this book yet."}</p>
+              </details>
             </div>
             <div className="catalog-row-side">
               <span className="catalog-book-id">#{book.BookID}</span>
@@ -135,6 +144,66 @@ export default function BookCatalogClient({ initialBooks }: CatalogProps) {
       </section>
     </div>
   );
+}
+
+function getCatalogRowStatusClass(readStatus?: string): string {
+  if (readStates.Read.matches(readStatus)) {
+    return "catalog-row-read";
+  }
+
+  if (readStates.Reading.matches(readStatus)) {
+    return "catalog-row-reading";
+  }
+
+  if (readStates.ToRead.matches(readStatus)) {
+    return "catalog-row-toread";
+  }
+
+  if (readStates.WontRead.matches(readStatus)) {
+    return "catalog-row-wontread";
+  }
+
+  return "catalog-row-unknown";
+}
+
+function getCatalogStatusLabel(readStatus?: string): string {
+  if (readStates.Read.matches(readStatus)) {
+    return "Read";
+  }
+
+  if (readStates.Reading.matches(readStatus)) {
+    return "Reading";
+  }
+
+  if (readStates.ToRead.matches(readStatus)) {
+    return "To Read";
+  }
+
+  if (readStates.WontRead.matches(readStatus)) {
+    return "Won't Read";
+  }
+
+  return "Unknown";
+}
+
+function getCatalogStatusPillClass(readStatus?: string): string {
+  if (readStates.Read.matches(readStatus)) {
+    return "catalog-status-pill-read";
+  }
+
+  if (readStates.Reading.matches(readStatus)) {
+    return "catalog-status-pill-reading";
+  }
+
+  if (readStates.ToRead.matches(readStatus)) {
+    return "catalog-status-pill-toread";
+  }
+
+  if (readStates.WontRead.matches(readStatus)) {
+    return "catalog-status-pill-wontread";
+  }
+
+  return "catalog-status-pill-unknown";
 }
 
 function FilterButton({
