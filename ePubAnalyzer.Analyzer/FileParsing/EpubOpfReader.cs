@@ -36,9 +36,60 @@ namespace EpubAnalyzer.FileParsing
 			return GetValueOfChild(GetMetadataTag(xDoc), "title");
 		}
 
-		private string GetISBN(XDocument xDoc) 
+		private string GetISBN(XDocument xDoc)
 		{
-			return GetValueOfChild(GetMetadataTag(xDoc), "identifier")?.Replace("-","").Replace(" ", "");
+			var metadata = GetMetadataTag(xDoc);
+			var identifiers = metadata.Descendants()
+				.Where(d => d.Name.LocalName == "identifier")
+				.ToList();
+
+			// 1. Explicit scheme attribute: opf:scheme="ISBN" or scheme="ISBN"
+			var byScheme = identifiers.FirstOrDefault(id =>
+				id.Attributes().Any(a =>
+					a.Name.LocalName == "scheme" &&
+					string.Equals(a.Value, "ISBN", StringComparison.OrdinalIgnoreCase)));
+			if (byScheme != null)
+				return CleanIsbn(byScheme.Value);
+
+			// 2. urn:isbn: or isbn: URI prefix
+			var byUrn = identifiers.FirstOrDefault(id =>
+				id.Value.StartsWith("urn:isbn:", StringComparison.OrdinalIgnoreCase) ||
+				id.Value.StartsWith("isbn:", StringComparison.OrdinalIgnoreCase));
+			if (byUrn != null)
+				return CleanIsbn(byUrn.Value.Substring(byUrn.Value.LastIndexOf(':') + 1));
+
+			// 3. Calibre stores ISBN in <meta name="calibre:isbn" content="...">
+			var calibreMeta = metadata.Descendants()
+				.FirstOrDefault(d =>
+					d.Name.LocalName == "meta" &&
+					d.Attributes().Any(a => a.Name.LocalName == "name" && a.Value == "calibre:isbn"));
+			if (calibreMeta != null)
+			{
+				var content = calibreMeta.Attribute("content")?.Value;
+				if (!string.IsNullOrWhiteSpace(content))
+					return CleanIsbn(content);
+			}
+
+			// 4. Last resort: pattern-match any identifier that looks like ISBN-10 or ISBN-13
+			foreach (var id in identifiers)
+			{
+				var cleaned = CleanIsbn(id.Value);
+				if (LooksLikeIsbn(cleaned))
+					return cleaned;
+			}
+
+			return null;
+		}
+
+		private static string CleanIsbn(string raw) =>
+			raw?.Replace("-", "").Replace(" ", "").Trim();
+
+		private static bool LooksLikeIsbn(string s)
+		{
+			if (string.IsNullOrWhiteSpace(s)) return false;
+			if (s.Length == 13 && s.All(char.IsDigit)) return true;
+			if (s.Length == 10 && s[..9].All(char.IsDigit) && (char.IsDigit(s[9]) || s[9] == 'X' || s[9] == 'x')) return true;
+			return false;
 		}
 
 		private string GetAuthor(XDocument xDoc)

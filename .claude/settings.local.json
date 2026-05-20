@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(npx tsc *)",
+      "Bash(curl -s \"https://www.googleapis.com/books/v1/volumes?q=intitle:De+laatste+die+sterft+inauthor:Helen+Fields&maxResults=1\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('totalItems:', d.get\\('totalItems'\\)\\); print\\('items:', [i['volumeInfo'].get\\('title'\\) for i in d.get\\('items',[]\\)]\\)\")",
+      "Bash(curl -s \"https://www.googleapis.com/books/v1/volumes?q=intitle:De+laatste+die+sterft&maxResults=1\")",
+      "Bash(curl -s \"https://www.googleapis.com/books/v1/volumes?q=De+laatste+die+sterft+Helen+Fields&maxResults=3\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('totalItems:', d.get\\('totalItems'\\)\\); [print\\(i['volumeInfo'].get\\('title'\\), '|', i['volumeInfo'].get\\('authors'\\)\\) for i in d.get\\('items',[]\\)]\")",
+      "Bash(curl -s \"https://openlibrary.org/search.json?q=Helen+Fields&limit=5\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('numFound:', d.get\\('numFound'\\)\\); [print\\(doc.get\\('title'\\), '|', doc.get\\('author_name'\\), '| cover_i:', doc.get\\('cover_i'\\)\\) for doc in d.get\\('docs',[]\\)]\")",
+      "Bash(curl -s \"https://openlibrary.org/search.json?q=Helen+Fields+de+laatste+die+sterft&limit=1\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); doc=d['docs'][0] if d['docs'] else {}; print\\('numFound:', d.get\\('numFound'\\)\\); print\\('title:', doc.get\\('title'\\)\\); print\\('cover_i:', doc.get\\('cover_i'\\)\\)\")",
+      "Bash(curl -s \"https://www.biblionet.nl/api/\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://www.biblionet.nl/\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"https://www.bol.com/nl/rnwy/account/login/bestel\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"https://covers.openlibrary.org/b/isbn/9789044937930-L.jpg\")",
+      "Bash(curl -s \"https://jsru.kb.nl/sru/sru?operation=searchRetrieve&version=1.2&recordSchema=dcx&x-collection=GGC&query=dc.title+exact+%22De+laatste+die+sterft%22&maximumRecords=3\")",
+      "Bash(python -c \"import sys; content=sys.stdin.read\\(\\); print\\(content[:2000]\\)\")",
+      "Bash(curl -s \"https://jsru.kb.nl/sru/sru?operation=searchRetrieve&version=1.2&recordSchema=dcx&x-collection=GGC&query=dc.title+all+%22De+laatste+die+sterft%22&maximumRecords=1\")",
+      "Bash(python -c ' *)",
+      "Bash(curl -s \"https://jsru.kb.nl/sru/sru?operation=searchRetrieve&version=1.2&recordSchema=dcx&x-collection=GGC&query=dc.title+all+%22Hoe+het+hoort%22&maximumRecords=1\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\\\\n\" \"https://covers.openlibrary.org/b/isbn/9789026362705-L.jpg\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\\\\n\" \"https://covers.openlibrary.org/b/isbn/0000000000000-L.jpg\")",
+      "Bash(curl -s \"https://jsru.kb.nl/sru/sru?operation=searchRetrieve&version=1.2&recordSchema=dcx&x-collection=GGC&query=\\(dc.title+exact+%22De+laatste+die+sterft%22\\)+and+\\(dc.creator+any+%22Helen+Fields%22\\)&maximumRecords=1\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-redirs 0 \"https://covers.openlibrary.org/b/isbn/9789026362705-L.jpg\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-redirs 0 \"https://covers.openlibrary.org/b/isbn/0000000000000-L.jpg\")"
+    ]
+  }
+}

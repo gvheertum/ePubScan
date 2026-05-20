@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { useDeferredValue, useEffect, useMemo, useState, useTransition } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ReadStatusBadge from "./readstatusbadge";
 import { IBookCatalogPage, ReadStateElement, ReadStates } from "../lib/IBook";
@@ -29,9 +29,18 @@ export default function BookCatalogClient({ catalogPage }: CatalogProps) {
     [catalogPage.page, catalogPage.totalPages]
   );
 
+  // Tracks the last search string we ourselves pushed to the URL so we can
+  // distinguish "URL changed because we typed" from "URL changed externally
+  // (back/forward)". Without this, each server round-trip resets the input.
+  const lastSubmittedSearch = useRef(catalogPage.search ?? "");
+
   useEffect(() => {
-    setSearchValue(catalogPage.search ?? "");
-  }, [catalogPage.search]);
+    const urlQ = searchParams.get("q") ?? "";
+    if (urlQ !== lastSubmittedSearch.current) {
+      lastSubmittedSearch.current = urlQ;
+      setSearchValue(urlQ);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     setFilterStatus(getReadStateFromQuery(catalogPage.readStatus));
@@ -45,6 +54,7 @@ export default function BookCatalogClient({ catalogPage }: CatalogProps) {
       return;
     }
 
+    lastSubmittedSearch.current = normalizedDeferredSearch;
     updateQuery({
       q: normalizedDeferredSearch,
       status: searchParams.get("status") ?? getQueryStatusValue(filterStatus),

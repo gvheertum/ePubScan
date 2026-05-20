@@ -2,7 +2,7 @@
 'use client'
 
 import { IBook, ReadStates } from "../lib/IBook"
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import ApiConsumer from "../lib/apiconsumer";
 import { Alert, Button, Card, CardContent, MenuItem, Select, Snackbar, TextField } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
@@ -30,6 +30,39 @@ export default function BookDetail({
     const [status, setStatus] = useState(book?.Status);
     const [statusRemark, setStatusRemark] = useState(book?.StatusRemark);
     const apiConsumer = new ApiConsumer();
+
+    const [coverUrl, setCoverUrl] = useState<string | null>(null);
+    const [coverVisible, setCoverVisible] = useState(false);
+    const [coverLoading, setCoverLoading] = useState(true);
+    const [openLibDescription, setOpenLibDescription] = useState<string | null>(null);
+
+    const initTitle = useRef(book?.Title);
+    const initAuthor = useRef(book?.Author);
+    const initIdentifier = useRef(book?.Identifier);
+
+    useEffect(() => {
+        const t = initTitle.current ?? '';
+        const a = initAuthor.current ?? '';
+        const i = initIdentifier.current ?? '';
+        if (!t && !a && !i) {
+            setCoverLoading(false);
+            return;
+        }
+
+        const params = new URLSearchParams();
+        if (t) params.set('title', t);
+        if (a) params.set('author', a);
+        if (i) params.set('identifier', i);
+
+        fetch(`/api/bookcover?${params}`)
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (data?.coverUrl) setCoverUrl(data.coverUrl);
+                if (data?.description) setOpenLibDescription(data.description);
+            })
+            .catch(() => {})
+            .finally(() => setCoverLoading(false));
+    }, []);
 
     async function updateData() {
         setSaving(true);
@@ -71,7 +104,7 @@ export default function BookDetail({
     return <>
         <section className="book-detail-shell">
         <section className="book-detail-hero">
-            <div>
+            <div className="book-detail-hero-content">
                 <p className="catalog-eyebrow">Book Detail</p>
                 <div className="book-detail-titleline">
                     <h1>{title || "Untitled book"}</h1>
@@ -81,8 +114,31 @@ export default function BookDetail({
                 </div>
                 <p>{author || "Unknown author"}</p>
                 <p>{identifier || "No identifier set"}</p>
+                {openLibDescription && !description && (
+                    <p className="book-detail-synopsis">{openLibDescription}</p>
+                )}
             </div>
             <div className="book-detail-hero-aside">
+                {coverLoading && (
+                    <div className="book-detail-cover-placeholder book-detail-cover-placeholder-loading" aria-label="Looking up cover…">
+                        <span className="book-detail-cover-placeholder-mark">?</span>
+                    </div>
+                )}
+                {!coverLoading && !coverUrl && (
+                    <div className="book-detail-cover-placeholder book-detail-cover-placeholder-notfound" aria-label="No cover found">
+                        <span className="book-detail-cover-placeholder-mark">—</span>
+                    </div>
+                )}
+                {!coverLoading && coverUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                        src={coverUrl}
+                        alt={`Cover of ${title ?? 'book'}`}
+                        className={`book-detail-cover${coverVisible ? ' book-detail-cover-visible' : ''}`}
+                        onLoad={() => setCoverVisible(true)}
+                        onError={() => setCoverUrl(null)}
+                    />
+                )}
                 <span className="book-detail-id">Book #{bookId}</span>
             </div>
         </section>
