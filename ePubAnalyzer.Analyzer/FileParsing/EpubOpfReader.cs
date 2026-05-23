@@ -13,7 +13,7 @@ namespace EpubAnalyzer.FileParsing
 		protected override EbookData GetDataInternal(string fileContent, FileInfo fileInfo)
 		{
 			var xDoc = ParseDesciptorFile(fileContent);
-			return new EbookData() 
+			return new EbookData()
 			{
 				BookDetail = new ePubAnalyzer.Shared.Entities.Book()
 				{
@@ -26,9 +26,34 @@ namespace EpubAnalyzer.FileParsing
 					Description = GetDescription(xDoc),
 					Subject = GetSubject(xDoc),
 					Language = GetLanguage(xDoc),
+					NrOfPages = GetPageCount(xDoc),
 				},
 				DataSource = "opf"
 			};
+		}
+
+		private int? GetPageCount(XDocument xDoc)
+		{
+			var metadata = GetMetadataTag(xDoc);
+
+			// EPUB3: <meta property="schema:numberOfPages">320</meta>
+			var schemaPages = metadata.Descendants()
+				.FirstOrDefault(d => d.Name.LocalName == "meta" &&
+					d.Attributes().Any(a => a.Name.LocalName == "property" && a.Value == "schema:numberOfPages"));
+			if (schemaPages != null && int.TryParse(schemaPages.Value?.Trim(), out var n1)) return n1;
+
+			// EPUB2/Calibre: <meta name="pageCount" content="320"/> or calibre:pagecount
+			var namedMeta = metadata.Descendants()
+				.FirstOrDefault(d => d.Name.LocalName == "meta" &&
+					d.Attributes().Any(a => a.Name.LocalName == "name" &&
+						(a.Value == "pageCount" || a.Value == "calibre:pagecount")));
+			if (namedMeta != null)
+			{
+				var content = namedMeta.Attribute("content")?.Value;
+				if (int.TryParse(content, out var n2)) return n2;
+			}
+
+			return null;
 		}
 
 		private string GetTitle(XDocument xDoc) 

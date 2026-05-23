@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.IO;
 using EpubAnalyzer.FileParsing;
 using EpubAnalyzer.Entities;
+using EpubAnalyzer.BookLookup;
 using System.Threading.Tasks;
 using System.Net;
 using ePubAnalyzer.Shared.ComparisonHelper;
@@ -35,7 +36,15 @@ namespace ePubAnalyzer
 			//Read and parse files
 			var parser = new EpubFileParser();
 			var epubDetails = files.Select(f => parser.GetDataFromFile(f)).ToList();
-			
+
+			//Enrich with Dutch description and page count
+			var enricher = new BookEnricher();
+			foreach(var book in epubDetails)
+			{
+				System.Console.WriteLine($"Enriching: {book.BookDetail.Title}");
+				await enricher.EnrichAsync(book);
+			}
+
 			EchoToOutput(epubDetails);
 			if(AskConfirmOnAction("Perform database actions?"))
 			{
@@ -89,6 +98,7 @@ namespace ePubAnalyzer
 				System.Console.WriteLine($"Description: {data.Description}");
 				System.Console.WriteLine($"Language: {data.Language}");
 				System.Console.WriteLine($"ISBN: {data.Identifier}");
+				System.Console.WriteLine($"Pages: {data.NrOfPages?.ToString() ?? "unknown"}");
 			});
 		}
 

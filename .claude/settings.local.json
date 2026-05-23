@@ -25,7 +25,16 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\\\\n\" \"https://covers.openlibrary.org/b/isbn/0000000000000-L.jpg\")",
       "Bash(curl -s \"https://jsru.kb.nl/sru/sru?operation=searchRetrieve&version=1.2&recordSchema=dcx&x-collection=GGC&query=\\(dc.title+exact+%22De+laatste+die+sterft%22\\)+and+\\(dc.creator+any+%22Helen+Fields%22\\)&maximumRecords=1\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-redirs 0 \"https://covers.openlibrary.org/b/isbn/9789026362705-L.jpg\")",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-redirs 0 \"https://covers.openlibrary.org/b/isbn/0000000000000-L.jpg\")"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-redirs 0 \"https://covers.openlibrary.org/b/isbn/0000000000000-L.jpg\")",
+      "Bash(psql --version)",
+      "Bash(dotnet tool *)",
+      "Bash(brew list *)",
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//usr/local/bin/**)",
+      "Bash(mkdir -p /tmp/migration-runner)",
+      "Bash(dotnet new *)",
+      "Bash(dotnet add *)",
+      "Bash(dotnet run *)"
     ]
   }
 }
