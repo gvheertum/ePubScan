@@ -26,3 +26,5 @@ Catalog.NG/.angular/cache/*
 Catalog.Next/catalog/.next/*
 /Catalog.Next/catalog/node_modules
 Catalog.Next/catalog/.env
+export
+.DS_Store
